@@ -1,0 +1,642 @@
+---
+import Layout from '../layouts/Layout.astro';
+import matildaImg from '../images/effet-matilda.png';
+import festivalImg from '../images/festival.png';
+import cuptailImg from '../images/cuptail.png';
+import moiImg from '../images/moi.jpeg';     
+---
+
+<Layout title="Maman Thilor SAMBE ">
+  <div class="bg-gradient-to-br from-white to-pink-500">
+    {/* HERO Section */}
+    <section id="hero" class="section-padding bg-gradient-to-br from-amber-300 via-pink-500 to-amber-300 relative">
+      <div class="container-custom">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div class="order-2 md:order-1">
+            <div class="mb-6">
+              <span class="inline-block px-4 py-2 bg-gradient-to-r from-amber-500 to-pink-500 backdrop-blur text-white font-semibold rounded-lg text-sm uppercase tracking-wide">Bienvenue</span>
+            </div>
+            <h1 class="text-xl sm:text-xl md:text-4xl font-bold mb-6 leading-tight text-white">
+              Maman Thilor SAMBE<br class="hidden sm:block" />
+            </h1>
+            <p class="text-lg md:text-xl font-semibold text-white mb-8">Développement Web | Designer UX | Communication digitale| Production Audiovisuelle</p>
+            <p class="text-lg text-white mb-8 leading-relaxed max-w-lg">Étudiante en <strong>BUT Métiers du Multimédia et de l'Internet (MMI)</strong> passionnée par les projets multimédias.</p>
+            <div class="flex flex-col sm:flex-row gap-4 mb-12">
+              <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold text-center">
+                Voir mes projets
+              </a>
+              <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-amber-400 to-rose-400 text-white rounded-lg font-semibold text-center">
+                Me contacter
+              </a>
+            </div>
+            <div class="flex gap-8">
+              <a href="https://www.linkedin.com/in/maman-thilor-sambe-996592389/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-pink-500 font-medium transition-colors">
+                LinkedIn
+              </a>
+            </div>
+          </div>
+          <div class="order-1 md:order-2 flex justify-center">
+            <div class="relative w-full max-w-md">
+              <div class="relative">
+                <div class="w-full aspect-square rounded-2xl bg-white border-2 border-gray-300 flex items-center justify-center overflow-hidden shadow-xl">
+                  <img src={moiImg.src} alt="Maman SAMBE" class="w-full h-full object-cover" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ABOUT Section */}
+    <section id="about" class="section-padding bg-white">
+      <div class="container-custom">
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-5xl font-bold mb-4">À propos</h2>
+          <div class="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          <div class="md:col-span-2">
+            <div class="space-y-6">
+              <div>
+                <h3 class="text-xl font-bold mb-4">Qui je suis ?</h3>
+                <p class="text-gray-600 text-lg leading-relaxed">
+                  Je suis Maman Thilor SAMBE, une créatrice numérique passionnée par les projets multimédias ainsi qu'en communication digitale. 
+                  J'aime créer des expériences utilisateur modernes, intuitives et engageantes. Mon approche combine 
+                  la créativité avec la rigueur technique pour livrer des projets de haute qualité.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-4">Mon parcours</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                  Je suis actuellement en études au <strong>BUT Multimédia et Internet</strong> à l'Université Marie et Louis Pasteur/IUT Nord Franche-Comté.
+                </p>
+                <p class="text-gray-600 leading-relaxed">
+                  Passionnée par la création numérique et le développement web, j'ai acquis des compétences
+                  en développement web, communication digitale, design UX/UI & production audiovisuelle. Je suis toujours en quête
+                  de nouvelles technologies et de meilleures pratiques pour créer des expériences utilisateur
+                  exceptionnelles.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-4">Ce qui me motive</h3>
+                <ul class="space-y-3">
+                  <li class="flex items-start gap-3">
+                    <span class="text-primary font-bold text-lg">→</span>
+                    <span class="text-gray-600">Créer des interfaces modernes et intuitives</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="text-primary font-bold text-lg">→</span>
+                    <span class="text-gray-600">Intervenir dans la communication digitale</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="text-primary font-bold text-lg">→</span>
+                    <span class="text-gray-600">Travailler sur des projets multimédias variés</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="text-primary font-bold text-lg">→</span>
+                    <span class="text-gray-600">Collaborer avec des équipes talentueuses</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sticky top-24 space-y-6">
+              <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg p-6 border border-border">
+                <h3 class="font-bold text-lg mb-4">Mes coordonnées</h3>
+                <ul class="space-y-3">
+                  <li>
+                    <p class="text-sm text-gray-600">Âge</p>
+                    <p class="font-semibold">19 ans</p>
+                  </li>
+                  <li>
+                    <p class="text-sm text-gray-600">Localisation</p>
+                    <p class="font-semibold">25200 Montbéliard, France</p>
+                  </li>
+                  <li>
+                    <p class="text-sm text-gray-600">Email</p>
+                    <a href="mailto:mamantsambe47@gmail.com" class="font-semibold text-primary hover:text-secondary">
+                      mamansambe47@gmail.com
+                    </a>
+                  </li>
+                  <li>
+                    <p class="text-sm text-gray-600">Téléphone</p>
+                    <a href="tel:+33678643805" class="font-semibold text-primary hover:text-secondary">
+                      +33 6 78 64 38 05
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-lg p-6 border border-border">
+                <h3 class="font-bold text-lg mb-4">Langues</h3>
+                <div class="space-y-3">
+                  <div>
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="font-medium">Français</span>
+                      <span class="text-sm text-gray-600">Niveau élevé</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="font-medium">Wolof</span>
+                      <span class="text-sm text-gray-600">Niveau élevé</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="font-medium">Espagnol</span>
+                      <span class="text-sm text-gray-600">Niveau moyen</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="font-medium">Latin</span>
+                      <span class="text-sm text-gray-600">Niveau débutant</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="font-medium">Anglais</span>
+                      <span class="text-sm text-gray-600">Niveau moyen</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a href="#contact" class="w-full px-8 py-3 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold text-center block">
+              Contact
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* SKILLS Section */}
+    <section id="skills" class="section-padding bg-gray-300">
+      <div class="container-custom">
+        <div class="mb-16">
+          <h2 class="text-4xl sm:text-5xl font-bold mb-4">Compétences</h2>
+          <div class="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-6"></div>
+          <p class="text-xl text-gray-600 max-w-3xl">
+            Découvrez les technologies et compétences que j'ai développées au cours de ma formation et de mes projets.
+          </p>
+        </div>
+
+        {/* Langages */}
+        <div class="mb-16">
+          <h3 class="text-2xl sm:text-xl font-bold mb-8">Langages</h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/html.svg" alt="HTML5" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">HTML5</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/css.svg" alt="CSS3" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">CSS3</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/javascript.png" alt="JavaScript" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">JavaScript</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Frameworks & Tools */}
+        <div class="mb-16">
+          <h3 class="text-xl sm:text-xl font-bold mb-8">Frameworks & Tools</h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/astro.png" alt="Astro" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">Astro</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/tailwind.png" alt="TailwindCSS" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">TailwindCSS</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <span class="font-semibold text-gray-700">React</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/github.png" alt="Git & GitHub" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">GitHub</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Design & Multimedia */}
+        <div class="mb-16">
+          <h3 class="text-xl sm:text-xl font-bold mb-8">Design & Multimedia</h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/figma.png" alt="Figma" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">Figma</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/davinci.png" alt="DaVinci Resolve" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">DaVinci Resolve</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/miro.png" alt="Miro" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">Miro</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/canva.png" alt="Canva" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">Canva</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Backend & Deployment */}
+        <div class="mb-16">
+          <h3 class="text-2xl sm:text-xl font-bold mb-8">Backend & Deployment</h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/pocketbase.png" alt="PocketBase" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">PocketBase</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/netlify.png" alt="Netlify" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">Netlify</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/vps.png" alt="VPS" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">VPS</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Soft Skills */}
+        <div class="mb-16">
+          <h3 class="text-2xl sm:text-xl font-bold mb-8">Soft Skills</h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <span class="font-semibold text-gray-700">Communication</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/canva.png" alt="Créativité" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">Créativité</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <img src="/images/github.png" alt="Travail en équipe" class="w-6 h-6" />
+              <span class="font-semibold text-gray-700">Travail en équipe</span>
+            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <span class="font-semibold text-gray-700">Gestion du temps</span>
+            </span>
+             <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
+              <span class="font-semibold text-gray-700">Rigueur</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* PROJECTS Section */}
+    <section id="projects" class="section-padding bg-white">
+      <div class="container-custom">
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-5xl font-bold mb-4">Projets</h2>
+          <div class="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-6"></div>
+          <p class="text-xl text-gray-600 max-w-3xl">
+            Voici une sélection de mes projets récents combinant développement web, UX design et créativité.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
+          <div class="bg-white rounded-lg border border-border shadow-md hover:shadow-lg transition-all overflow-hidden">
+            <img src={matildaImg.src} alt="Effet Matilda" class="h-64 w-full object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Effet Matilda</h3>
+              <p class="text-gray-600 text-sm mb-4">Site statique mettant en avant l'effet Matilda.</p>
+              <p class="text-gray-600 text-sm font-extrabold mb-4">Html Css Javascript</p>
+             <a href="#" class="w-full text-center px-4 py-2 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-medium text-sm">Voir le projet</a>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg border border-border shadow-md hover:shadow-lg transition-all overflow-hidden">
+            <img src={festivalImg.src} alt="Festival Musique" class="h-64 w-full object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Festival Musique</h3>
+              <p class="text-gray-600 text-sm mb-4">Site dynamique pour un festival de musique.</p>
+                            <p class="text-gray-600 text-sm font-extrabold mb-4">Html Css Javascript</p>
+              <a href="#" class="w-full text-center px-4 py-2 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-medium text-sm">Voir le projet</a>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg border border-border shadow-md hover:shadow-lg transition-all overflow-hidden">
+            <img src={cuptailImg.src} alt="Boissons Fonctionnelles" class="h-64 w-full object-cover" />
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Boissons Fonctionnelles</h3>
+              <p class="text-gray-600 text-sm mb-4">Application web avec base de données.</p>
+                            <p class="text-gray-600 text-sm font-extrabold mb-4">Astro TailwindCSS PocketBase</p>
+              <a href="#" class="w-full text-center px-4 py-2 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-medium text-sm">Voir le projet</a>
+            </div>
+          </div>
+        </div>
+        <div class="p-8 bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg border border-amber-300 text-center">
+          <p class="text-gray-700 font-medium">
+            Vous avez un projet en tête? <a href="#contact" class="font-bold text-primary hover:text-secondary">Contactez-moi</a>!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* EDUCATION Section */}
+    <section id="education" class="section-padding bg-gradient-to-br from-pink-100 to-amber-100">
+      <div class="container-custom">
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-4xl font-bold mb-4">Formation & Expérience</h2>
+          <div class="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-6"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+          {/* Formation */}
+          <div>
+            <h3 class="text-2xl font-bold mb-8">Formation</h3>
+            <div class="space-y-6">
+              <div class="bg-white rounded-lg border-l-4 border-primary p-6 hover:shadow-lg transition-all">
+                <div class="flex items-start gap-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-xl">🎓</span>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="text-xl font-bold mb-1">BUT Métiers du Multimédia et de l'Internet</h4>
+                    <p class="text-primary font-semibold text-sm mb-3">Université Marie et Louis Pasteur</p>
+                    <p class="text-gray-600 mb-4">Formation complète en développement web, Communication digitale, design UX/UI & production multimédia. Cette formation m'a permis de maîtriser les technologies modernes et les bonnes pratiques du webdesign.</p>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Développement Web</span>
+                      <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Design UX/UI</span>
+                      <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Communication digitale</span>
+                      <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Production Audiovisuel</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg border-l-4 border-primary p-6 hover:shadow-lg transition-all">
+                <div class="flex items-start gap-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-xl">📚</span>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="text-xl font-bold mb-1">Baccalauréat Scientifique</h4>
+                    <p class="text-primary font-semibold text-sm mb-3">Obtenu au Sénégal</p>
+                    <p class="text-gray-600 mb-4">Formation générale solide dans les disciplines scientifiques fondamentales, développant la rigueur analytique et les compétences en résolution de problèmes.</p>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Mathématiques</span>
+                      <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Sciences Physiques</span>
+                      <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Sciences de la Vie et de la Terre</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Expérience en BUT MMI */}
+          <div>
+            <h3 class="text-2xl font-bold mb-8">Expérience en BUT MMI / Mise en situation professionnelle</h3>
+            <div class="space-y-6">
+              <div class="bg-white rounded-lg border-l-4 border-secondary p-6 hover:shadow-lg transition-all">
+                <div class="flex items-start gap-4">
+                  <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-xl">🎥</span>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="text-xl font-bold mb-2">Micro-trottoir & Plateau Web TV</h4>
+                    <ul class="text-gray-600 text-sm space-y-2 mb-3">
+                      <li>• Réalisation d'un micro-trottoir : captation, interviews et structuration du contenu avec caméra Canon XA-45</li>
+                      <li>• Tournage en plateau Web TV : enregistrement d'introductions et conclusions en français et anglais</li>
+                      <li>• Réalisation de versions doublées en anglais</li>
+                      <li>• Montage vidéo avec DaVinci Resolve</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Audiovisuel</span>
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">DaVinci Resolve</span>
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Production</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg border-l-4 border-secondary p-6 hover:shadow-lg transition-all">
+                <div class="flex items-start gap-4">
+                  <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-xl">📱</span>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="text-xl font-bold mb-2">Stratégie de Communication Digitale</h4>
+                    <ul class="text-gray-600 text-sm space-y-2 mb-3">
+                      <li>• Élaboration d'une stratégie de communication pour une application web créée</li>
+                      <li>• Analyse de la cible et du positionnement</li>
+                      <li>• Réalisation d'un SWOT/DEEPLIST et définition des objectifs</li>
+                      <li>• Création d'un plan de communication (contenus, canaux, diffusion)</li>
+                      <li>• Travail en équipe et coordination du projet</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Communication digitale</span>
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Stratégie</span>
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Travail en équipe</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg border-l-4 border-secondary p-6 hover:shadow-lg transition-all">
+                <div class="flex items-start gap-4">
+                  <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-xl">🚀</span>
+                  </div>
+                  <div class="flex-1">
+                    <h4 class="text-xl font-bold mb-2">Création d'Entreprise & Stratégie de Communication</h4>
+                    <ul class="text-gray-600 text-sm space-y-2 mb-3">
+                      <li>• Conception d'un projet d'entreprise fictif</li>
+                      <li>• Étude de marché, positionnement et ciblage</li>
+                      <li>• Élaboration d'une stratégie marketing et d'un plan de communication</li>
+                      <li>• Création de contenus et d'une identité visuelle</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Entrepreneuriat</span>
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Marketing</span>
+                      <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Design</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Expériences Professionnelles */}
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold mb-8">Expériences Professionnelles</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg border-l-4 border-secondary p-6 hover:shadow-lg transition-all">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-xl">📋</span>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-xl font-bold mb-1">Stage Bureautique</h4>
+                  <p class="text-secondary font-semibold text-sm mb-3">Loum Consulting</p>
+                  <p class="text-gray-600 mb-4 text-sm">Maîtrise des outils bureautiques professionnels avec gestion complète des documents. Classement, saisie et organisation méthodique des données pour assurer une bonne traçabilité.</p>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Bureautique</span>
+                    <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Gestion</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg border-l-4 border-secondary p-6 hover:shadow-lg transition-all">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-xl">🛍️</span>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-xl font-bold mb-1">Entrepreneuriat E-commerce</h4>
+                  <p class="text-secondary font-semibold text-sm mb-3">Expérience autonome</p>
+                  <p class="text-gray-600 mb-4 text-sm">Gestion complète d'une boutique en ligne avec focus sur la relation client et la gestion des commandes. Respect des délais et organisation pour une satisfaction client optimale.</p>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">E-commerce</span>
+                    <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Relation client</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg border-l-4 border-secondary p-6 hover:shadow-lg transition-all">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-xl">✂️</span>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-xl font-bold mb-1">Stage Couture</h4>
+                  <p class="text-secondary font-semibold text-sm mb-3">Travaux de précision</p>
+                  <p class="text-gray-600 mb-4 text-sm">Travail manuel exigeant demandant précision et rapidité. Étiquetage, décompte, sérigraphie et emballage des produits finis. Rigueur et efficacité.</p>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Travail manuel</span>
+                    <span class="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded">Précision</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* PASSIONS Section */}
+    <section id="passions" class="section-padding bg-gradient-to-br from-white to-gray-300">
+      <div class="container-custom">
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-5xl font-bold mb-4">Mes Passions</h2>
+          <div class="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-6"></div>
+          <p class="text-xl text-gray-600 max-w-3xl">
+            Au-delà du code et du design, je suis passionnée par de nombreuses choses qui enrichissent ma vie.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-16">
+          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
+            <h3 class="text-2xl font-bold mb-3">🎨 Création Numérique</h3>
+            <p class="text-gray-600">Concevoir et développer des interfaces créatives, fusionnant art et technologie.</p>
+          </div>
+          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
+            <h3 class="text-2xl font-bold mb-3">🖌️ Peinture</h3>
+            <p class="text-gray-600">Exprimer ma créativité à travers la couleur et les formes sur toile.</p>
+          </div>
+          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
+            <h3 class="text-2xl font-bold mb-3">🥋 Taekwondo</h3>
+            <p class="text-gray-600">Discipline physique et mentale, persévérance et respect des traditions.</p>
+          </div>
+          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
+            <h3 class="text-2xl font-bold mb-3">📚 Lecture</h3>
+            <p class="text-gray-600">Explorer des mondes et enrichir mon esprit à travers les histoires.</p>
+          </div>
+          
+        </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    {/* CONTACT Section */}
+    <section id="contact" class="section-padding bg-white">
+      <div class="container-custom">
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-5xl font-bold mb-4">Me Contacter</h2>
+          <div class="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-6"></div>
+          <p class="text-xl text-gray-600 max-w-3xl">
+            Vous avez une question, une opportunité? Je suis toujours ouvert à de nouvelles connexions et collaborations.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <div class="lg:col-span-1">
+            <div class="space-y-6">
+              <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
+                <h3 class="font-bold text-lg mb-2">Email</h3>
+                <a href="mailto:mamantsambe47@gmail.com" class="text-primary hover:text-secondary font-semibold break-all">mamansambe47@gmail.com</a>
+                <p class="text-gray-500 text-sm mt-2">Réponse rapide</p>
+              </div>
+              <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
+                <h3 class="font-bold text-lg mb-2">Téléphone</h3>
+                <a href="tel:+33678643805" class="text-primary hover:text-secondary font-semibold">+33 6 78 64 38 05</a>
+                <p class="text-gray-500 text-sm mt-2">France (GMT+1)</p>
+              </div>
+              <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
+                <h3 class="font-bold text-lg mb-2">Localisation</h3>
+                <p class="text-gray-700 font-semibold">Montbéliard, France</p>
+                <p class="text-gray-500 text-sm mt-2">Télétravail disponible</p>
+              </div>
+              <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg border border-border p-6">
+                <h3 class="font-bold text-lg mb-2">Disponibilité</h3>
+                <p class="text-gray-700 font-semibold">Toujours ouverte aux opportunités</p>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-2">
+            <form name="contact" method="POST" netlify-honeypot="bot-field" netlify class="bg-white rounded-lg border border-border p-8 space-y-6">
+              <input type="hidden" name="bot-field" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="name" class="block font-semibold mb-2">Votre nom</label>
+                  <input id="name" type="text" name="name" required placeholder="Jean Dupont" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
+                </div>
+                <div>
+                  <label for="email" class="block font-semibold mb-2">Votre email</label>
+                  <input id="email" type="email" name="email" required placeholder="jean@example.com" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
+                </div>
+              </div>
+              <div>
+                <label for="subject" class="block font-semibold mb-2">Sujet</label>
+                <input id="subject" type="text" name="subject" required placeholder="Sujet..." class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
+              </div>
+              <div>
+                <label for="type" class="block font-semibold mb-2">Type</label>
+                <select id="type" name="type" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors">
+                  <option value="">Sélectionnez</option>
+                  <option value="collaboration">Collaboration</option>
+                  <option value="stage">Stage</option>
+                  <option value="cdi">CDI</option>
+                  <option value="question">Question</option>
+                  <option value="autre">Autre</option>
+                </select>
+              </div>
+              <div>
+                <label for="message" class="block font-semibold mb-2">Message</label>
+                <textarea id="message" name="message" rows="6" required placeholder="Votre message..." class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"></textarea>
+              </div>
+              <button type="submit" class="w-full px-4 py-3 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold">Envoyer</button>
+            </form>
+          </div>
+        </div>
+        <div class="text-center">
+          <h3 class="text-2xl font-bold mb-6">Ou trouvez-moi en ligne</h3>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="https://www.linkedin.com/in/maman-thilor-sambe-996592389/" target="_blank" rel="noopener noreferrer" class="px-6 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</Layout>

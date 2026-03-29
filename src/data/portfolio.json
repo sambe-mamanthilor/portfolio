@@ -1,0 +1,243 @@
+{
+  "personal": {
+    "name": "Maman Thilor SAMBE",
+    "tagline": "Développeuse Web | Designer UX | Créative Numérique",
+    "location": "Montbéliard, France",
+    "email": "mamantsambe47@gmail.com",
+    "phone": "+33 6 78 64 38 05",
+    "bio": "Étudiante en BUT MMI passionnée par le développement web et le design. Je crée des expériences numériques modernes et inclusives. Je combine compétences techniques et créativité pour transformer les idées en réalité.",
+    "age": 19,
+    "birthDate": "30/01/2007",
+    "image": "/images/profile.jpg"
+  },
+  "social": {
+    "linkedin": "https://linkedin.com/in/maman-thilor-sambe",
+    "github": "https://github.com/mamantsambe",
+    "twitter": "https://twitter.com",
+    "instagram": "https://instagram.com"
+  },
+  "skills": [
+    {
+      "category": "Langages",
+      "items": [
+        { "name": "HTML5", "level": "Avancé", "icon": "html5" },
+        { "name": "CSS3", "level": "Avancé", "icon": "css3" },
+        { "name": "JavaScript", "level": "Intermédiaire", "icon": "javascript" }
+      ]
+    },
+    {
+      "category": "Frameworks & Tools",
+      "items": [
+        { "name": "Astro", "level": "Avancé", "icon": "astro" },
+        { "name": "TailwindCSS", "level": "Avancé", "icon": "tailwind" },
+        { "name": "Git & GitHub", "level": "Intermédiaire", "icon": "github" }
+      ]
+    },
+    {
+      "category": "Design & Multimedia",
+      "items": [
+        { "name": "Figma", "level": "Avancé", "icon": "figma" },
+        { "name": "DaVinci Resolve", "level": "Intermédiaire", "icon": "davinci" },
+        { "name": "Responsive Design", "level": "Avancé", "icon": "responsive" },
+        { "name": "UX/UI Design", "level": "Intermédiaire", "icon": "design" }
+      ]
+    },
+    {
+      "category": "Bases de données & Backend",
+      "items": [
+        { "name": "PocketBase", "level": "Intermédiaire", "icon": "pocketbase" },
+        { "name": "MongoDB", "level": "Basique", "icon": "mongodb" },
+        { "name": "VPS", "level": "Intermédiaire", "icon": "vps" }
+      ]
+    },
+    {
+      "category": "Soft Skills",
+      "items": [
+        { "name": "Communication", "level": "Avancé", "icon": "communication" },
+        { "name": "Créativité", "level": "Avancé", "icon": "creativity" },
+        { "name": "Travail en équipe", "level": "Avancé", "icon": "teamwork" },
+        { "name": "Gestion de projet", "level": "Intermédiaire", "icon": "project" }
+      ]
+    }
+  ],
+  "languages": [
+    { "name": "Français", "level": "Natif" },
+    { "name": "Wolof", "level": "Natif/Courant" },
+    { "name": "Anglais", "level": "Intermédiaire" },
+    { "name": "Espagnol", "level": "Basique" },
+    { "name": "Latin", "level": "Basique" }
+  ],
+  "projects": [
+    {
+      "id": "effet-matilda",
+      "title": "Effet Matilda - Site Statique",
+      "description": "Site statique mettant en avant l'effet Matilda. Projet de maquettage, développement et intégration.",
+      "longDescription": "Premier projet majeur de maquettage et développement. J'ai conçu une maquette complète du site, puis j'ai intégré le design avec HTML, CSS et JavaScript en respectant l'approche mobile-first. Le site est totalement responsive et déployé sur Netlify.",
+      "image": "/images/projects/effet-matilda.jpg",
+      "tags": ["HTML", "CSS", "JavaScript", "Mobile-first", "Netlify"],
+      "technologies": ["HTML5", "CSS3", "JavaScript"],
+      "link": "https://effet-matilda.netlify.app",
+      "github": "https://github.com/mamantsambe/effet-matilda",
+      "date": "2024",
+      "category": "Web"
+    },
+    {
+      "id": "festival-musique",
+      "title": "Festival de Musique - Site Dynamique",
+      "description": "Site dynamique pour un festival de musique avec contenu interactif.",
+      "longDescription": "Site entièrement responsive mettant en avant les événements d'un festival de musique. Développé avec HTML, CSS et JavaScript. Intégration complète du design et animations interactives.",
+      "image": "/images/projects/festival-musique.jpg",
+      "tags": ["HTML", "CSS", "JavaScript", "Responsive", "Animations"],
+      "technologies": ["HTML5", "CSS3", "JavaScript"],
+      "link": "https://festival-musique.netlify.app",
+      "github": "https://github.com/mamantsambe/festival-musique",
+      "date": "2024",
+      "category": "Web"
+    },
+    {
+      "id": "boissons-fonctionnelles",
+      "title": "Application Web - Boissons Fonctionnelles",
+      "description": "Application web complète avec base de données pour une boutique de boissons fonctionnelles.",
+      "longDescription": "Projet fullstack combinant maquettage, développement frontend et backend. Utilise Astro, TailwindCSS et PocketBase. Inclut gestion de base de données, authentification et interface utilisateur moderne.",
+      "image": "/images/projects/boissons-fonctionnelles.jpg",
+      "tags": ["Astro", "TailwindCSS", "JavaScript", "PocketBase", "Fullstack"],
+      "technologies": ["Astro", "TailwindCSS", "JavaScript", "PocketBase"],
+      "link": "https://boissons-fonctionnelles.com",
+      "github": "https://github.com/mamantsambe/boissons-fonctionnelles",
+      "date": "2024",
+      "category": "Web"
+    },
+    {
+      "id": "cherre-projet",
+      "title": "Cherre de Projet - Collectif",
+      "description": "Projet collectif réalisé en équipe utilisant Astro et TailwindCSS.",
+      "longDescription": "Projet collaboratif où j'ai contribué au développement frontend. Déploiement en VPS et Netlify avec intégration continue via GitHub.",
+      "image": "/images/projects/cherre-projet.jpg",
+      "tags": ["Astro", "TailwindCSS", "Collaboration", "VPS", "Netlify"],
+      "technologies": ["Astro", "TailwindCSS", "JavaScript", "Git"],
+      "link": "https://cherre-projet.com",
+      "github": "https://github.com/mamantsambe/cherre-projet",
+      "date": "2024",
+      "category": "Web"
+    },
+    {
+      "id": "micro-trottoir",
+      "title": "Micro-Trottoir & Web TV",
+      "description": "Production vidéo multimédia avec réalisation, interviews et montage professionnel.",
+      "longDescription": "Projet multimédia complet incluant micro-trottoir, entrevues et montage. Réalisé avec DaVinci Resolve. Billingue français/anglais. Production d'une Web TV complète avec structure narrative et éditing professionnel.",
+      "image": "/images/projects/micro-trottoir.jpg",
+      "tags": ["Vidéo", "DaVinci Resolve", "Production", "Communication", "Montage"],
+      "technologies": ["DaVinci Resolve", "Caméra", "Microphone", "Editing"],
+      "link": "https://youtube.com/exemple",
+      "date": "2024",
+      "category": "Multimedia"
+    }
+  ],
+  "education": [
+    {
+      "degree": "BUT Multimédia et Internet (MMI)",
+      "school": "Université Marie et Louis Pasteur",
+      "location": "IUT Nord Franche-Comté",
+      "startDate": "2023",
+      "endDate": "2025",
+      "status": "En cours",
+      "description": "Diplôme obtenu (2024-2025)",
+      "specializations": [
+        "Mathématiques",
+        "Sciences physiques",
+        "Sciences de la Vie et de la Terre"
+      ],
+      "relevant": true
+    },
+    {
+      "degree": "Baccalauréat Scientifique",
+      "school": "Lycée",
+      "location": "France",
+      "startDate": "2020",
+      "endDate": "2023",
+      "status": "Complété",
+      "description": "Obtenu au Sénégal",
+      "specializations": [],
+      "relevant": false
+    }
+  ],
+  "experience": [
+    {
+      "title": "Stage en Bureautique",
+      "company": "Loum Consulting",
+      "location": "Montbéliard, France",
+      "startDate": "2024",
+      "endDate": "2024",
+      "type": "Stage",
+      "description": "Stage en bureautique et gestion de documents. Utilisation des outils bureautiques professionnels.",
+      "tasks": [
+        "Utilisation des outils bureautiques",
+        "Classement, saisie et organisation de documents"
+      ]
+    },
+    {
+      "title": "Entrepreneuriat E-commerce",
+      "company": "Projet Personnel",
+      "location": "En ligne",
+      "startDate": "2023",
+      "endDate": "2024",
+      "type": "Entrepreneuriat",
+      "description": "Gestion d'une boutique e-commerce",
+      "tasks": [
+        "Relation client et gestion des commandes",
+        "Organisation et respect des délais"
+      ]
+    },
+    {
+      "title": "Stage - Entreprise de Couture",
+      "company": "Atelier de Couture",
+      "location": "Montbéliard, France",
+      "startDate": "2023",
+      "endDate": "2024",
+      "type": "Stage",
+      "description": "Stage dans une entreprise artisanale de couture",
+      "tasks": [
+        "Étiquetage, décompte, sérographie, emballage",
+        "Travail manuel demandant précision et rapidité"
+      ]
+    }
+  ],
+  "interests": [
+    {
+      "name": "Création Web & Numérique",
+      "icon": "globe",
+      "description": "Passion pour la création d'expériences numériques innovantes"
+    },
+    {
+      "name": "Design & Peinture",
+      "icon": "palette",
+      "description": "Expression créative à travers le design et les arts visuels"
+    },
+    {
+      "name": "Sport",
+      "icon": "dumbbell",
+      "description": "Musculation, Taekwondo et autres activités sportives"
+    },
+    {
+      "name": "Lecture",
+      "icon": "book",
+      "description": "Passion pour les histoires et la découverte de nouveaux univers"
+    },
+    {
+      "name": "Méditation",
+      "icon": "meditation",
+      "description": "Pratique du bien-être et de la méditation"
+    },
+    {
+      "name": "Développement Personnel",
+      "icon": "growth",
+      "description": "Amélioration continue et apprentissage"
+    }
+  ],
+  "contact": {
+    "email": "mamantsambe47@gmail.com",
+    "phone": "+33 6 78 64 38 05",
+    "location": "22 rue Saint-Georges, 25200 Montbéliard, France",
+    "availability": "Ouvert aux opportunités de stage et CDI"
+  }
+}

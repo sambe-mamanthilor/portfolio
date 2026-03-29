@@ -1,0 +1,71 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 bg-white/98 backdrop-blur bg-gray-300 shadow-sm">
+  <nav class="container-custom">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      {/* Logo/Name */}
+      <a href="/" class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+          <span class="text-white font-bold text-xs">MTS</span>
+        </div>
+        <span class="hidden sm:inline font-semibold text-dark text-lg">Maman Thilor SAMBE</span>
+      </a>
+
+      {/* Desktop Menu */}
+      <ul class="hidden md:flex items-center space-x-8">
+        <li><a href="/#hero" class="text-gray-700 hover:text-primary font-medium transition-colors">Accueil</a></li>
+        <li><a href="/#about" class="text-gray-700 hover:text-primary font-medium transition-colors">À propos</a></li>
+        <li><a href="/#skills" class="text-gray-700 hover:text-primary font-medium transition-colors">Compétences</a></li>
+        <li><a href="/#projects" class="text-gray-700 hover:text-primary font-medium transition-colors">Projets</a></li>
+        <li><a href="/#education" class="text-gray-700 hover:text-primary font-medium transition-colors">Formation</a></li>
+        <li><a href="/#passions" class="text-gray-700 hover:text-primary font-medium transition-colors">Passions</a></li>
+        <li><a href="/#contact" class="btn-primary">Contact</a></li>
+      </ul>
+
+      {/* Mobile Menu Button */}
+      <button id="mobile-menu-btn" class="md:hidden p-2 hover:bg-border rounded-lg transition-colors" aria-label="Toggle menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    {/* Mobile Menu */}
+    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-border bg-white">
+      <ul class="flex flex-col space-y-1 pt-4">
+        <li><a href="/#hero" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Accueil</a></li>
+        <li><a href="/#about" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">À propos</a></li>
+        <li><a href="/#skills" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Compétences</a></li>
+        <li><a href="/#projects" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Projets</a></li>
+        <li><a href="/#education" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Formation</a></li>
+        <li><a href="/#passions" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Passions</a></li>
+        <li class="pt-2"><a href="/#contact" class="block px-4 py-2 btn-primary text-center">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+</script>
+
+<style>
+  @media (max-width: 768px) {
+    nav {
+      @apply px-4;
+    }
+  }
+</style>
