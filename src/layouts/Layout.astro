@@ -21,7 +21,7 @@ const { title = "Maman SAMBE - Portfolio", description = "Portfolio de Maman Thi
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&family=Alexandria:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <Header />
@@ -37,5 +37,56 @@ const { title = "Maman SAMBE - Portfolio", description = "Portfolio de Maman Thi
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Alexandria', 'Inter', sans-serif;
+  }
+
+  h1, h2, .section-title {
+    font-family: 'Playfair Display', serif;
+  }
+
+  h3, h4 {
+    font-family: 'Alexandria', 'Inter', sans-serif;
+  }
+
+  /* Formes organiques */
+  .organic-blob {
+    position: relative;
+    border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
+    animation: blobShift 8s ease-in-out infinite;
+  }
+
+  @keyframes blobShift {
+    0%, 100% {
+      border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
+    }
+    25% {
+      border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
+    }
+    50% {
+      border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+    }
+    75% {
+      border-radius: 45% 55% 55% 45% / 45% 55% 45% 55%;
+    }
+  }
+
+  /* Gradient artistique */
+  .gradient-artistic {
+    background: linear-gradient(135deg, #fef3e2 0%, #f5d5e3 50%, #e8dcc8 100%);
+  }
+
+  /* Divider artistique */
+  .divider-artistic {
+    position: relative;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #d97706, #ec4899, transparent);
+    border: none;
   }
 </style>
