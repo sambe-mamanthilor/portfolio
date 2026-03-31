@@ -721,39 +721,47 @@ import plageImg from '../images/plage.jpeg';
             </div>
           </div>
           <div class="lg:col-span-2">
-            <form name="contact" method="POST" netlify-honeypot="bot-field" class="bg-white rounded-lg border border-border p-8 space-y-6" data-netlify="true" data-netlify-redirect="/success">
-              <input type="hidden" name="bot-field" />
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label for="name" class="block font-semibold mb-2">Votre nom</label>
-                  <input id="name" type="text" name="name" required placeholder="Jean Dupont" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
-                </div>
-                <div>
-                  <label for="email" class="block font-semibold mb-2">Votre email</label>
-                  <input id="email" type="email" name="email" required placeholder="jean@example.com" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
-                </div>
-              </div>
-              <div>
-                <label for="subject" class="block font-semibold mb-2">Sujet</label>
-                <input id="subject" type="text" name="subject" required placeholder="Sujet..." class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
-              </div>
-              <div>
-                <label for="type" class="block font-semibold mb-2">Type</label>
-                <select id="type" name="type" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors">
-                  <option value="">Sélectionnez</option>
-                  <option value="collaboration">Collaboration</option>
-                  <option value="stage">Stage</option>
-                  <option value="cdi">CDI</option>
-                  <option value="question">Question</option>
-                  <option value="autre">Autre</option>
-                </select>
-              </div>
-              <div>
-                <label for="message" class="block font-semibold mb-2">Message</label>
-                <textarea id="message" name="message" rows="6" required placeholder="Votre message..." class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"></textarea>
-              </div>
-              <button type="submit" class="w-full px-4 py-3 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold">Envoyer</button>
-            </form>
+           <form name="contact" method="POST" data-netlify="true" class="bg-white rounded-lg border border-border p-8 space-y-6">
+  <input type="hidden" name="form-name" value="contact" />
+  <input type="hidden" name="bot-field" />
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <label for="name" class="block font-semibold mb-2">Votre nom</label>
+      <input id="name" type="text" name="name" required placeholder="Jean Dupont" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
+    </div>
+    <div>
+      <label for="email" class="block font-semibold mb-2">Votre email</label>
+      <input id="email" type="email" name="email" required placeholder="jean@example.com" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
+    </div>
+  </div>
+
+  <div>
+    <label for="subject" class="block font-semibold mb-2">Sujet</label>
+    <input id="subject" type="text" name="subject" required placeholder="Sujet..." class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors" />
+  </div>
+
+  <div>
+    <label for="type" class="block font-semibold mb-2">Type</label>
+    <select id="type" name="type" class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors">
+      <option value="">Sélectionnez</option>
+      <option value="collaboration">Collaboration</option>
+      <option value="stage">Stage</option>
+      <option value="cdi">CDI</option>
+      <option value="question">Question</option>
+      <option value="autre">Autre</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="message" class="block font-semibold mb-2">Message</label>
+    <textarea id="message" name="message" rows="6" required placeholder="Votre message..." class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"></textarea>
+  </div>
+
+  <button type="submit" class="w-full px-4 py-3 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold">
+    Envoyer
+  </button>
+</form>
           </div>
         </div>
         <div class="text-center">
