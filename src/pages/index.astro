@@ -3,13 +3,17 @@ import Layout from '../layouts/Layout.astro';
 import matildaImg from '../images/effet-matilda.png';
 import festivalImg from '../images/festival.png';
 import cuptailImg from '../images/cuptail.png';
-import moiImg from '../images/moi.jpeg';     
+import moiImg from '../images/moi.jpeg';
+import coeurImg from '../images/coeur.jpeg';
+import tab1Img from '../images/tab1.jpeg';
+import tab2Img from '../images/tab2.jpeg';
+import plageImg from '../images/plage.jpeg';     
 ---
 
 <Layout title="Maman Thilor SAMBE ">
   <div class="bg-gradient-to-br from-amber-400 to-pink-500">
     {/* HERO Section */}
-    <section id="hero" class="pb-6 relative overflow-hidden bg-gradient-to-br from-amber-100 via-rose-100 to-stone-200">
+    <section id="hero" class="pb-6 relative overflow-hidden bg-gradient-to-br from-amber-200 via-rose-200 to-stone-200">
       {/* Decoration */}
       <div class="absolute top-10 right-10 w-64 h-64 bg-gradient-to-br from-rose-300 to-amber-200 opacity-30 rounded-full blur-3xl organic-blob"></div>
       <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-stone-300 to-rose-200 opacity-20 rounded-full blur-3xl"></div>
@@ -20,7 +24,7 @@ import moiImg from '../images/moi.jpeg';
             <div class="mb-6">
               <span class="inline-block px-6 py-3 bg-gradient-to-r from-rose-400 to-amber-500 text-white font-semibold rounded-full text-sm uppercase tracking-widest shadow-lg">✨ Bienvenue</span>
             </div>
-            <h1 class="text-xl sm:text-6xl md:text-7xl font-bold mb-6 leading-tight text-gray-900" style="font-family: 'Playfair Display', serif;">
+            <h1 class="text-xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900" style="font-family: 'Playfair Display', serif;">
               Maman Thilor<br />
               <span class="bg-gradient-to-r from-rose-500 to-amber-400 bg-clip-text text-transparent">SAMBE</span>
             </h1>
@@ -59,7 +63,7 @@ import moiImg from '../images/moi.jpeg';
       <div class="absolute top-0 right-0 w-80 h-80 bg-rose-100 opacity-30 rounded-full blur-3xl -mr-40"></div>
       <div class="container-custom relative z-10">
         <div class="mb-12">
-          <h2 class="text-4xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">À propos</h2>
+          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">À propos</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
@@ -184,7 +188,7 @@ import moiImg from '../images/moi.jpeg';
       <div class="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-rose-200 to-transparent opacity-20 rounded-full blur-3xl"></div>
       <div class="container-custom relative z-10">
         <div class="mb-16">
-          <h2 class="text-5xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Compétences</h2>
+          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Compétences</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
           <p class="text-xl text-gray-600 max-w-3xl">
             Découvrez les technologies et compétences que j'ai développées au cours de ma formation et de mes projets.
@@ -222,9 +226,7 @@ import moiImg from '../images/moi.jpeg';
               <img src="/images/tailwind.png" alt="TailwindCSS" class="w-6 h-6" />
               <span class="font-semibold text-gray-700">TailwindCSS</span>
             </span>
-            <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
-              <span class="font-semibold text-gray-700">React</span>
-            </span>
+            
             <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-violet-300 rounded-full hover:shadow-lg transition-all hover:border-violet-500">
               <img src="/images/github.png" alt="Git & GitHub" class="w-6 h-6" />
               <span class="font-semibold text-gray-700">GitHub</span>
@@ -301,11 +303,11 @@ import moiImg from '../images/moi.jpeg';
     </section>
 
     {/* PROJECTS Section */}
-    <section id="projects" class="section-padding bg-gradient-to-br from-rose-50 to-amber-100 relative overflow-hidden">
+    <section id="projects" class="section-padding bg-gradient-to-br from-rose-100 to-amber-100 relative overflow-hidden">
       <div class="absolute bottom-20 right-0 w-80 h-80 bg-rose-100 opacity-20 rounded-full blur-3xl"></div>
       <div class="container-custom relative z-10">
         <div class="mb-12">
-          <h2 class="text-5xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Projets</h2>
+          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Projets académiques</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
           <p class="text-xl text-gray-600 max-w-3xl">
             Voici une sélection de mes projets récents combinant développement web, UX design et créativité.
@@ -354,7 +356,7 @@ import moiImg from '../images/moi.jpeg';
       <div class="absolute top-40 left-10 w-80 h-80 bg-rose-100 opacity-25 rounded-full blur-3xl"></div>
       <div class="container-custom relative z-10">
         <div class="mb-12">
-          <h2 class="text-5xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Formation & Expérience</h2>
+          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Formation & Expérience</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
         </div>
 
@@ -480,15 +482,15 @@ import moiImg from '../images/moi.jpeg';
         <div class="mb-16">
           <h2 class="text-2xl font-bold mb-8">Expériences Professionnelles</h2>
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="bg-white rounded-lg border-l-4 border-orange-400 p-6 hover:shadow-lg transition-all">
+            <div class="bg-white rounded-lg border-l-4 border-orange-400 p-8 hover:shadow-lg transition-all">
               <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-orange-100  rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span class="text-xl">📋</span>
+                <div class="w-14 h-14 bg-orange-100  rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-2xl">📋</span>
                 </div>
                 <div class="flex-1">
-                  <h4 class="text-xl font-bold mb-1">Stage Bureautique</h4>
-                  <p class="text-orange-600 font-semibold text-sm mb-3">Loum Consulting</p>
-                  <p class="text-gray-600 mb-4 text-sm">Maîtrise des outils bureautiques professionnels avec gestion complète des documents. Classement, saisie et organisation méthodique des données pour assurer une bonne traçabilité.</p>
+                  <h4 class="text-2xl font-bold mb-2">Stage Bureautique</h4>
+                  <p class="text-orange-600 font-semibold text-base mb-3">Loum Consulting</p>
+                  <p class="text-gray-600 mb-4 text-base">Maîtrise des outils bureautiques professionnels avec gestion complète des documents. Classement, saisie et organisation méthodique des données pour assurer une bonne traçabilité.</p>
                   <div class="flex flex-wrap gap-2">
                     <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Bureautique</span>
                     <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Gestion</span>
@@ -497,15 +499,15 @@ import moiImg from '../images/moi.jpeg';
               </div>
             </div>
 
-            <div class="bg-white rounded-lg border-l-4 border-orange-400 p-6 hover:shadow-lg transition-all">
+            <div class="bg-white rounded-lg border-l-4 border-orange-400 p-8 hover:shadow-lg transition-all">
               <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span class="text-xl">🛍️</span>
+                <div class="w-14 h-14 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-2xl">🛍️</span>
                 </div>
                 <div class="flex-1">
-                  <h4 class="text-xl font-bold mb-1">Entrepreneuriat E-commerce</h4>
-                  <p class="text-orange-600 font-semibold text-sm mb-3">Expérience autonome</p>
-                  <p class="text-gray-600 mb-4 text-sm">Gestion complète d'une boutique en ligne avec focus sur la relation client et la gestion des commandes. Respect des délais et organisation pour une satisfaction client optimale.</p>
+                  <h4 class="text-2xl font-bold mb-2">Entrepreneuriat E-commerce</h4>
+                  <p class="text-orange-600 font-semibold text-base mb-3">Expérience autonome</p>
+                  <p class="text-gray-600 mb-4 text-base">Gestion complète d'une boutique en ligne avec focus sur la relation client et la gestion des commandes. Respect des délais et organisation pour une satisfaction client optimale.</p>
                   <div class="flex flex-wrap gap-2">
                     <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">E-commerce</span>
                     <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Relation client</span>
@@ -514,15 +516,15 @@ import moiImg from '../images/moi.jpeg';
               </div>
             </div>
 
-            <div class="bg-white rounded-lg border-l-4 border-orange-400 p-6 hover:shadow-lg transition-all">
+            <div class="bg-white rounded-lg border-l-4 border-orange-400 p-8 hover:shadow-lg transition-all">
               <div class="flex items-start gap-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span class="text-xl">✂️</span>
+                <div class="w-14 h-14 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-2xl">✂️</span>
                 </div>
                 <div class="flex-1">
-                  <h4 class="text-xl font-bold mb-1">Stage Couture</h4>
-                  <p class="text-orange-600 font-semibold text-sm mb-3">Travaux de précision</p>
-                  <p class="text-gray-600 mb-4 text-sm">Travail manuel exigeant demandant précision et rapidité. Étiquetage, décompte, sérigraphie et emballage des produits finis. Rigueur et efficacité.</p>
+                  <h4 class="text-2xl font-bold mb-2">Stage Couture</h4>
+                  <p class="text-orange-600 font-semibold text-base mb-3">Proco Confection</p>
+                  <p class="text-gray-600 mb-4 text-base">Travail manuel exigeant demandant précision et rapidité. Étiquetage, décompte, sérigraphie et emballage des produits finis. Rigueur et efficacité.</p>
                   <div class="flex flex-wrap gap-2">
                     <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Travail manuel</span>
                     <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Précision</span>
@@ -536,11 +538,11 @@ import moiImg from '../images/moi.jpeg';
     </section>
 
     {/* PASSIONS Section */}
-    <section id="passions" class="section-padding bg-gradient-to-br from-white via-rose-50 to-amber-50 relative overflow-hidden">
+    <section id="passions" class="section-padding bg-white relative overflow-hidden">
       <div class="absolute top-0 right-20 w-96 h-96 bg-rose-100 opacity-20 rounded-full blur-3xl"></div>
       <div class="container-custom relative z-10">
         <div class="mb-12">
-          <h2 class="text-5xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Mes Passions</h2>
+          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Mes Passions</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
           <p class="text-xl text-gray-600 max-w-3xl">
             Au-delà du code et du design, je suis passionnée par de nombreuses choses qui enrichissent ma vie.
@@ -571,12 +573,125 @@ import moiImg from '../images/moi.jpeg';
       </div>
     </section>
 
-    {/* CONTACT Section */}
-    <section id="contact" class="section-padding bg-gradient-to-br from-amber-50 to-rose-100 relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-80 h-80 bg-rose-100 opacity-20 rounded-full blur-3xl"></div>
+    {/* GALERIE Section */}
+    <section id="galerie" class="wave section-padding bg-gradient-to-br from-rose-100 to-amber-100 relative overflow-hidden">
       <div class="container-custom relative z-10">
         <div class="mb-12">
-          <h2 class="text-5xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Me Contacter</h2>
+          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Galerie</h2>
+          <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
+          <p class="text-xl text-gray-600 max-w-3xl">Mes créations artistiques et peintures</p>
+        </div>
+
+        {/* Carousel */}
+        <div class="flex items-center justify-between gap-8">
+          {/* Bouton Précédent */}
+          <button id="carousel-prev" class="flex-shrink-0 p-3 rounded-full bg-gradient-to-r from-amber-400 to-pink-600 text-white shadow-lg hover:shadow-xl transition-all hover:scale-110 active:scale-95">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+
+          {/* Carousel Container - Main */}
+          <div class="flex-1 overflow-hidden">
+            <div id="carousel-container" class="flex gap-8 transition-transform duration-500">
+              
+              {/* Peinture 1 */}
+              <div class="w-96 flex-shrink-0">
+                <div class="mx-auto">
+                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
+                    <img src={coeurImg.src} alt="Cœur" class="w-full h-80 object-contain" />
+                  </div>
+                  <h3 class="text-2xl font-bold mt-6 mb-3 text-gray-900" style="font-family: 'Playfair Display', serif;">Cœur</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">Une exploration des émotions à travers les formes et les couleurs.</p>
+                </div>
+              </div>
+
+              {/* Peinture 2 */}
+              <div class="w-96 flex-shrink-0">
+                <div class="mx-auto">
+                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
+                    <img src={tab1Img.src} alt="Tableau 1" class="w-full h-80 object-contain" />
+                  </div>
+                  <h3 class="text-2xl font-bold mt-6 mb-3 text-gray-900" style="font-family: 'Playfair Display', serif;">Tableau 1</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">Une composition abstraite mêlant technique et intuition créative.</p>
+                </div>
+              </div>
+
+              {/* Peinture 3 */}
+              <div class="w-96 flex-shrink-0">
+                <div class="mx-auto">
+                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
+                    <img src={tab2Img.src} alt="Tableau 2" class="w-full h-80 object-contain" />
+                  </div>
+                  <h3 class="text-2xl font-bold mt-6 mb-3 text-gray-900" style="font-family: 'Playfair Display', serif;">Tableau 2</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">Un mélange harmonieux de textures et de teintes vibrantes.</p>
+                </div>
+              </div>
+
+              {/* Peinture 4 */}
+              <div class="w-96 flex-shrink-0">
+                <div class="mx-auto">
+                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
+                    <img src={plageImg.src} alt="Plage" class="w-full h-80 object-contain" />
+                  </div>
+                  <h3 class="text-2xl font-bold mt-6 mb-3 text-gray-900" style="font-family: 'Playfair Display', serif;">Plage</h3>
+                  <p class="text-gray-600 text-sm leading-relaxed">Inspiration maritime capturée dans une perspective personnelle et poétique.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Bouton Suivant */}
+          <button id="carousel-next" class="flex-shrink-0 p-3 rounded-full bg-gradient-to-r from-amber-400 to-pink-600 text-white shadow-lg hover:shadow-xl transition-all hover:scale-110 active:scale-95">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            let currentIndex = 0;
+            const container = document.getElementById('carousel-container');
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            const totalSlides = 4;
+
+            function updateCarousel() {
+              if (container) {
+                // Calcul de la distance de défilement : width slide + gap
+                const slideWidth = 384; // w-96 = 24rem = 384px
+                const gap = 32; // gap-8 = 2rem = 32px
+                const offset = currentIndex * (slideWidth + gap);
+                container.style.transform = `translateX(-${offset}px)`;
+              }
+            }
+
+            if (prevBtn) {
+              prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+              });
+            }
+
+            if (nextBtn) {
+              nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+              });
+            }
+          });
+        </script>
+      </div>
+    </section>
+
+    {/* CONTACT Section */}
+    <section id="contact" class="section-padding bg-white relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-80 h-80 opacity-20 rounded-full blur-3xl"></div>
+      <div class="container-custom relative z-10">
+        <div class="mb-12">
+          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Me Contacter</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
           <p class="text-xl text-gray-600 max-w-3xl">
             Vous avez une question, une opportunité? Je suis toujours ouvert à de nouvelles connexions et collaborations.
