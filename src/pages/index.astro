@@ -683,191 +683,101 @@ import plageImg from '../images/plage.jpeg';
     </section>
 
     {/* CONTACT Section */}
-    <section id="contact" class="section-padding bg-white relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-80 h-80 opacity-20 rounded-full blur-3xl"></div>
-      <div class="container-custom relative z-10">
-        <div class="mb-12">
-          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Me Contacter</h2>
-          <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
-          <p class="text-xl text-gray-600 max-w-3xl">
-            Vous avez une question, une opportunité? Je suis toujours ouvert à de nouvelles connexions et collaborations.
-          </p>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          <div class="lg:col-span-1">
-            <div class="space-y-6">
-              <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
-                <h3 class="font-bold text-lg mb-2">Email</h3>
-                <a href="mailto:mamantsambe47@gmail.com" class="text-primary hover:text-secondary font-semibold break-all">mamansambe47@gmail.com</a>
-                <p class="text-gray-500 text-sm mt-2">Réponse rapide</p>
-              </div>
-              <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
-                <h3 class="font-bold text-lg mb-2">Téléphone</h3>
-                <a href="tel:+33678643805" class="text-primary hover:text-secondary font-semibold">+33 6 78 64 38 05</a>
-              </div>
-              <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
-                <h3 class="font-bold text-lg mb-2">Localisation</h3>
-                <p class="text-gray-700 font-semibold">Montbéliard, France</p>
-                <p class="text-gray-500 text-sm mt-2">Télétravail disponible</p>
-              </div>
-              <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg border border-border p-6">
-                <h3 class="font-bold text-lg mb-2">Disponibilité</h3>
-                <p class="text-gray-700 font-semibold">Toujours ouverte aux opportunités</p>
-              </div>
-            </div>
-          </div>
-          <div class="lg:col-span-2">
-           <form
-  id="contact-form"
-  name="contact"
-  method="POST"
-  data-netlify="true"
-  netlify-honeypot="bot-field"
-  class="bg-white rounded-lg border border-border p-8 space-y-6"
->
-  <input type="hidden" name="form-name" value="contact" />
-  <input type="hidden" name="bot-field" />
-
-  <div
-    id="form-success"
-    class="hidden rounded-lg border border-green-300 bg-green-100 px-4 py-3 font-medium text-green-800"
-  >
-    Merci ! Je répondrai dans les plus brefs délais !
-  </div>
-
-  <div
-    id="form-error"
-    class="hidden rounded-lg border border-red-300 bg-red-100 px-4 py-3 font-medium text-red-800"
-  >
-    Une erreur est survenue. Veuillez réessayer.
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div>
-      <label for="name" class="block font-semibold mb-2">Votre nom</label>
-      <input
-        id="name"
-        type="text"
-        name="name"
-        required
-        placeholder="Jean Dupont"
-        class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors"
-      />
+<section id="contact" class="section-padding bg-white relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-80 h-80 opacity-20 rounded-full blur-3xl"></div>
+  <div class="container-custom relative z-10">
+    <div class="mb-12">
+      <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">
+        Me Contacter
+      </h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
+      <p class="text-xl text-gray-600 max-w-3xl">
+        Vous avez une question, une opportunité ou un projet à me proposer ? Je suis toujours ouverte à de nouvelles connexions, collaborations et expériences professionnelles.
+      </p>
     </div>
 
-    <div>
-      <label for="email" class="block font-semibold mb-2">Votre email</label>
-      <input
-        id="email"
-        type="email"
-        name="email"
-        required
-        placeholder="jean@example.com"
-        class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors"
-      />
-    </div>
-  </div>
-
-  <div>
-    <label for="subject" class="block font-semibold mb-2">Sujet</label>
-    <input
-      id="subject"
-      type="text"
-      name="subject"
-      required
-      placeholder="Sujet..."
-      class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors"
-    />
-  </div>
-
-  <div>
-    <label for="type" class="block font-semibold mb-2">Type</label>
-    <select
-      id="type"
-      name="type"
-      class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors"
-    >
-      <option value="">Sélectionnez</option>
-      <option value="collaboration">Collaboration</option>
-      <option value="stage">Stage</option>
-      <option value="cdi">CDI</option>
-      <option value="question">Question</option>
-      <option value="autre">Autre</option>
-    </select>
-  </div>
-
-  <div>
-    <label for="message" class="block font-semibold mb-2">Message</label>
-    <textarea
-      id="message"
-      name="message"
-      rows="6"
-      required
-      placeholder="Votre message..."
-      class="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"
-    ></textarea>
-  </div>
-
-  <button
-    type="submit"
-    id="submit-button"
-    class="w-full px-4 py-3 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
-  >
-    Envoyer
-  </button>
-</form>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("contact-form");
-    const successMessage = document.getElementById("form-success");
-    const errorMessage = document.getElementById("form-error");
-    const submitButton = document.getElementById("submit-button");
-
-    if (!form) return;
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      successMessage.classList.add("hidden");
-      errorMessage.classList.add("hidden");
-      submitButton.disabled = true;
-      submitButton.textContent = "Envoi en cours...";
-
-      const formData = new FormData(form);
-
-      try {
-        const response = await fetch("/", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(formData).toString(),
-        });
-
-        if (!response.ok) {
-          throw new Error("Erreur réseau");
-        }
-
-        form.reset();
-        successMessage.classList.remove("hidden");
-      } catch (error) {
-        errorMessage.classList.remove("hidden");
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Envoyer";
-      }
-    });
-  });
-</script>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+      <div class="lg:col-span-1">
+        <div class="space-y-6">
+          <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
+            <h3 class="font-bold text-lg mb-2">Email</h3>
+            <a href="mailto:mamantsambe47@gmail.com" class="text-primary hover:text-secondary font-semibold break-all">
+              mamansambe47@gmail.com
+            </a>
+            <p class="text-gray-500 text-sm mt-2">Réponse rapide</p>
           </div>
-        </div>
-        <div class="text-center">
-          <h3 class="text-2xl font-bold mb-6">Ou trouvez-moi en ligne</h3>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="https://www.linkedin.com/in/maman-thilor-sambe-996592389/" target="_blank" rel="noopener noreferrer" class="px-6 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold">LinkedIn</a>
+
+          <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
+            <h3 class="font-bold text-lg mb-2">Téléphone</h3>
+            <a href="tel:+33678643805" class="text-primary hover:text-secondary font-semibold">
+              +33 6 78 64 38 05
+            </a>
+          </div>
+
+          <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
+            <h3 class="font-bold text-lg mb-2">Localisation</h3>
+            <p class="text-gray-700 font-semibold">Montbéliard, France</p>
+            <p class="text-gray-500 text-sm mt-2">Télétravail disponible</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg border border-border p-6">
+            <h3 class="font-bold text-lg mb-2">Disponibilité</h3>
+            <p class="text-gray-700 font-semibold">Toujours ouverte aux opportunités</p>
           </div>
         </div>
       </div>
-    </section>
+
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg border border-border p-8">
+          <h3 class="text-2xl font-bold mb-4">Parlons de votre projet</h3>
+          <p class="text-gray-600 mb-6 leading-relaxed">
+            Je suis ouverte aux stages, alternances, collaborations et projets web.
+            Pour toute opportunité, vous pouvez me contacter directement par email ou sur LinkedIn.
+          </p>
+
+          <div class="space-y-4">
+            <a
+              href="mailto:mamantsambe47@gmail.com?subject=Prise%20de%20contact%20depuis%20votre%20portfolio"
+              class="w-full block text-center px-6 py-4 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold hover:opacity-90 transition-all"
+            >
+              M’écrire par email
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/maman-thilor-sambe-996592389/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full block text-center px-6 py-4 bg-white border-2 border-rose-300 text-rose-600 rounded-lg font-semibold hover:bg-rose-50 transition-all"
+            >
+              Voir mon LinkedIn
+            </a>
+          </div>
+
+          <div class="mt-6 rounded-lg bg-gradient-to-r from-amber-50 to-rose-50 border border-rose-100 p-4">
+            <p class="text-sm text-gray-700">
+              Réponse rapide • Basée à Montbéliard • Disponible pour de nouvelles opportunités
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <h3 class="text-2xl font-bold mb-6">Ou trouvez-moi en ligne</h3>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="https://www.linkedin.com/in/maman-thilor-sambe-996592389/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-6 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold"
+        >
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
   </div>
 
 </Layout>
