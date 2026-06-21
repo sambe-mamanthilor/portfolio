@@ -76,3 +76,90 @@
     );
   }
 }
+#projects-carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+#projects-carousel::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+}
+
+#projects-carousel::-webkit-scrollbar-thumb {
+  background: #00BCD4;
+  border-radius: 999px;
+}
+
+
+
+.experience-card {
+  background: white;
+  padding: 3rem;
+
+  border: 1px solid #dbeafe;
+
+  box-shadow:
+    0 15px 40px rgba(15, 23, 42, 0.08);
+
+  position: relative;
+  overflow: hidden;
+
+  transition: all 0.3s ease;
+
+  border-radius:
+    42px 28px 48px 30px /
+    30px 48px 28px 42px;
+}
+
+.experience-card-alt {
+  border-radius:
+    28px 48px 30px 42px /
+    48px 30px 42px 28px;
+}
+
+.experience-card:hover {
+  transform: translateY(-6px);
+}
+
+.experience-card::before {
+  content: "";
+  position: absolute;
+
+  width: 320px;
+  height: 320px;
+
+  top: -150px;
+  right: -150px;
+
+  background: radial-gradient(
+    circle,
+    rgba(34, 211, 238, 0.12),
+    transparent 70%
+  );
+}
+
+.quote-box {
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.08),
+    rgba(34, 211, 238, 0.08)
+  );
+
+  border-left: 4px solid #22d3ee;
+
+  padding: 1.5rem;
+  border-radius: 24px;
+}
+
+.skill-tag {
+  padding: 0.6rem 1rem;
+
+  border-radius: 999px;
+
+  background: #ecfeff;
+  color: #0e7490;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
