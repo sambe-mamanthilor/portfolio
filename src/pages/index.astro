@@ -1,23 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import matildaImg from '../images/effet-matilda.png';
-import festivalImg from '../images/festival.png';
-import cuptailImg from '../images/cuptail.png';
-import moiImg from '../images/moi.jpeg';
-import coeurImg from '../images/coeur.jpeg';
-import tab1Img from '../images/tab1.jpeg';
-import tab2Img from '../images/tab2.jpeg';
-import plageImg from '../images/plage.jpeg';    
-import ProjectCard from '../components/ProjectCard.astro'; 
-import portfolioData from '../data/portfolio.json';
+import Projects from '../components/Projects.astro';
 ---
 
-<Layout title="Maman Thilor SAMBE ">
-  <div class="bg-gradient-to-br from-amber-400 to-pink-500">
+<Layout title="Maman Thilor SAMBE">
+  <div class="bg-gradient-to-br from-sky-50 to-cyan-50">
 
-{/* HERO SECTION */}
-
-<section id="hero" class="relative min-h-screen overflow-hidden">
+<section id="hero" class="relative min-h-screen overflow-hidden pt-36">
 
   <!-- Background -->
   <div
@@ -43,10 +32,10 @@ import portfolioData from '../data/portfolio.json';
       <div>
 
         <span class="inline-flex items-center px-5 py-2 rounded-full bg-cyan-500/20 border border-cyan-300/30 text-cyan-200 text-sm font-medium mb-8">
-          BTS SIO SLAM • Recherche d'alternance
+          BTS SIO option SLAM • Recherche d'alternance
         </span>
 
-        <h1 class="text-5xl lg:text-7xl font-bold text-white leading-tight mb-6">
+        <h1 class="text-4xl lg:text-7xl font-bold text-white leading-tight mb-6">
           Maman Thilor
           <span class="block text-cyan-300">
             SAMBE
@@ -54,7 +43,7 @@ import portfolioData from '../data/portfolio.json';
         </h1>
 
         <p class="text-xl lg:text-2xl text-cyan-100 font-semibold mb-6">
-          Développeuse web en devenir
+          Développeuse full stack en devenir
         </p>
 
         <p class="text-lg text-slate-300 leading-relaxed max-w-2xl mb-10">
@@ -71,7 +60,7 @@ import portfolioData from '../data/portfolio.json';
           </a>
 
           <a
-            href="#contact"
+            href="/contact"
             class="px-8 py-4 rounded-full border border-white/30 bg-white/10 backdrop-blur text-white font-semibold hover:bg-white/20 transition"
           >
             Me contacter
@@ -102,15 +91,16 @@ import portfolioData from '../data/portfolio.json';
 
           <div class="absolute -inset-6 bg-cyan-400/30 rounded-full blur-3xl"></div>
 
-          <div class="relative w-[320px] h-[320px] lg:w-[420px] lg:h-[420px] overflow-hidden border-4 border-cyan-300/30 shadow-2xl organic-blob">
+          
+          <div class="flex justify-center lg:justify-end">
 
-            <img
-              src={moiImg.src}
-              alt="Maman Thilor Sambe"
-              class="w-full h-full object-cover"
-            />
+  <img
+    src="/images/moi.jpeg"
+    alt="Maman Thilor Sambe"
+    class="relative z-10 w-[320px] h-[320px] lg:w-[420px] lg:h-[420px] rounded-full object-cover border-4 border-cyan-300/30 shadow-2xl"
+/>
 
-          </div>
+</div>
 
         </div>
 
@@ -121,383 +111,605 @@ import portfolioData from '../data/portfolio.json';
   </div>
 
 </section>
+<section
+  id="about"
+  class="section-padding bg-slate-950 relative overflow-hidden"
+>
 
+  <!-- Halo -->
 
+  <div class="absolute top-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]"></div>
 
-    {/* ABOUT Section */}
-    <section id="about" class="section-padding relative bg-gradient-to-br from-amber-50 to-rose-50">
-      <div class="absolute top-0 right-0 w-80 h-80 bg-rose-100 opacity-30 rounded-full blur-3xl -mr-40"></div>
-      <div class="container-custom relative z-10">
-        <div class="mb-12">
-          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">À propos</h2>
-          <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-          <div class="md:col-span-2">
-            <div class="space-y-8">
-              <div>
-                <h3 class="text-xl font-bold mb-4">Qui je suis ?</h3>
-                <p class="text-gray-600 text-lg leading-relaxed">
-                  Je suis Maman Thilor Sambe, étudiante en BTS Services Informatiques aux Organisations (SIO) option SLAM, passionnée par le développement web et la création d'expériences numériques utiles.
-                   Mon parcours en Métiers du Multimédia et de l'Internet m'a permis de développer une double compétence en développement et en conception d'interfaces, avec une attention particulière portée à l'expérience utilisateur et à la cohérence des projets digitaux.
+  <div class="container-custom relative z-10">
 
-J'aime transformer une idée en solution concrète, de la réflexion initiale jusqu'à la réalisation technique, en combinant créativité, rigueur et sens du détail.
-                </p>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold mb-4">Mon parcours</h3>
-                <p class="text-gray-600 leading-relaxed mb-4">
-Après une première année en BUT Métiers du Multimédia et de l'Internet à l'IUT Nord Franche-Comté, j'ai choisi de poursuivre mon parcours en BTS SIO option SLAM afin de renforcer mes compétences en développement logiciel et en conception d'applications.                </p>
-                <p class="text-gray-600 leading-relaxed">
-                  Au fil de mes projets universitaires et personnels, j'ai acquis des compétences en développement web, UX/UI design, gestion de projet, communication digitale et intégration de solutions numériques. Cette polyvalence me permet de comprendre les enjeux d'un projet dans leur globalité tout en conservant une forte orientation vers le développement.
-                </p>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold mb-4">Ce qui me motive</h3>
-                <ul class="space-y-3">
-                  <li class="flex items-start gap-3">
-                    <span class="text-primary font-bold text-lg">→</span>
-                    <span class="text-gray-600">Concevoir des applications web utiles et intuitives</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <span class="text-primary font-bold text-lg">→</span>
-                    <span class="text-gray-600">Apprendre continuellement de nouvelles technologies</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <span class="text-primary font-bold text-lg">→</span>
-                    <span class="text-gray-600">Développer des interfaces modernes, accessibles et responsives</span>
-                  </li>
-                  <li class="flex items-start gap-3">
-                    <span class="text-primary font-bold text-lg">→</span>
-                    <span class="text-gray-600">Évoluer vers le métier de développeuse full-stack</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="sticky top-24 space-y-6">
-              <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg p-6 border border-border">
-                <h3 class="font-bold text-lg mb-4">Mes coordonnées</h3>
-                <ul class="space-y-3">
-                  <li>
-                    <p class="text-sm text-gray-600">Âge</p>
-                    <p class="font-semibold">19 ans</p>
-                  </li>
-                  <li>
-                    <p class="text-sm text-gray-600">Localisation</p>
-                    <p class="font-semibold">Île-de-France</p>
-                  </li>
-                  <li>
-                    <p class="text-sm text-gray-600">Email</p>
-                    <a href="mailto:mamantsambe47@gmail.com" class="font-semibold text-primary hover:text-secondary">
-                      mamansambe47@gmail.com
-                    </a>
-                  </li>
-                  <li>
-                    <p class="text-sm text-gray-600">Téléphone</p>
-                    <a href="tel:+33678643805" class="font-semibold text-primary hover:text-secondary">
-                      +33 6 78 64 38 05
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="bg-white rounded-lg p-6 border border-border">
-                <h3 class="font-bold text-lg mb-4">Langues</h3>
-                <div class="space-y-3">
-                  <div>
-                    <div class="flex justify-between items-center mb-2">
-                      <span class="font-medium">Français</span>
-                      <span class="text-sm text-gray-600">C2</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="flex justify-between items-center mb-2">
-                      <span class="font-medium">Wolof</span>
-                      <span class="text-sm text-gray-600">C2</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="flex justify-between items-center mb-2">
-                      <span class="font-medium">Anglais</span>
-                      <span class="text-sm text-gray-600">B2</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="flex justify-between items-center mb-2">
-                      <span class="font-medium">Espagnol</span>
-                      <span class="text-sm text-gray-600">B1</span>
-                    </div>
-                  </div>
-                  
-                  </div>
-                </div>
-              </div>
-              <a href="#contact" class="w-full px-8 py-3 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold text-center block">
-              Contact
-              </a>
-            </div>
-          </div>
-        </div>
+    <!-- Titre -->
+
+    <div class="max-w-4xl mb-16">
+
+      <span class="text-cyan-400 font-semibold uppercase tracking-[0.2em]">
+        À propos
+      </span>
+
+      <h2
+        class="text-2xl sm:text-3xl font-bold text-white mt-4 mb-6"
+        style="font-family: 'Playfair Display', serif;"
+      >
+        Un parcours entre créativité et développement
+      </h2>
+
+      <p class="text-xl text-slate-300 leading-relaxed">
+        Mon parcours en Métiers du Multimédia et de l'Internet m'a permis
+        d'acquérir une vision globale des projets numériques. Aujourd'hui,
+        je poursuis ma spécialisation en BTS SIO option SLAM afin de renforcer
+        mes compétences en développement d'applications web et participer à
+        des projets concrets au sein d'une équipe technique.
+      </p>
+
+    </div>
+
+    <!-- Cartes -->
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+      <div class="bg-slate-900 border border-cyan-400 rounded-3xl p-6 hover:border-cyan-500/40 transition-all">
+
+        <h3 class="text-white font-bold text-lg mb-2">
+          Formation
+        </h3>
+
+        <p class="text-slate-400">
+          Une année en MMI → BTS SIO SLAM
+        </p>
       </div>
-    </section>
 
+      <div class="bg-slate-900 border border-cyan-400 rounded-3xl p-6 hover:border-cyan-500/40 transition-all">
 
-    {/* PROJECTS Section */}
-    <section id="projects" class="section-padding bg-gradient-to-br from-rose-100 to-amber-100 relative overflow-hidden">
-      <div class="absolute bottom-20 right-0 w-80 h-80 bg-rose-100 opacity-20 rounded-full blur-3xl"></div>
-      <div class="container-custom relative z-10">
-        <div class="mb-12">
-          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Projets académiques</h2>
-          <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
-          <p class="text-xl text-gray-600 max-w-3xl">
-            Voici une sélection de mes projets récents combinant développement web, UX design et créativité en mise en situation professionnelle (BUT MMI).
-          </p>
-        </div>
-        <div class="relative mb-16">
+        <h3 class="text-white font-bold text-lg mb-2">
+          Spécialité
+        </h3>
+
+        <p class="text-slate-400">
+          Développement full stack & UX/UI design
+        </p>
+      </div>
+
+      <div class="bg-slate-900 border border-cyan-400 rounded-3xl p-6 hover:border-cyan-500/40 transition-all">
+
+        <h3 class="text-white font-bold text-lg mb-2">
+          Triple compétence
+        </h3>
+
+        <p class="text-slate-400">
+          UX/UI design, Communication digitale & Développement
+        </p>
+      </div>
+
+      <div class="bg-slate-900 border border-cyan-400 rounded-3xl p-6 hover:border-cyan-500/40 transition-all">
+
+        <h3 class="text-white font-bold text-lg mb-2">
+          Objectif
+        </h3>
+
+        <p class="text-slate-400">
+          Trouver une alternance en parallèle avec mon BTS SIO.
+        </p>
+      </div>
+
+    </div>
+
+   
+
+    </div>
+
+  </div>
+
+</section>
+
+   
+{/* COMPÉTENCES */}
+
+<section
+  id="competences"
+  class="relative overflow-hidden py-32"
+>
+
+  <!-- Background aquarelle -->
 
   <div
-    id="projects-carousel"
-    class="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6"
-  >
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/bg-watercolor.png');
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+    "
+  ></div>
 
-    {portfolioData.projects.map((project: any) => (
+  <!-- Voile blanc -->
+
+  <div class="absolute inset-0 bg-white/40"></div>
+
+  <div class="container-custom relative z-10">
+
+    <!-- TITRE -->
+
+    <div class="text-center mb-20">
+
+      <h2
+        class="text-4xl sm:text-4xl font-bold mb-6 text-slate-900"
+        style="font-family:'Playfair Display', serif;"
+      >
+        Mon écosystème numérique
+      </h2>
+
+      <div class="h-1 w-24 mx-auto bg-gradient-to-r from-cyan-400 to-sky-500 rounded-full mb-6"></div>
+
+      <p class="text-xl text-slate-700 max-w-4xl mx-auto">
+        Les technologies et outils que j'utilise pour concevoir,
+        développer, déployer et valoriser des projets numériques.
+      </p>
+
+    </div>
+
+    <!-- IMAGE COMPÉTENCES -->
+
+    <div class="max-w-5xl mx-auto mb-14">
 
       <div
-        class="min-w-[350px] md:min-w-[420px] snap-start"
+        class="
+          bg-white/85
+          backdrop-blur-md
+          rounded-[40px]
+          shadow-2xl
+          border
+          border-white/60
+          p-8 md:p-10
+        "
       >
 
-        <a href={`/projects/${project.id}`}>
-
-          <ProjectCard
-            id={project.id}
-            title={project.title}
-            description={project.description}
-            image={project.image}
-            tags={project.tags}
-            link={project.link}
-            github={project.github}
-            category={project.category}
-          />
-
-        </a>
+        <img
+          src="/images/competences-techniques.png"
+          alt="Compétences techniques"
+          class="w-full h-auto object-contain"
+        />
 
       </div>
 
-    ))}
+    </div>
+
+   <!-- SOFT SKILLS -->
+
+<div class="text-center mt-12">
+
+  <h3 class="text-2xl font-bold text-slate-900 mb-8">
+    Soft Skills
+  </h3>
+
+  <div class="flex flex-wrap justify-center gap-4">
+
+    <span class="px-6 py-3 rounded-full  bg-cyan-200 text-cyan border border-cyan-600 text-slate-800 font-semibold shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+      Organisée et rigoureuse
+    </span>
+
+    <span class="px-6 py-3 rounded-full  bg-cyan-200 text-cyan border border-cyan-600 text-slate-800 font-semibold shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+      Persévérante
+    </span>
+
+    <span class="px-6 py-3 rounded-full  bg-cyan-200 text-cyan border border-cyan-600 text-slate-800 font-semibold shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+      Sens du relationnel
+    </span>
+
+    <span class="px-6 py-3 rounded-full  bg-cyan-200 text-cyan border border-cyan-600 text-slate-800 font-semibold shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+      Créative
+    </span>
+
+    <span class="px-6 py-3 rounded-full  bg-cyan-200 text-cyan border border-cyan-600 text-slate-800 font-semibold shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+      Curieuse
+    </span>
 
   </div>
 
 </div>
-    </section>
+
+</section>
+
+   <Projects />
 
    {/* PARCOURS */}
-<section id="parcours" class="section-padding bg-gradient-to-br from-white to-sky-50">
-  <div class="container-custom">
 
-    <div class="mb-12">
-      <h2 class="text-4xl sm:text-5xl font-bold mb-4">
+<section
+  id="formation"
+  class="relative overflow-hidden py-32"
+>
+
+  <!-- Background aquarelle -->
+
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/bg-watercolor.png');
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+    "
+  ></div>
+
+  <!-- Voile -->
+
+  <div class="absolute inset-0 bg-white/40"></div>
+
+  <div class="container-custom relative z-10">
+
+    <!-- Titre -->
+
+    <div class="text-center mb-16">
+
+      <h2
+        class="text-4xl sm:text-5xl font-bold mb-4 text-slate-900"
+        style="font-family:'Playfair Display', serif;"
+      >
         Mon parcours
       </h2>
 
-      <div class="h-1 w-20 bg-gradient-to-r from-sky-400 to-cyan-400 rounded-full mb-6"></div>
+      <div class="h-1 w-24 mx-auto bg-gradient-to-r from-sky-400 to-cyan-400 rounded-full mb-6"></div>
 
-      <p class="text-xl text-gray-600 max-w-3xl">
-De la création de contenus numériques au développement d'applications, mon parcours reflète une évolution progressive vers les métiers du développement logiciel.
+      <p class="text-xl text-slate-700 max-w-4xl mx-auto leading-relaxed">
+        De la création de contenus numériques au développement d'applications,
+        mon parcours reflète une évolution progressive vers les métiers du développement logiciel.
+        Aujourd'hui, je poursuis cette trajectoire à travers le BTS SIO SLAM afin de renforcer
+        mes compétences techniques et construire des solutions utiles et innovantes.
+      </p>
 
-Aujourd'hui, je poursuis cette trajectoire à travers le BTS SIO SLAM afin de renforcer mes compétences techniques et construire des solutions utiles et innovantes.      </p>
     </div>
+
+    <!-- Cartes -->
 
     <div class="max-w-5xl mx-auto space-y-8">
 
-  <!-- BUT MMI -->
-  <div
-    class="bg-white border border-cyan-100 shadow-xl p-8 flex flex-col md:flex-row items-center gap-8 rounded-[40px]"
-  >
-    <img
-      src="/images/mmi.png"
-      alt="Logo MMI"
-      class="w-28 h-28 object-contain flex-shrink-0"
-    />
+      <!-- BUT MMI -->
 
-    <div class="flex-1 text-center md:text-left">
-      <h3 class="text-2xl font-bold mb-3">
-        BUT Métiers du Multimédia et de l'Internet
-      </h3>
+      <div
+        class="
+          bg-white/90
+          backdrop-blur-md
+          border
+          border-white/60
+          shadow-xl
+          rounded-[40px]
+          p-8
+          flex
+          flex-col
+          md:flex-row
+          items-center
+          gap-8
+        "
+      >
 
-      <p class="text-gray-600 leading-relaxed mb-4">
-        Formation en développement web, communication digitale,
-        UX/UI design et production audiovisuelle à travers des
-        projets concrets et des mises en situation professionnelles.
-      </p>
+        <img
+          src="/images/mmi.png"
+          alt="MMI"
+          class="w-28 h-28 object-contain flex-shrink-0"
+        />
 
-      <p class="font-semibold text-cyan-700">
-        IUT Nord Franche-Comté • 2025 – 2026
-      </p>
+        <div class="flex-1">
+
+          <h3 class="text-2xl font-bold text-slate-900 mb-3">
+            BUT Métiers du Multimédia et de l'Internet
+          </h3>
+
+          <p class="text-slate-600 leading-relaxed mb-4">
+            Formation en développement web, communication digitale,
+            UX/UI design et production audiovisuelle à travers
+            des projets concrets et des mises en situation professionnelles.
+          </p>
+
+          <span class="inline-flex px-4 py-2 rounded-full bg-cyan-100 text-cyan-700 font-semibold">
+            IUT Nord Franche-Comté • 2025 – 2026
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- BTS -->
+
+      <div
+        class="
+          bg-white/90
+          backdrop-blur-md
+          border
+          border-white/60
+          shadow-xl
+          rounded-[40px]
+          p-8
+          flex
+          flex-col
+          md:flex-row
+          items-center
+          gap-8
+        "
+      >
+
+        <img
+          src="/images/ingetis.webp"
+          alt="Ingetis"
+          class="w-28 h-28 object-contain flex-shrink-0"
+        />
+
+        <div class="flex-1">
+
+          <h3 class="text-2xl font-bold text-slate-900 mb-3">
+            BTS SIO option SLAM
+          </h3>
+
+          <p class="text-slate-600 leading-relaxed mb-4">
+            Formation orientée développement logiciel,
+            bases de données, programmation orientée objet,
+            architecture applicative et cybersécurité.
+          </p>
+
+          <span class="inline-flex px-4 py-2 rounded-full bg-cyan-100 text-cyan-700 font-semibold">
+            INGETIS Paris • 2026 – 2028
+          </span>
+
+        </div>
+
+      </div>
+
     </div>
-  </div>
 
-  <!-- BTS -->
-  <div
-    class="bg-white border border-cyan-100 shadow-xl p-8 flex flex-col md:flex-row items-center gap-8 rounded-[40px]"
-  >
-    <img
-      src="/images/ingetis.webp"
-      alt="Logo Ingetis"
-      class="w-28 h-28 object-contain flex-shrink-0"
-    />
+    <!-- Bouton -->
 
-    <div class="flex-1 text-center md:text-left">
-      <h3 class="text-2xl font-bold mb-3">
-        BTS Systèmes Informatiques Organisations option SLAM
-      </h3>
+    <div class="text-center mt-14">
 
-      <p class="text-gray-600 leading-relaxed mb-4">
-        Formation en alternance orientée développement logiciel,
-        bases de données, programmation orientée objet,
-        architecture applicative et cybersécurité.
-      </p>
-
-      <p class="font-semibold text-cyan-700">
-        INGETIS Paris • 2026 – 2028
-      </p>
-    </div>
-  </div>
-
-</div>
-</div>
-    <div class="text-center mt-12">
       <a
         href="/parcours"
-        class="btn-gradient"
+        class="
+          inline-flex
+          items-center
+          px-8
+          py-4
+          rounded-full
+          bg-gradient-to-r
+          from-cyan-500
+          to-sky-600
+          text-white
+          font-semibold
+          shadow-lg
+          hover:shadow-xl
+          hover:scale-105
+          transition-all
+        "
       >
-        Découvrir mon parcours
+        Découvrir mon parcours →
       </a>
+
     </div>
 
   </div>
+
 </section>
+   
 
 {/* EXPERIENCES */}
 
-<section id="experiences" class="section-padding bg-gradient-to-br from-white to-sky-50">
-  <div class="container-custom">
+<section
+  id="experiences"
+  class="relative overflow-hidden py-32 bg-slate-950"
+>
 
-    <div class="mb-12">
-      <h2 class="text-4xl sm:text-5xl font-bold mb-4">
+  <!-- Background code -->
+
+ <div
+  class="absolute inset-0"
+  style="
+    background-image:url('/images/code-bg.jpg');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+  "
+></div>
+
+  <!-- Grille -->
+
+  <div
+    class="absolute inset-0 opacity-10"
+    style="
+      background-image:
+      linear-gradient(rgba(34,211,238,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,211,238,.08) 1px, transparent 1px);
+      background-size:60px 60px;
+    "
+  ></div>
+
+  <!-- Overlay -->
+
+<div class="absolute inset-0 bg-slate-950/60"></div>
+  <div class="container-custom relative z-10">
+
+    <div class="text-center mb-16">
+
+      <h2
+        class="text-4xl sm:text-5xl font-bold mb-4 text-white"
+        style="font-family:'Playfair Display', serif;"
+      >
         Expériences professionnelles
       </h2>
 
-      <div class="h-1 w-20 mx-auto bg-gradient-to-r from-sky-400 to-cyan-400 rounded-full mb-6"></div>
+      <div class="h-1 w-24 mx-auto bg-gradient-to-r from-cyan-400 to-sky-500 rounded-full mb-6"></div>
 
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+      <p class="text-xl text-slate-300 max-w-3xl mx-auto">
         Des expériences qui ont renforcé mon sens de l'organisation,
         ma rigueur professionnelle et ma capacité d'adaptation.
       </p>
+
     </div>
 
-    <div class="max-w-5xl mx-auto space-y-10">
+    <div class="grid lg:grid-cols-2 gap-8">
 
       <!-- LOUM -->
 
-      <article class="experience-card">
+      <article
+        class="
+          group
+          bg-slate-900/90
+          backdrop-blur-md
+          border
+          border-cyan-500/20
+          rounded-[32px]
+          shadow-2xl
+          p-8
+          transition-all
+          duration-500
+          hover:-translate-y-2
+          hover:border-cyan-400/50
+          hover:shadow-cyan-500/20
+        "
+      >
 
-        <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
+        <div class="flex flex-col items-center text-center mb-8">
 
           <img
             src="/images/loum.png"
             alt="Loum Consulting"
-            class="w-28 h-28 object-contain flex-shrink-0"
+            class="w-28 h-28 object-contain mb-6"
           />
 
-          <div class="flex-1">
-            <h3 class="text-3xl font-bold mb-2">
-              Loum Consulting
-            </h3>
+          <h3 class="text-3xl font-bold text-white mb-2">
+            Loum Consulting
+          </h3>
 
-            <p class="text-cyan-600 font-semibold text-lg">
-              Stage administratif & bureautique
-            </p>
-          </div>
+          <p class="text-cyan-300 font-semibold text-lg">
+            Stage administratif & bureautique
+          </p>
 
         </div>
 
-        <p class="text-gray-600 leading-relaxed mb-8">
+        <p class="text-slate-300 leading-relaxed mb-8">
           Durant cette expérience, j'ai participé à la gestion documentaire,
           au classement des dossiers ainsi qu'à l'organisation des informations administratives.
           Cette mission m'a permis de développer une méthode de travail rigoureuse,
           une meilleure maîtrise des outils bureautiques et un sens accru de l'organisation.
         </p>
 
-        <div class="quote-box mb-8">
-          <p class="italic text-gray-700 leading-relaxed">
-            « Maman a démontré un excellent sens de l'organisation,
-            du sérieux dans les missions confiées et une bonne capacité d'adaptation. »
+        <div class="mb-8 p-6 rounded-2xl bg-slate-800/60 border border-slate-700">
+
+          <p class="italic text-slate-300 leading-relaxed">
+            « Tout au long de la formation, elle a fait preuve d'un esprit vif, d'une excellente capacité de compréhension et d'une grande facilité d'apprentissage. Elle assimilait rapidement les notions abordées et veillait toujours à maîtriser parfaitement chaque compétence avant la fin de chaque séance. Son sérieux, sa motivation et sa volonté de bien faire lui permettront sans aucun doute de réussir dans ses futures missions professionnelles. »
           </p>
 
-          <p class="mt-4 font-semibold text-cyan-700">
+          <p class="mt-4 font-semibold text-cyan-300">
             — Directrice de Loum Consulting
           </p>
+
         </div>
 
         <div class="flex flex-wrap gap-3">
-          <span class="skill-tag">Organisation</span>
-          <span class="skill-tag">Bureautique</span>
-          <span class="skill-tag">Gestion documentaire</span>
-          <span class="skill-tag">Rigueur</span>
-          <span class="skill-tag">Autonomie</span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Organisation
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Bureautique
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Gestion documentaire
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Rigueur
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Autonomie
+          </span>
+
         </div>
 
       </article>
 
-      <!-- PROCO -->
+           <!-- PROCO -->
 
-      <article class="experience-card experience-card-alt">
+      <article
+        class="
+          group
+          bg-slate-900/90
+          backdrop-blur-md
+          border
+          border-cyan-500/20
+          rounded-[32px]
+          shadow-2xl
+          p-8
+          transition-all
+          duration-500
+          hover:-translate-y-2
+          hover:border-cyan-400/50
+          hover:shadow-cyan-500/20
+        "
+      >
 
-        <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
+        <div class="flex flex-col items-center text-center mb-8">
 
           <img
             src="/images/proco.png"
             alt="Proco Confection"
-            class="w-28 h-28 object-contain flex-shrink-0"
+            class="w-28 h-28 object-contain mb-6"
           />
 
-          <div class="flex-1">
-            <h3 class="text-3xl font-bold mb-2">
-              Proco Confection
-            </h3>
+          <h3 class="text-3xl font-bold text-white mb-2">
+            Proco Confection
+          </h3>
 
-            <p class="text-cyan-600 font-semibold text-lg">
-              Stage en environnement de production
-            </p>
-          </div>
+          <p class="text-cyan-300 font-semibold text-lg">
+            Stage en environnement de production
+          </p>
 
         </div>
 
-        <p class="text-gray-600 leading-relaxed mb-8">
+        <p class="text-slate-300 leading-relaxed mb-8">
           Cette expérience m'a permis de participer à différentes étapes
           de la chaîne de production : étiquetage, emballage, contrôle qualité
           et préparation des produits. J'y ai développé précision,
           efficacité, sens du détail et respect des procédures.
         </p>
 
-        <div class="quote-box mb-8">
-          <p class="italic text-gray-700 leading-relaxed">
-            « Maman s'est montrée sérieuse, appliquée et impliquée
-            dans les tâches qui lui ont été confiées. »
+        <div class="mb-8 p-6 rounded-2xl bg-slate-800/60 border border-slate-700">
+
+          <p class="italic text-slate-300 leading-relaxed">
+            « Mademoiselle Sambe s'est montrée sérieuse, appliquée et impliquée
+            dans les tâches qui lui ont été confiées. En cas de tâches incomprises, elle était toujours disposée à consulter ces supérieurs. Elle prenait en compte toutes mes recommandations et faisait en compte de faire le meilleur résultat. »
           </p>
 
-          <p class="mt-4 font-semibold text-cyan-700">
-            — Directrice de Proco Confection
+          <p class="mt-4 font-semibold text-cyan-300">
+            — Propriétaire de Proco Confection
           </p>
+
         </div>
 
         <div class="flex flex-wrap gap-3">
-          <span class="skill-tag">Précision</span>
-          <span class="skill-tag">Qualité</span>
-          <span class="skill-tag">Travail d'équipe</span>
-          <span class="skill-tag">Organisation</span>
-          <span class="skill-tag">Respect des délais</span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Précision
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Qualité
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Travail d'équipe
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Organisation
+          </span>
+
+          <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
+            Respect des délais
+          </span>
+
         </div>
 
       </article>
@@ -505,250 +717,52 @@ Aujourd'hui, je poursuis cette trajectoire à travers le BTS SIO SLAM afin de re
     </div>
 
   </div>
+
 </section>
 
+<section id="passions" class="relative overflow-hidden py-24">
 
+<div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/bg-watercolor.png');
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+    "
+  ></div>
 
-    {/* PASSIONS Section */}
-    <section id="passions" class="section-padding bg-white relative overflow-hidden">
-      <div class="absolute top-0 right-20 w-96 h-96 bg-rose-100 opacity-20 rounded-full blur-3xl"></div>
-      <div class="container-custom relative z-10">
-        <div class="mb-12">
-          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Mes Passions</h2>
-          <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
-          <p class="text-xl text-gray-600 max-w-3xl">
-            Au-delà des projets mutlimédias, je suis passionnée par de nombreuses choses qui enrichissent ma vie.
-          </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-16">
-          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
-            <h3 class="text-2xl font-bold mb-3">🎨 Création Numérique</h3>
-            <p class="text-gray-600">Concevoir et développer des interfaces créatives, fusionnant art et technologie.</p>
-          </div>
-          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
-            <h3 class="text-2xl font-bold mb-3">🖌️ Peinture</h3>
-            <p class="text-gray-600">Exprimer ma créativité à travers la couleur et les formes sur toile.</p>
-          </div>
-          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
-            <h3 class="text-2xl font-bold mb-3">🥋 Taekwondo</h3>
-            <p class="text-gray-600">Discipline physique et mentale, persévérance et respect des traditions.</p>
-          </div>
-          <div class="p-8 bg-white rounded-lg border border-border hover:shadow-lg transition-all">
-            <h3 class="text-2xl font-bold mb-3">📚 Lecture</h3>
-            <p class="text-gray-600">Explorer des mondes et enrichir mon esprit à travers les histoires.</p>
-          </div>
-          
-        </div>
-          </div>
-        </div>
-        
-      </div>
-    </section>
+  <!-- Voile -->
 
-    {/* GALERIE Section */}
-    <section id="galerie" class="wave section-padding bg-gradient-to-br from-rose-100 to-amber-100 relative overflow-hidden">
-      <div class="container-custom relative z-10">
-        <div class="mb-12">
-          <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">Galerie</h2>
-          <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
-          <p class="text-xl text-gray-600 max-w-3xl">Mes peintures</p>
-        </div>
+  <div class="absolute inset-0 bg-white/40"></div>
 
-        {/* Carousel */}
-        <div class="flex items-center justify-between gap-8">
-          {/* Bouton Précédent */}
-          <button id="carousel-prev" class="flex-shrink-0 p-3 rounded-full bg-gradient-to-r from-amber-400 to-pink-600 text-white shadow-lg hover:shadow-xl transition-all hover:scale-110 active:scale-95">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-          </button>
-
-          {/* Carousel Container - Main */}
-          <div class="flex-1 overflow-hidden">
-            <div id="carousel-container" class="flex gap-8 transition-transform duration-500">
-              
-              {/* Peinture 1 */}
-              <div class="w-96 flex-shrink-0">
-                <div class="mx-auto">
-                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
-                    <img src={coeurImg.src} alt="Cœur" class="w-full h-80 object-contain" />
-                  </div>
-                 
-                </div>
-              </div>
-
-              {/* Peinture 2 */}
-              <div class="w-96 flex-shrink-0">
-                <div class="mx-auto">
-                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
-                    <img src={tab1Img.src} alt="Tableau 1" class="w-full h-80 object-contain" />
-                  </div>
-                 
-                </div>
-              </div>
-
-              {/* Peinture 3 */}
-              <div class="w-96 flex-shrink-0">
-                <div class="mx-auto">
-                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
-                    <img src={tab2Img.src} alt="Tableau 2" class="w-full h-80 object-contain" />
-                  </div>
-                  
-                </div>
-              </div>
-
-              {/* Peinture 4 */}
-              <div class="w-96 flex-shrink-0">
-                <div class="mx-auto">
-                  <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-amber-200 to-pink-200">
-                    <img src={plageImg.src} alt="Plage" class="w-full h-80 object-contain" />
-                  </div>
-                  
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Bouton Suivant */}
-          <button id="carousel-next" class="flex-shrink-0 p-3 rounded-full bg-gradient-to-r from-amber-400 to-pink-600 text-white shadow-lg hover:shadow-xl transition-all hover:scale-110 active:scale-95">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </button>
-        </div>
-
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
-            let currentIndex = 0;
-            const container = document.getElementById('carousel-container');
-            const prevBtn = document.getElementById('carousel-prev');
-            const nextBtn = document.getElementById('carousel-next');
-            const totalSlides = 4;
-
-            function updateCarousel() {
-              if (container) {
-                // Calcul de la distance de défilement : width slide + gap
-                const slideWidth = 384; // w-96 = 24rem = 384px
-                const gap = 32; // gap-8 = 2rem = 32px
-                const offset = currentIndex * (slideWidth + gap);
-                container.style.transform = `translateX(-${offset}px)`;
-              }
-            }
-
-            if (prevBtn) {
-              prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-                updateCarousel();
-              });
-            }
-
-            if (nextBtn) {
-              nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % totalSlides;
-                updateCarousel();
-              });
-            }
-          });
-        </script>
-      </div>
-    </section>
-
-    {/* CONTACT Section */}
-<section id="contact" class="section-padding bg-white relative overflow-hidden">
-  <div class="absolute top-0 left-0 w-80 h-80 opacity-20 rounded-full blur-3xl"></div>
   <div class="container-custom relative z-10">
-    <div class="mb-12">
-      <h2 class="text-3xl sm:text-6xl font-bold mb-4 text-gray-900" style="font-family: 'Playfair Display', serif;">
-        Me Contacter
+    <div class="text-center mb-12">
+
+      <h2
+        class="text-4xl sm:text-5xl font-bold mb-4"
+        style="font-family:'Playfair Display', serif;"
+      >
+        Mes passions
       </h2>
-      <div class="w-24 h-1 bg-gradient-to-r from-rose-400 to-amber-400 rounded-full mb-6"></div>
-      <p class="text-xl text-gray-600 max-w-3xl">
-        Vous avez une question, une opportunité ou un projet à me proposer ? Je suis toujours ouverte à de nouvelles connexions, collaborations et expériences professionnelles.
+
+      <div class="h-1 w-20 mx-auto bg-gradient-to-r from-sky-400 to-cyan-400 rounded-full"></div>
+<p class="text-xl text-gray-600 max-w-4xl mx-auto">
+        Au-delà des projets mutlimédias, je suis passionnée par de nombreuses choses qui enrichissent ma vie.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-      <div class="lg:col-span-1">
-        <div class="space-y-6">
-          <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
-            <h3 class="font-bold text-lg mb-2">Email</h3>
-            <a href="mailto:mamantsambe47@gmail.com" class="text-primary hover:text-secondary font-semibold break-all">
-              mamansambe47@gmail.com
-            </a>
-            <p class="text-gray-500 text-sm mt-2">Réponse rapide</p>
-          </div>
+    <img
+      src="/images/passion.png"
+      alt="Mes passions"
+      class="w-full rounded-[40px] shadow-2xl"
+    />
 
-          <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
-            <h3 class="font-bold text-lg mb-2">Téléphone</h3>
-            <a href="tel:+33678643805" class="text-primary hover:text-secondary font-semibold">
-              +33 6 78 64 38 05
-            </a>
-          </div>
-
-          <div class="bg-white rounded-lg border border-border p-6 hover:border-primary hover:shadow-lg transition-all">
-            <h3 class="font-bold text-lg mb-2">Localisation</h3>
-            <p class="text-gray-700 font-semibold">Montbéliard, France</p>
-            <p class="text-gray-500 text-sm mt-2">Télétravail disponible</p>
-          </div>
-
-          <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg border border-border p-6">
-            <h3 class="font-bold text-lg mb-2">Disponibilité</h3>
-            <p class="text-gray-700 font-semibold">Toujours ouverte aux opportunités</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="lg:col-span-2">
-        <div class="bg-white rounded-lg border border-border p-8">
-          <h3 class="text-2xl font-bold mb-4">Parlons de votre projet</h3>
-          <p class="text-gray-600 mb-6 leading-relaxed">
-            Je suis ouverte aux stages, alternances, collaborations et projets web.
-            Pour toute opportunité, vous pouvez me contacter directement par email ou sur LinkedIn.
-          </p>
-
-          <div class="space-y-4">
-            <a
-              href="mailto:mamantsambe47@gmail.com?subject=Prise%20de%20contact%20depuis%20votre%20portfolio"
-              class="w-full block text-center px-6 py-4 bg-gradient-to-r from-rose-400 to-amber-400 text-white rounded-lg font-semibold hover:opacity-90 transition-all"
-            >
-              M’écrire par email
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/maman-thilor-sambe-996592389/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-full block text-center px-6 py-4 bg-white border-2 border-rose-300 text-rose-600 rounded-lg font-semibold hover:bg-rose-50 transition-all"
-            >
-              Voir mon LinkedIn
-            </a>
-          </div>
-
-          <div class="mt-6 rounded-lg bg-gradient-to-r from-amber-50 to-rose-50 border border-rose-100 p-4">
-            <p class="text-sm text-gray-700">
-              Réponse rapide • Basée à Montbéliard • Disponible pour de nouvelles opportunités
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center">
-      <h3 class="text-2xl font-bold mb-6">Ou trouvez-moi en ligne</h3>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a
-          href="https://www.linkedin.com/in/maman-thilor-sambe-996592389/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-6 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold"
-        >
-          LinkedIn
-        </a>
-      </div>
-    </div>
   </div>
+
 </section>
+   
+  
 
   </div>
 

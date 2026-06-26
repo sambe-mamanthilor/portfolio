@@ -6,67 +6,400 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<header class="wave sticky top-0 z-50 bg-gradient-to-br from-amber-200 to-pink-200 shadow-sm">
-  <nav class="container-custom">
-    <div class="flex items-center justify-between h-16 md:h-20">
-      {/* Logo/Name */}
-      <a href="/" class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
-          <span class="text-white font-bold text-xs">MTS</span>
-        </div>
-        <span class="hidden sm:inline font-semibold text-dark text-lg">Maman Thilor SAMBE</span>
-      </a>
+<header class="fixed top-0 left-0 right-0 z-[9999]">
+  <div class="px-4 pt-4">
 
-      {/* Desktop Menu */}
-      <ul class="hidden md:flex items-center space-x-8">
-        <li><a href="/#hero" class="text-gray-700 hover:text-primary font-medium transition-colors">Accueil</a></li>
-        <li><a href="/#about" class="text-gray-700 hover:text-primary font-medium transition-colors">À propos</a></li>
-        <li><a href="/#parcours" class="text-gray-700 hover:text-primary font-medium transition-colors">Parcours</a></li>
-        <li><a href="/#skills" class="text-gray-700 hover:text-primary font-medium transition-colors">Compétences</a></li>
-        <li><a href="/#projects" class="text-gray-700 hover:text-primary font-medium transition-colors">Projets</a></li>
-        <li><a href="/#education" class="text-gray-700 hover:text-primary font-medium transition-colors">Formation</a></li>
-        <li><a href="/#passions" class="text-gray-700 hover:text-primary font-medium transition-colors">Passions</a></li>
-        <li><a href="/#contact" class="btn-gradient">Contact</a></li>
+    <nav
+      class="
+        container-custom
+        mx-auto
+        flex
+        items-center
+        justify-between
+        rounded-full
+        border
+        border-cyan-400/20
+        bg-slate-950/75
+        backdrop-blur-xl
+        shadow-2xl
+        px-6
+        py-4
+      "
+  >
+
+    <!-- Logo -->
+
+    <a href="/" class="flex items-center gap-4 group">
+
+      <div
+        class="
+          w-12
+          h-12
+          rounded-full
+          bg-gradient-to-br
+          from-cyan-400
+          to-sky-600
+          flex
+          items-center
+          justify-center
+          shadow-lg
+          shadow-cyan-500/30
+          transition
+          duration-300
+          group-hover:scale-110
+        "
+      >
+        <span class="text-white font-bold tracking-wider">
+          MTS
+        </span>
+      </div>
+
+     
+
+    </a>
+
+    <!-- Desktop -->
+
+    <ul class="hidden lg:flex items-center gap-10">
+
+      <li>
+        <a
+          href="/#hero"
+          class="
+            relative
+            text-slate-200
+            font-medium
+            transition
+            hover:text-cyan-300
+            after:absolute
+            after:left-0
+            after:-bottom-2
+            after:w-0
+            after:h-[2px]
+            after:bg-cyan-400
+            after:transition-all
+            hover:after:w-full
+          "
+        >
+          Accueil
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="/#about"
+          class="
+            relative
+            text-slate-200
+            font-medium
+            transition
+            hover:text-cyan-300
+            after:absolute
+            after:left-0
+            after:-bottom-2
+            after:w-0
+            after:h-[2px]
+            after:bg-cyan-400
+            after:transition-all
+            hover:after:w-full
+          "
+        >
+          À propos
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="/#competences"
+          class="
+            relative
+            text-slate-200
+            font-medium
+            transition
+            hover:text-cyan-300
+            after:absolute
+            after:left-0
+            after:-bottom-2
+            after:w-0
+            after:h-[2px]
+            after:bg-cyan-400
+            after:transition-all
+            hover:after:w-full
+          "
+        >
+          Compétences
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="/#projects"
+          class="
+            relative
+            text-slate-200
+            font-medium
+            transition
+            hover:text-cyan-300
+            after:absolute
+            after:left-0
+            after:-bottom-2
+            after:w-0
+            after:h-[2px]
+            after:bg-cyan-400
+            after:transition-all
+            hover:after:w-full
+          "
+        >
+          Projets
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="/#formation"
+          class="
+            relative
+            text-slate-200
+            font-medium
+            transition
+            hover:text-cyan-300
+            after:absolute
+            after:left-0
+            after:-bottom-2
+            after:w-0
+            after:h-[2px]
+            after:bg-cyan-400
+            after:transition-all
+            hover:after:w-full
+          "
+        >
+          Parcours
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="/#experiences"
+          class="
+            relative
+            text-slate-200
+            font-medium
+            transition
+            hover:text-cyan-300
+            after:absolute
+            after:left-0
+            after:-bottom-2
+            after:w-0
+            after:h-[2px]
+            after:bg-cyan-400
+            after:transition-all
+            hover:after:w-full
+          "
+        >
+          Expériences
+        </a>
+      </li>
+
+      <li>
+
+        <a
+          href="/contact"
+          class="
+            px-7
+            py-3
+            rounded-full
+            bg-gradient-to-r
+            from-cyan-500
+            to-sky-600
+            text-white
+            font-semibold
+            shadow-lg
+            hover:shadow-cyan-500/40
+            hover:scale-105
+            transition-all
+            duration-300
+          "
+        >
+          Contact
+        </a>
+
+      </li>
+
+    </ul>
+
+    <!-- Bouton mobile -->
+
+    <button
+      id="mobile-menu-btn"
+      class="
+        lg:hidden
+        w-12
+        h-12
+        rounded-full
+        border
+        border-cyan-400/20
+        bg-slate-900/70
+        text-white
+        flex
+        items-center
+        justify-center
+      "
+    >
+
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+
+    </button>
+        <!-- Mobile Menu -->
+
+    <div
+      id="mobile-menu"
+      class="
+        hidden
+        absolute
+        top-24
+        left-4
+        right-4
+        rounded-3xl
+        border
+        border-cyan-400/20
+        bg-slate-950/95
+        backdrop-blur-xl
+        shadow-2xl
+        overflow-hidden
+      "
+    >
+
+      <ul class="flex flex-col py-6">
+
+        <li>
+          <a href="/#hero" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
+            Accueil
+          </a>
+        </li>
+
+        <li>
+          <a href="/#about" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
+            À propos
+          </a>
+        </li>
+
+        <li>
+          <a href="/#competences" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
+            Compétences
+          </a>
+        </li>
+
+        <li>
+          <a href="/#projects" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
+            Projets
+          </a>
+        </li>
+
+        <li>
+          <a href="/#formation" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
+            Parcours
+          </a>
+        </li>
+
+        <li>
+          <a href="/#experiences" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
+            Expériences
+          </a>
+        </li>
+
+        <li>
+          <a href="/#passions" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
+            Passions
+          </a>
+        </li>
+
+        <li class="px-8 pt-6">
+
+          <a
+            href="/contact"
+            class="
+              flex
+              justify-center
+              rounded-full
+              bg-gradient-to-r
+              from-cyan-500
+              to-sky-600
+              py-4
+              text-white
+              font-semibold
+              shadow-lg
+              hover:scale-105
+              transition
+            "
+          >
+            Me contacter
+          </a>
+
+        </li>
+
       </ul>
 
-      {/* Mobile Menu Button */}
-      <button id="mobile-menu-btn" class="md:hidden p-2 hover:bg-border rounded-lg transition-colors" aria-label="Toggle menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
     </div>
 
-    {/* Mobile Menu */}
-    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-border bg-white">
-      <ul class="flex flex-col space-y-1 pt-4">
-        <li><a href="/#hero" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Accueil</a></li>
-        <li><a href="/#about" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">À propos</a></li>
-        <li><a href="/#skills" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Compétences</a></li>
-        <li><a href="/#projects" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Projets</a></li>
-        <li><a href="/#education" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Formation</a></li>
-        <li><a href="/#passions" class="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-primary/5 rounded-lg font-medium transition-colors">Passions</a></li>
-        <li class="pt-2"><a href="/#contact" class="btn-gradient">Contact</a></li>
-      </ul>
-    </div>
   </nav>
+
 </header>
 
 <script>
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
 
-  if (mobileMenuBtn && mobileMenu) {
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+const btn = document.getElementById("mobile-menu-btn");
+const menu = document.getElementById("mobile-menu");
+
+btn?.addEventListener("click", () => {
+  menu?.classList.toggle("hidden");
+});
+
+window.addEventListener("scroll", () => {
+
+  const header = document.querySelector("header");
+
+  if(window.scrollY > 20){
+
+    header?.classList.add("py-3");
+
+    header?.classList.remove("py-5");
+
+  }else{
+
+    header?.classList.remove("py-3");
+
+    header?.classList.add("py-5");
+
   }
+
+});
+
 </script>
 
 <style>
-  @media (max-width: 768px) {
-    nav {
-      @apply px-4;
-    }
-  }
+
+header{
+
+  transition:.35s ease;
+
+}
+
+nav{
+
+  transition:.35s ease;
+
+}
+
 </style>

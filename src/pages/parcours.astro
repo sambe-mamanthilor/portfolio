@@ -3,232 +3,474 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="Parcours - Maman Thilor Sambé"
-  description="Mon parcours académique entre le BUT MMI et le BTS SIO SLAM."
+  title="Mon parcours - Maman Thilor Sambe"
+  description="Découvrez mon parcours académique entre le BUT MMI et le BTS SIO SLAM."
 >
 
-<main class="bg-gradient-to-br from-white to-sky-50">
+<main class="relative overflow-hidden">
 
-  <section class="section-padding">
-    <div class="container-custom">
+  <!-- Background -->
 
-      <!-- HERO -->
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/bg-watercolor.png');
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+    "
+  ></div>
 
-      <div class="max-w-4xl mx-auto text-center mb-24">
+  <div class="absolute inset-0 bg-white/30"></div>
 
-        <h1 class="text-5xl md:text-6xl font-bold mb-6">
-          Mon parcours académique
-        </h1>
+  <div class="relative z-10">
 
-        <div class="h-1 w-24 mx-auto bg-gradient-to-r from-sky-400 to-cyan-400 rounded-full mb-8"></div>
+    <!-- HERO -->
 
-        <p class="text-xl text-gray-600 leading-relaxed">
-          Du multimédia au développement d'applications, mon parcours témoigne d'une évolution progressive vers les métiers du numérique.
-        </p>
+    <section class="pt-32 pb-20">
 
-        <p class="text-lg text-gray-500 mt-6 max-w-3xl mx-auto">
-          Entre créativité, communication digitale et développement web, chaque formation m'a permis de construire des compétences complémentaires et d'affiner mon projet professionnel.
-        </p>
+      <div class="container-custom">
 
-      </div>
+        <div class="max-w-4xl mx-auto text-center">
 
-      <!-- BUT MMI -->
+          <span class="inline-flex px-5 py-2 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-700 font-medium mb-6">
+            Parcours académique
+          </span>
 
-      <div class="bg-white rounded-[40px] shadow-xl border border-sky-100 p-10 md:p-14 mb-20">
+          <h1
+            class="text-5xl md:text-6xl font-bold mb-6"
+            style="font-family:'Playfair Display', serif;"
+          >
+            Mon parcours
+          </h1>
 
-        <div class="flex flex-col md:flex-row items-center gap-8 mb-10">
+          <div class="h-1 w-24 mx-auto rounded-full bg-gradient-to-r from-sky-400 to-cyan-500 mb-8"></div>
 
-          <img
-            src="/images/mmi.png"
-            alt="Logo MMI"
-            class="w-28 h-28 object-contain"
-          />
+          <p class="text-xl text-slate-600 leading-9">
 
-          <div>
-            <p class="text-cyan-600 font-bold uppercase tracking-wider">
-              2024 - 2026
-            </p>
+            Mon parcours reflète une évolution progressive du multimédia
+            vers le développement d'applications, avec une volonté
+            constante d'approfondir mes compétences techniques tout en
+            conservant une forte sensibilité à l'expérience utilisateur.
 
-            <h2 class="text-3xl md:text-4xl font-bold">
-              BUT Métiers du Multimédia et de l'Internet
-            </h2>
-
-            <p class="text-gray-500 font-medium">
-              IUT Nord Franche-Comté
-            </p>
-          </div>
-
-        </div>
-
-        <h3 class="text-2xl font-bold mb-4">
-          Présentation
-        </h3>
-
-        <p class="text-gray-600 leading-relaxed mb-6">
-          Le BUT Métiers du Multimédia et de l'Internet est une formation pluridisciplinaire dédiée aux métiers du numérique. Elle combine développement web, communication digitale, design d'interfaces, création audiovisuelle et gestion de projet.
-        </p>
-
-        <p class="text-gray-600 leading-relaxed mb-10">
-          Cette formation m'a permis d'acquérir une vision globale d'un projet numérique, de l'analyse des besoins jusqu'à la conception, la réalisation et la valorisation du produit final.
-        </p>
-
-        <h3 class="text-2xl font-bold mb-4">
-          Enseignements principaux
-        </h3>
-
-        <div class="flex flex-wrap gap-3 mb-10">
-          <span class="tag-light">Développement Web</span>
-          <span class="tag-light">UX/UI Design</span>
-          <span class="tag-light">Communication Digitale</span>
-          <span class="tag-light">Audiovisuel</span>
-          <span class="tag-light">Marketing Digital</span>
-          <span class="tag-light">Gestion de Projet</span>
-          <span class="tag-light">Référencement Web</span>
-          <span class="tag-light">Stratégie de Communication</span>
-        </div>
-
-        <h3 class="text-2xl font-bold mb-4">
-          Outils et technologies
-        </h3>
-
-        <div class="flex flex-wrap gap-3 mb-10">
-          <span class="tag-light">HTML</span>
-          <span class="tag-light">CSS</span>
-          <span class="tag-light">JavaScript</span>
-          <span class="tag-light">Astro</span>
-          <span class="tag-light">Tailwind CSS</span>
-          <span class="tag-light">Figma</span>
-          <span class="tag-light">GitHub</span>
-          <span class="tag-light">DaVinci Resolve</span>
-          <span class="tag-light">Canva</span>
-        </div>
-
-        <h3 class="text-2xl font-bold mb-4">
-          Compétences développées
-        </h3>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-
-          <div class="bg-sky-50 p-5 rounded-2xl">
-            <h4 class="font-bold mb-2">Développement Web</h4>
-            <p class="text-sm text-gray-600">
-              Conception et intégration de sites et applications web.
-            </p>
-          </div>
-
-          <div class="bg-sky-50 p-5 rounded-2xl">
-            <h4 class="font-bold mb-2">UX/UI Design</h4>
-            <p class="text-sm text-gray-600">
-              Création d'interfaces intuitives centrées utilisateur.
-            </p>
-          </div>
-
-          <div class="bg-sky-50 p-5 rounded-2xl">
-            <h4 class="font-bold mb-2">Communication</h4>
-            <p class="text-sm text-gray-600">
-              Définition et mise en œuvre de stratégies digitales.
-            </p>
-          </div>
-
-          <div class="bg-sky-50 p-5 rounded-2xl">
-            <h4 class="font-bold mb-2">Gestion de projet</h4>
-            <p class="text-sm text-gray-600">
-              Organisation et pilotage de projets numériques.
-            </p>
-          </div>
+          </p>
 
         </div>
 
       </div>
 
-      <!-- TRANSITION -->
+    </section>
 
-      <div class="text-center max-w-3xl mx-auto mb-20">
+    <!-- BUT MMI -->
 
-        <p class="text-2xl font-semibold text-gray-700 leading-relaxed">
-          Le BUT MMI m'a apporté une vision globale du numérique.
-        </p>
+    <section class="pb-24">
 
-        <p class="text-lg text-gray-500 mt-4">
-          J'ai choisi de poursuivre mon parcours en BTS SIO SLAM afin d'approfondir mes compétences techniques et de me spécialiser davantage dans le développement d'applications.
-        </p>
+      <div class="container-custom">
 
-      </div>
+        <div
+          class="
+            bg-white/90
+            backdrop-blur-md
+            rounded-[40px]
+            shadow-xl
+            border
+            border-cyan-100
+            p-8
+            lg:p-14
+          "
+        >
 
-      <!-- BTS -->
+          <div class="flex flex-col lg:flex-row gap-10 items-center mb-12">
 
-      <div class="bg-white rounded-[40px] shadow-xl border border-sky-100 p-10 md:p-14">
+            <img
+              src="/images/mmi.png"
+              alt="Logo MMI"
+              class="w-28 h-28 object-contain"
+            />
 
-        <div class="flex flex-col md:flex-row items-center gap-8 mb-10">
+            <div>
 
-          <img
-            src="/images/ingetis.webp"
-            alt="Logo Ingetis"
-            class="w-28 h-28 object-contain"
-          />
+              <span class="text-cyan-600 font-semibold uppercase tracking-widest">
+                2025 • 2026
+              </span>
 
-          <div>
-            <p class="text-cyan-600 font-bold uppercase tracking-wider">
-              2026 - 2028
-            </p>
+              <h2
+                class="text-4xl font-bold mt-2"
+                style="font-family:'Playfair Display', serif;"
+              >
+                BUT Métiers du Multimédia et de l'Internet
+              </h2>
 
-            <h2 class="text-3xl md:text-4xl font-bold">
-              BTS SIO - Option SLAM
-            </h2>
+              <p class="text-slate-500 mt-2">
+                IUT Nord Franche-Comté
+              </p>
 
-            <p class="text-gray-500 font-medium">
-              INGETIS Paris
-            </p>
+            </div>
+
+          </div>
+
+          <!-- Présentation -->
+
+          <h3 class="text-2xl font-bold mb-5">
+            Présentation
+          </h3>
+
+          <p class="text-slate-600 leading-8 mb-6">
+
+            Le BUT Métiers du Multimédia et de l'Internet est une
+            formation pluridisciplinaire dédiée aux métiers du numérique.
+            Elle associe développement web, communication digitale,
+            design d'interfaces, audiovisuel et gestion de projet.
+
+          </p>
+
+          <p class="text-slate-600 leading-8 mb-10">
+
+            Cette formation m'a permis de développer une vision globale
+            d'un projet numérique, depuis l'analyse des besoins jusqu'à
+            la conception, la réalisation et la valorisation d'un produit.
+
+          </p>
+
+          <!-- Enseignements -->
+
+          <h3 class="text-2xl font-bold mb-5">
+
+            Enseignements principaux
+
+          </h3>
+
+          <div class="flex flex-wrap gap-3 mb-10">
+
+            <span class="skill-tag">Développement Web</span>
+            <span class="skill-tag">UX/UI Design</span>
+            <span class="skill-tag">Communication Digitale</span>
+            <span class="skill-tag">Audiovisuel</span>
+            <span class="skill-tag">Marketing Digital</span>
+            <span class="skill-tag">Gestion de Projet</span>
+            <span class="skill-tag">SEO</span>
+            <span class="skill-tag">Stratégie de Communication</span>
+
+          </div>
+
+          <!-- Technologies -->
+
+          <h3 class="text-2xl font-bold mb-5">
+
+            Technologies et outils
+
+          </h3>
+
+          <div class="flex flex-wrap gap-3 mb-12">
+
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Astro</span>
+            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">GitHub</span>
+            <span class="skill-tag">Canva</span>
+            <span class="skill-tag">DaVinci Resolve</span>
+
+          </div>
+
+          <!-- Compétences -->
+
+          <h3 class="text-2xl font-bold mb-6">
+
+            Compétences développées
+
+          </h3>
+
+          <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+              <h4 class="font-bold mb-3">Développement Web</h4>
+              <p class="text-sm text-slate-600">
+                Conception et intégration de sites et applications web.
+              </p>
+            </div>
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+              <h4 class="font-bold mb-3">UX / UI Design</h4>
+              <p class="text-sm text-slate-600">
+                Création d'interfaces centrées utilisateur.
+              </p>
+            </div>
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+              <h4 class="font-bold mb-3">Communication</h4>
+              <p class="text-sm text-slate-600">
+                Élaboration de stratégies et de contenus digitaux.
+              </p>
+            </div>
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+              <h4 class="font-bold mb-3">Gestion de projet</h4>
+              <p class="text-sm text-slate-600">
+                Organisation, planification et travail collaboratif.
+              </p>
+            </div>
+
           </div>
 
         </div>
 
-        <h3 class="text-2xl font-bold mb-4">
-          Présentation
-        </h3>
+      </div>
 
-        <p class="text-gray-600 leading-relaxed mb-6">
-          Le BTS Services Informatiques aux Organisations, option Solutions Logicielles et Applications Métiers (SLAM), est une formation spécialisée dans la conception, le développement et la maintenance d'applications informatiques.
-        </p>
+    </section>
+        <!-- TRANSITION -->
 
-        <p class="text-gray-600 leading-relaxed mb-10">
-          Cette formation me permet d'approfondir les aspects techniques du développement logiciel et de renforcer mes compétences en programmation, bases de données, architecture applicative et cybersécurité.
-        </p>
+    <section class="pb-24">
 
-        <h3 class="text-2xl font-bold mb-4">
-          Enseignements principaux
-        </h3>
+      <div class="container-custom">
 
-        <div class="flex flex-wrap gap-3 mb-10">
-          <span class="tag-light">Algorithmique</span>
-          <span class="tag-light">Programmation Objet</span>
-          <span class="tag-light">Développement Web</span>
-          <span class="tag-light">Bases de Données</span>
-          <span class="tag-light">Cybersécurité</span>
-          <span class="tag-light">Architecture Logicielle</span>
-          <span class="tag-light">Gestion de Projet</span>
-          <span class="tag-light">Veille Technologique</span>
-        </div>
+        <div
+          class="
+            max-w-4xl
+            mx-auto
+            text-center
+            bg-cyan-100
+            backdrop-blur-md
+            rounded-[40px]
+            p-12
+            border
+            border-cyan-100
+            shadow-xl
+          "
+        >
 
-        <h3 class="text-2xl font-bold mb-4">
-          Technologies étudiées
-        </h3>
+          <h2
+            class="text-4xl font-bold mb-6"
+            style="font-family:'Playfair Display', serif;"
+          >
+            Une évolution vers le développement logiciel
+          </h2>
 
-        <div class="flex flex-wrap gap-3">
-          <span class="tag-light">Java</span>
-          <span class="tag-light">PHP</span>
-          <span class="tag-light">SQL</span>
-          <span class="tag-light">JavaScript</span>
-          <span class="tag-light">Git</span>
-          <span class="tag-light">GitHub</span>
+          <p class="text-lg text-slate-600 leading-8">
+
+            Ma première année en BUT MMI m'a permis d'acquérir une vision globale des métiers
+            du numérique, en mêlant développement, communication et design.
+
+            Souhaitant approfondir mes compétences techniques, j'ai choisi de
+            poursuivre mon parcours en BTS SIO option SLAM afin de me
+            spécialiser dans la conception et le développement d'applications.
+
+          </p>
+
         </div>
 
       </div>
 
-    </div>
-  </section>
+    </section>
+
+    <!-- BTS -->
+
+    <section class="pb-32">
+
+      <div class="container-custom">
+
+        <div
+          class="
+            bg-white/90
+            backdrop-blur-md
+            rounded-[40px]
+            shadow-xl
+            border
+            border-cyan-100
+            p-8
+            lg:p-14
+          "
+        >
+
+          <div class="flex flex-col lg:flex-row gap-10 items-center mb-12">
+
+            <img
+              src="/images/ingetis.webp"
+              alt="Logo Ingetis"
+              class="w-28 h-28 object-contain"
+            />
+
+            <div>
+
+              <span class="text-cyan-600 font-semibold uppercase tracking-widest">
+                2026 • 2028
+              </span>
+
+              <h2
+                class="text-4xl font-bold mt-2"
+                style="font-family:'Playfair Display', serif;"
+              >
+                BTS SIO – Option SLAM
+              </h2>
+
+              <p class="text-slate-500 mt-2">
+                INGETIS Paris
+              </p>
+
+            </div>
+
+          </div>
+
+          <h3 class="text-2xl font-bold mb-5">
+            Présentation
+          </h3>
+
+          <p class="text-slate-600 leading-8 mb-6">
+
+            Le BTS Services Informatiques aux Organisations,
+            option Solutions Logicielles et Applications Métiers,
+            est une formation spécialisée dans la conception,
+            le développement et la maintenance d'applications.
+
+          </p>
+
+          <p class="text-slate-600 leading-8 mb-10">
+
+            Cette formation me permet d'approfondir les aspects techniques
+            du développement logiciel et de renforcer mes compétences en
+            programmation, bases de données, architecture applicative
+            et cybersécurité.
+
+          </p>
+
+          <!-- Enseignements -->
+
+          <h3 class="text-2xl font-bold mb-5">
+
+            Enseignements principaux
+
+          </h3>
+
+          <div class="flex flex-wrap gap-3 mb-10">
+
+            <span class="skill-tag">Algorithmique</span>
+            <span class="skill-tag">Programmation Objet</span>
+            <span class="skill-tag">Développement Web</span>
+            <span class="skill-tag">PHP</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Cybersécurité</span>
+            <span class="skill-tag">Gestion de Projet</span>
+
+          </div>
+
+          <!-- Technologies -->
+
+          <h3 class="text-2xl font-bold mb-5">
+
+            Technologies étudiées
+
+          </h3>
+
+          <div class="flex flex-wrap gap-3 mb-12">
+
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">PHP</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">GitHub</span>
+
+          </div>
+
+          <!-- Objectifs -->
+
+          <h3 class="text-2xl font-bold mb-6">
+
+            Objectifs de la formation
+
+          </h3>
+
+          <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+
+              <h4 class="font-bold mb-3">
+                Développement
+              </h4>
+
+              <p class="text-sm text-slate-600">
+                Concevoir des applications robustes et évolutives.
+              </p>
+
+            </div>
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+
+              <h4 class="font-bold mb-3">
+                Bases de données
+              </h4>
+
+              <p class="text-sm text-slate-600">
+                Concevoir, administrer et exploiter des bases de données.
+              </p>
+
+            </div>
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+
+              <h4 class="font-bold mb-3">
+                Cybersécurité
+              </h4>
+
+              <p class="text-sm text-slate-600">
+                Sécuriser les applications et les infrastructures.
+              </p>
+
+            </div>
+
+            <div class="bg-sky-50 rounded-3xl p-6">
+
+              <h4 class="font-bold mb-3">
+                Gestion de projet
+              </h4>
+
+              <p class="text-sm text-slate-600">
+                Participer au pilotage et au suivi de projets informatiques.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Bouton -->
+
+        <div class="text-center mt-20">
+
+          <a
+            href="/"
+            class="
+              inline-flex
+              items-center
+              px-8
+              py-4
+              rounded-full
+              bg-gradient-to-r
+              from-cyan-500
+              to-sky-600
+              text-white
+              font-semibold
+              shadow-lg
+              hover:shadow-xl
+              hover:scale-105
+              transition-all
+            "
+          >
+            ← Retour au portfolio
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
 
 </main>
 
 </Layout>
-```

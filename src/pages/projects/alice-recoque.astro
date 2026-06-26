@@ -1,0 +1,603 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="L'Effet Matilda | Portfolio">
+
+<!-- HERO -->
+
+<section class="relative min-h-screen overflow-hidden flex items-center">
+
+  <!-- Background -->
+
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/code-bg.jpg');
+      background-size:cover;
+      background-position:center;
+    "
+  ></div>
+
+  <div class="absolute inset-0 bg-slate-950/85"></div>
+
+  <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-500/20 blur-[160px] rounded-full"></div>
+
+  <div class="container-custom relative z-10">
+
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+      <!-- Texte -->
+
+      <div>
+
+
+        <h1
+          class="text-5xl lg:text-7xl font-bold text-white mb-8"
+          style="font-family:'Playfair Display', serif;"
+        >
+         L'Effet Matilda - Alice Recoque
+        </h1>
+
+        <p class="text-xl text-slate-300 leading-9 mb-10">
+
+
+Site web bilingue (FR/EN) développé en mobile-first afin de valoriser le parcours d'Alice Recoque et sensibiliser le public à l'effet Matilda, qui désigne l'invisibilisation des femmes dans les sciences.        </p>
+
+        <!-- Badges -->
+
+        <div class="flex flex-wrap gap-3 mb-10">
+
+          <span class="skill-tag">HTLM5</span>
+
+          <span class="skill-tag">CSS3</span>
+
+          <span class="skill-tag">Javascript</span>
+
+          <span class="skill-tag">Figma</span>
+
+        </div>
+
+        <div class="flex flex-wrap gap-5">
+
+          <a
+            href="#presentation"
+            class="
+              px-8
+              py-4
+              rounded-full
+              bg-gradient-to-r
+              from-cyan-500
+              to-sky-600
+              text-white
+              font-semibold
+              hover:scale-105
+              transition
+            "
+          >
+            Découvrir le projet
+          </a>
+
+          <a
+            href="/#projects"
+            class="
+              px-8
+              py-4
+              rounded-full
+              border
+              border-cyan-400/30
+              bg-white/10
+              backdrop-blur
+              text-white
+              hover:bg-white/20
+              transition
+            "
+          >
+            Retour
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- Capture -->
+
+      <div class="relative">
+
+        <div
+          class="
+            absolute
+            -inset-4
+            rounded-[40px]
+            bg-cyan-500/20
+            blur-3xl
+          "
+        ></div>
+
+        <img
+          src="/images/alice-recoque.png"
+          alt="Olyvia"
+          class="
+            relative
+            rounded-[36px]
+            border
+            border-cyan-500/20
+            shadow-2xl
+            hover:scale-[1.02]
+            transition
+            duration-500
+          "
+        />
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+<section id="presentation" class="relative py-32 overflow-hidden">
+
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/bg-watercolor.png');
+      background-size:cover;
+      background-position:center;
+    "
+  ></div>
+
+  <div class="absolute inset-0 bg-white/35"></div>
+
+  <div class="container-custom relative z-10">
+<div
+  class="
+    bg-white/90
+    backdrop-blur
+    rounded-[40px]
+    shadow-xl
+    border
+    border-cyan-100
+    p-8 lg:p-12
+  "
+>
+
+  <div class="grid lg:grid-cols-[2fr_1fr] gap-12 items-start">
+
+    <!-- Présentation -->
+
+    <div>
+
+      <h2
+        class="text-3xl lg:text-4xl font-bold mb-8"
+        style="font-family:'Playfair Display', serif;"
+      >
+        Présentation
+      </h2>
+
+      <p class="text-slate-600 text-lg leading-8 mb-6">
+Ce projet individuel a été réalisé en partenariat avec l'Université Marie et Louis Pasteur. Il consiste en la conception et au développement d'un site web bilingue (français/anglais) consacré à Alice Recoque, pionnière française de l'informatique, et à l'effet Matilda.      </p>
+
+      <p class="text-slate-600 text-lg leading-8">
+L'objectif était de créer un site moderne, responsive et accessible permettant de mettre en lumière le parcours d'Alice Recoque, de vulgariser la notion d'effet Matilda et de valoriser la place des femmes dans les sciences à travers différents contenus interactifs.
+    <!-- Informations -->
+
+    <div class="space-y-8">
+
+      <div>
+        <p class="text-sm uppercase tracking-widest text-slate-400 mb-1">
+          Période
+        </p>
+
+        <p class="text-xl font-bold text-slate-800">
+          Décembre 2025 
+        </p>
+      </div>
+
+      <div>
+        <p class="text-sm uppercase tracking-widest text-slate-400 mb-1">
+          Durée
+        </p>
+
+        <p class="text-xl font-bold text-slate-800">
+          3 semaines
+        </p>
+      </div>
+
+      <div>
+        <p class="text-sm uppercase tracking-widest text-slate-400 mb-1">
+          Équipe
+        </p>
+
+        <p class="text-xl font-bold text-slate-800">
+Individuel       </p>
+      </div>
+
+      <div>
+        <p class="text-sm uppercase tracking-widest text-slate-400 mb-1">
+          Mon rôle
+        </p>
+
+        <p class="text-l font-bold text-cyan-600">
+         -  Maquettage du site complet sur Figma
+        </p>
+
+        <p class="text-l font-bold text-cyan-600">
+         -  Intégration web
+        </p>
+
+        <p class="text-l font-bold text-cyan-600">
+         -  Déploiement 
+        </p>
+          <p class="text-l font-bold text-cyan-600">
+         -  Hébergement web
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- MISSIONS -->
+
+<section class="relative py-32 bg-slate-950 overflow-hidden">
+
+  <!-- Background -->
+
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/code-bg.jpg');
+      background-size:cover;
+      background-position:center;
+    "
+  ></div>
+
+  <div class="absolute inset-0 bg-slate-950/85"></div>
+
+  <div class="container-custom relative z-10">
+
+    <div class="text-center mb-20">
+
+      <h2
+        class="text-5xl font-bold text-white mb-6"
+        style="font-family:'Playfair Display', serif;"
+      >
+        Mes missions
+      </h2>
+
+      <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-sky-500 mx-auto rounded-full"></div>
+
+    </div>
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+<div class="bg-slate-900/90 rounded-[32px] border border-cyan-500/20 p-8 hover:-translate-y-2 transition">
+
+        <h3 class="text-cyan-300 text-2xl font-bold mb-4">
+Recherche documentaire</h3>
+
+        <p class="text-slate-300 leading-8">
+Analyse des ressources scientifiques et historiques afin de produire un contenu fiable sur Alice Recoque et l'effet Matilda.</p>
+      </div>
+      <div class="bg-slate-900/90 rounded-[32px] border border-cyan-500/20 p-8 hover:-translate-y-2 transition">
+  
+<h3 class="text-cyan-300 text-2xl font-bold mb-4">
+UX/UI Design  </h3>
+
+        <p class="text-slate-300 leading-8">
+Conception des maquettes, réflexion sur le parcours utilisateur et création d'une interface moderne, accessible et adaptée au mobile-first.      </div>
+
+      <div class="bg-slate-900/90 rounded-[32px] border border-cyan-500/20 p-8 hover:-translate-y-2 transition">
+
+        <h3 class="text-cyan-300 text-2xl font-bold mb-4">
+          Développement Front-end
+        </h3>
+
+        <p class="text-slate-300 leading-8">
+Développement complet du site en HTML5, CSS3 et JavaScript avec une architecture claire en mobile-first.        </p>
+
+      </div>
+
+      <div class="bg-slate-900/90 rounded-[32px] border border-cyan-500/20 p-8 hover:-translate-y-2 transition">
+
+        <h3 class="text-cyan-300 text-2xl font-bold mb-4">
+Fonctionnalités interactives       </h3>
+
+        <p class="text-slate-300 leading-8">
+Développement de plusieurs fonctionnalités telles que les carrousels, les galeries vidéo, le glossaire interactif et le changement de langue français/anglais.      </div>
+
+      <div class="bg-slate-900/90 rounded-[32px] border border-cyan-500/20 p-8 hover:-translate-y-2 transition">
+
+        <h3 class="text-cyan-300 text-2xl font-bold mb-4">
+Accessibilité & Responsive      </h3>
+
+        <p class="text-slate-300 leading-8">
+Développement de plusieurs fonctionnalités telles que les carrousels, les galeries vidéo, le glossaire interactif et le changement de langue français/anglais.
+      </div>
+
+      <div class="bg-slate-900/90 rounded-[32px] border border-cyan-500/20 p-8 hover:-translate-y-2 transition">
+
+        <h3 class="text-cyan-300 text-2xl font-bold mb-4">
+Déploiement </h3>
+
+        <p class="text-slate-300 leading-8">
+Mise en ligne du site avec Netlify et configuration de l'hébergement sur Infomaniak.        </p>
+
+      </div>
+
+      
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- TECHNOLOGIES -->
+
+<section class="relative py-32 overflow-hidden">
+
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/bg-watercolor.png');
+      background-size:cover;
+      background-position:center;
+    "
+  ></div>
+
+  <div class="absolute inset-0 bg-white/35"></div>
+
+  <div class="container-custom relative z-10">
+
+    <div class="grid lg:grid-cols-2 gap-10">
+
+      <!-- Technologies -->
+
+      <div class="bg-white/90 rounded-[40px] shadow-xl p-10">
+
+        <h2
+          class="text-4xl font-bold mb-8"
+          style="font-family:'Playfair Display', serif;"
+        >
+          Technologies
+        </h2>
+
+        <div class="flex flex-wrap gap-4">
+
+          <span class="skill-tag">HTML5</span>
+
+          <span class="skill-tag">CSS3</span>
+
+          <span class="skill-tag">Javascript</span>
+
+          <span class="skill-tag">Figma</span>
+
+          <span class="skill-tag">Github</span>
+
+          <span class="skill-tag">Netlify</span>
+
+          <span class="skill-tag">Infomaniak</span>
+
+
+        </div>
+
+      </div>
+
+      <!-- Compétences -->
+
+      <div class="bg-white/90 rounded-[40px] shadow-xl p-10">
+
+        <h2
+          class="text-4xl font-bold mb-8"
+          style="font-family:'Playfair Display', serif;"
+        >
+          Compétences mobilisées
+        </h2>
+
+        <div class="flex flex-wrap gap-4">
+
+          <span class="skill-tag">Développement Front-end</span>
+
+          <span class="skill-tag">Accessibilité web</span>
+
+          <span class="skill-tag">Communication scientifique</span>
+
+          <span class="skill-tag">Intégration web</span>
+
+          <span class="skill-tag">Optimisation web</span>
+
+          <span class="skill-tag">Déploiement</span>
+
+          <span class="skill-tag">Respect de la deadline</span>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+<!-- GALERIE -->
+
+<section class="relative py-32 bg-slate-950 overflow-hidden">
+
+  <!-- Background -->
+
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/code-bg.jpg');
+      background-size:cover;
+      background-position:center;
+    "
+  ></div>
+
+  <div class="absolute inset-0 bg-slate-950/85"></div>
+
+  <div class="container-custom relative z-10">
+
+    <div class="text-center mb-20">
+
+      <h2
+        class="text-5xl font-bold text-white mb-6"
+        style="font-family:'Playfair Display', serif;"
+      >
+        Aperçu du projet
+      </h2>
+
+      <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-sky-500 rounded-full mx-auto mb-6"></div>
+
+      <p class="text-slate-300 text-lg max-w-3xl mx-auto">
+        Quelques captures illustrant les principales fonctionnalités et l'interface du site sur L'effet Matilda.
+      </p>
+
+    </div>
+
+    <!-- Grande image -->
+
+    <div
+      class="
+        overflow-hidden
+        rounded-[36px]
+        border
+        border-cyan-500/20
+        shadow-2xl
+        mb-10
+      "
+    >
+
+      <img
+        src="/images/alice-recoque.png"
+        alt="Accueil Olyvia"
+        class="w-full hover:scale-105 transition duration-700"
+      />
+
+    </div>
+
+   <div class="flex flex-wrap justify-center gap-6">
+
+        <a
+          href="https://empreintes-invisibles-de-la-science.maman-sambe.fr/fr/"
+          class="
+            px-8
+            py-4
+            rounded-full
+            bg-gradient-to-r
+            from-cyan-500
+            to-sky-600
+            text-white
+            font-semibold
+            hover:scale-105
+            transition
+          "
+        >
+          Découvrir Le site
+        </a>
+        </div>
+
+  </div>
+
+</section>
+
+<!-- NAVIGATION -->
+
+<section class="relative py-24 overflow-hidden">
+
+  <div
+    class="absolute inset-0"
+    style="
+      background-image:url('/images/bg-watercolor.png');
+      background-size:cover;
+      background-position:center;
+    "
+  ></div>
+
+  <div class="absolute inset-0 bg-white/35"></div>
+
+  <div class="container-custom relative z-10">
+
+    <div
+      class="
+        bg-white/90
+        backdrop-blur
+        rounded-[40px]
+        shadow-xl
+        p-12
+        text-center
+      "
+    >
+
+      <h2
+        class="text-4xl font-bold mb-6"
+        style="font-family:'Playfair Display', serif;"
+      >
+        Merci pour votre visite
+      </h2>
+
+      <p class="text-slate-600 text-lg leading-8 max-w-3xl mx-auto mb-12">
+Ce projet m'a permis de conduire un projet web de manière entièrement autonome, depuis la recherche documentaire jusqu'au déploiement en ligne. J'ai renforcé mes compétences en développement front-end, en conception d'interfaces responsive et accessibles, ainsi qu'en création d'expériences utilisateur interactives. Cette expérience m'a également sensibilisée aux enjeux de la médiation scientifique et à l'importance de rendre des contenus complexes accessibles à un large public.      <div class="flex flex-wrap justify-center gap-6">
+
+        <a
+          href="https://empreintes-invisibles-de-la-science.maman-sambe.fr/fr/"
+          class="
+            px-8
+            py-4
+            rounded-full
+            bg-gradient-to-r
+            from-cyan-500
+            to-sky-600
+            text-white
+            font-semibold
+            hover:scale-105
+            transition
+          "
+        >
+    Découvrir le site 
+        </a>
+
+        <a
+          href="/projects/olyvia"
+          class="
+            px-8
+            py-4
+            rounded-full
+            border
+            border-cyan-500/20
+            bg-white
+            font-semibold
+            hover:bg-cyan-50
+            transition
+          "
+        >
+          Projet suivant →
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</Layout>
