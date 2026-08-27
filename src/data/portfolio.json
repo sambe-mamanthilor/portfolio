@@ -135,17 +135,18 @@
   ],
   "education": [
     {
-      "degree": "BUT Multimédia et Internet (MMI)",
-      "school": "Université Marie et Louis Pasteur",
-      "location": "IUT Nord Franche-Comté",
-      "startDate": "2023",
-      "endDate": "2025",
+      "degree": "BUT Métiers du Multimédia et de l'Internet (MMI)",
+      "school": "IUT Nord Franche-Comté",
+      "location": "Montbéliard, France",
+      "startDate": "2025",
+      "endDate": "Aujourd'hui",
       "status": "En cours",
-      "description": "Diplôme obtenu (2024-2025)",
+      "description": "Formation actuelle orientée numérique, design et développement web",
       "specializations": [
-        "Mathématiques",
-        "Sciences physiques",
-        "Sciences de la Vie et de la Terre"
+        "Développement web",
+        "UX/UI design",
+        "Communication digitale",
+        "Audiovisuel"
       ],
       "relevant": true
     },
@@ -156,8 +157,12 @@
       "startDate": "2020",
       "endDate": "2023",
       "status": "Complété",
-      "description": "Obtenu au Sénégal",
-      "specializations": [],
+      "description": "Spécialités : Mathématiques, Physique, Sciences de la Vie et de la Terre",
+      "specializations": [
+        "Mathématiques",
+        "Sciences physiques",
+        "Sciences de la Vie et de la Terre"
+      ],
       "relevant": false
     }
   ],
