@@ -141,9 +141,10 @@
       "startDate": "2025",
       "endDate": "Aujourd'hui",
       "status": "En cours",
-      "description": "Formation actuelle orientée numérique, design et développement web",
+      "description": "Formation actuelle en deuxième année, parcours Développement web et dispositifs interactifs, avec une pratique de l'UX/UI design et de la communication digitale",
       "specializations": [
         "Développement web",
+        "Dispositifs interactifs",
         "UX/UI design",
         "Communication digitale",
         "Audiovisuel"
