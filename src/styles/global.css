@@ -1,148 +1,123 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* =========================================================
+   GLOBAL.CSS — point d'entrée unique des styles du portfolio
+   Tailwind CSS 4 + daisyUI 5
+   ========================================================= */
 
-/* ======================
-   BASE
-====================== */
+/* 1. Tailwind : génère uniquement les classes utilisées dans le code. */
+@import "tailwindcss";
 
+/* 2. Polices auto-hébergées (installées avec npm, voir Layout.astro).
+      Pas d'appel à Google Fonts : plus rapide, et aucune adresse IP
+      de visiteur envoyée à Google (point RGPD pour QUALITE.md). */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/playfair-display";
+
+/* 3. daisyUI sans ses thèmes prédéfinis : on n'embarque que le nôtre. */
+@plugin "daisyui" {
+  themes: false;
+}
+
+/* 4. Thème "mts" : les couleurs de la maquette Figma, nommées par RÔLE.
+      On écrit `bg-primary`, pas `bg-[#79f4ff]` : si une couleur change,
+      on la modifie ici une seule fois. */
+@plugin "daisyui/theme" {
+  name: "mts";
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Fonds : du plus sombre au plus clair */
+  --color-base-100: #010f2a;      /* "bleu de nuit" (variable Figma) */
+  --color-base-200: #0a0f2e;      /* barre de navigation, boutons sombres */
+  --color-base-300: #16234a;      /* bordures, survols (dérivé, absent de Figma) */
+  --color-base-content: #f8fafc;  /* texte principal */
+
+  /* Cyan clair : bouton "Voir mes projets", mot SAMBE, titres */
+  --color-primary: #79f4ff;
+  --color-primary-content: #010f2a;
+
+  /* Cyan soutenu : bouton "Me contacter" du footer.
+     Texte bleu nuit et non blanc : le blanc sur ce cyan a un contraste
+     de 2,94:1 (insuffisant, WCAG demande 4,5:1). Bleu nuit : 6,47:1. */
+  --color-secondary: #0ea3cd;
+  --color-secondary-content: #010f2a;
+
+  /* Cyan lumineux : halo sous la navigation */
+  --color-accent: #35c3ea;
+  --color-accent-content: #010f2a;
+
+  /* Bouton sombre "Me contacter" de l'accueil */
+  --color-neutral: #0a0f2e;
+  --color-neutral-content: #79f4ff;
+
+  /* États (formulaire de contact) */
+  --color-info: #38bdf8;
+  --color-info-content: #010f2a;
+  --color-success: #4ade80;
+  --color-success-content: #010f2a;
+  --color-warning: #fbbf24;
+  --color-warning-content: #010f2a;
+  --color-error: #f87171;
+  --color-error-content: #010f2a;
+
+  /* Arrondis mesurés dans Figma */
+  --radius-selector: 1.25rem;  /* badges, interrupteurs */
+  --radius-field: 1.25rem;     /* boutons, champs : 20px */
+  --radius-box: 0.625rem;      /* cartes : 10px */
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+
+  /* Pas d'ombres ni de grain automatiques : la maquette est en aplats. */
+  --depth: 0;
+  --noise: 0;
+}
+
+/* 5. Tokens Tailwind propres au projet (hors couleurs daisyUI). */
+@theme {
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-display: "Playfair Display Variable", Georgia, serif;
+
+  /* Texte secondaire (#cbd5e1 dans le footer Figma) : contraste 12,8:1 */
+  --color-muted: #cbd5e1;
+}
+
+/* 6. Styles de base */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-light text-dark;
-    letter-spacing: -0.01em;
+    @apply bg-base-100 text-base-content font-sans antialiased;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold text-dark;
-    letter-spacing: -0.02em;
+  h1, h2, h3 {
+    @apply font-display;
   }
 
-  a {
-    @apply text-primary transition-colors duration-300;
-  }
-
-  a:hover {
-    @apply text-secondary;
+  /* Contour de focus visible au clavier : obligatoire en accessibilité.
+     :focus-visible ne s'affiche pas au clic souris, seulement au clavier. */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
   }
 }
 
-/* ======================
-   LAYOUT
-====================== */
-
-@layer components {
-  .container-custom {
-    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+/* 7. Respect du réglage système "réduire les animations".
+      Toutes les animations et transitions du site sont coupées
+      pour les personnes sensibles au mouvement. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  .section-padding {
-    @apply py-20 lg:py-28;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-
-  /* Boutons */
-
-  .btn-primary {
-    @apply px-8 py-3 bg-primary text-white rounded-xl font-semibold shadow-md hover:bg-secondary hover:shadow-lg transition-all duration-300;
-  }
-
-  .btn-secondary {
-    @apply px-8 py-3 bg-secondary text-white rounded-xl font-semibold shadow-md hover:bg-primary hover:shadow-lg transition-all duration-300;
-  }
-
-  .btn-outline {
-    @apply px-8 py-3 border-2 border-primary text-primary rounded-xl font-semibold hover:bg-primary hover:text-white transition-all duration-300;
-  }
-
-  .btn-gradient {
-    @apply px-8 py-4 rounded-full text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300;
-    background: linear-gradient(
-      135deg,
-      #0ea5e9,
-      #06b6d4
-    );
-  }
-
-  /* Cartes */
-
-  .card {
-    @apply bg-white border border-border rounded-3xl p-6 shadow-md transition-all duration-300;
-  }
-
-  .card:hover {
-    @apply shadow-xl;
-    transform: translateY(-6px);
-  }
-
-  /* Tags */
-
-  .skill-tag {
-    @apply px-4 py-2 rounded-full text-sm font-semibold;
-    background: #ecfeff;
-    color: #155e75;
-  }
-}
-
-/* ======================
-   BLOB HERO
-====================== */
-
-.organic-blob {
-  border-radius:
-    45% 55% 52% 48% /
-    48% 45% 55% 52%;
-
-  animation: blobShift 8s ease-in-out infinite;
-}
-
-@keyframes blobShift {
-  0%,100% {
-    border-radius:
-      45% 55% 52% 48% /
-      48% 45% 55% 52%;
-  }
-
-  25% {
-    border-radius:
-      50% 50% 45% 55% /
-      55% 45% 50% 50%;
-  }
-
-  50% {
-    border-radius:
-      60% 40% 50% 50% /
-      50% 50% 40% 60%;
-  }
-
-  75% {
-    border-radius:
-      45% 55% 55% 45% /
-      45% 55% 45% 55%;
-  }
-}
-
-/* ======================
-   SCROLLBAR
-====================== */
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #06b6d4;
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
 }

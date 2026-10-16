@@ -1,91 +1,83 @@
 ---
+// Layout : la structure HTML commune à TOUTES les pages.
+// Chaque page l'utilise comme ceci :
+//   <Layout title="Projets" description="...">contenu</Layout>
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
 interface Props {
+  /** Titre propre à la page, ex. "Projets". Le nom du site est ajouté automatiquement. */
   title?: string;
+  /** Résumé de la page (150-160 caractères) : c'est le texte affiché par Google. */
   description?: string;
+  /** Image de partage (LinkedIn, Slack...), chemin depuis /public. */
+  image?: string;
 }
 
-const { title = "Maman Thilor SAMBE - Portfolio", description = "Portfolio de Maman Thilor SAMBE, développeuse web, designer UX et créative numérique" } = Astro.props;
+const SITE_NAME = 'Maman Thilor SAMBE';
+
+const {
+  title,
+  description = "Portfolio de Maman Thilor SAMBE, étudiante en BUT MMI : développement web front-end et full-stack, intégration et UX/UI design. En recherche d'alternance et de stage.",
+  image = '/images/og-image.jpg',
+} = Astro.props;
+
+// "Projets | Maman Thilor SAMBE" sur les pages internes, le nom seul sur l'accueil.
+const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME}, développeuse web`;
+
+// URL absolue de la page courante (utilise `site` défini dans astro.config.mjs).
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.site);
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-theme="mts">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&family=Alexandria:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- SEO -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph : aperçu quand le lien est partagé sur LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+
+    <!-- Couleur de la barre du navigateur sur mobile -->
+    <meta name="theme-color" content="#010f2a" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body>
+
+  <body class="min-h-screen flex flex-col">
+    <!-- Lien d'évitement : premier élément atteint avec Tab.
+         Il permet aux personnes qui naviguent au clavier ou avec un lecteur
+         d'écran de sauter directement au contenu. Invisible tant qu'il
+         n'a pas le focus (sr-only + focus:not-sr-only). -->
+    <a
+      href="#contenu"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 btn btn-primary"
+    >
+      Aller au contenu
+    </a>
+
     <Header />
-    <main>
+
+    <!-- flex-1 : le main prend toute la hauteur disponible,
+         ce qui pousse le footer en bas même sur une page courte. -->
+    <main id="contenu" class="flex-1">
       <slot />
     </main>
+
     <Footer />
   </body>
 </html>
-
-<style is:global>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    font-family: 'Alexandria', 'Inter', sans-serif;
-  }
-
-  h1, h2, .section-title {
-    font-family: 'Playfair Display', serif;
-  }
-
-  h3, h4 {
-    font-family: 'Alexandria', 'Inter', sans-serif;
-  }
-
-  /* Formes organiques */
-  .organic-blob {
-    position: relative;
-    border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
-    animation: blobShift 8s ease-in-out infinite;
-  }
-
-  @keyframes blobShift {
-    0%, 100% {
-      border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
-    }
-    25% {
-      border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
-    }
-    50% {
-      border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
-    }
-    75% {
-      border-radius: 45% 55% 55% 45% / 45% 55% 45% 55%;
-    }
-  }
-
-  /* Gradient artistique */
-  .gradient-artistic {
-    background: linear-gradient(135deg, #fef3e2 0%, #f5d5e3 50%, #e8dcc8 100%);
-  }
-
-  /* Divider artistique */
-  .divider-artistic {
-    position: relative;
-    height: 2px;
-    background: linear-gradient(to right, transparent, #d97706, #ec4899, transparent);
-    border: none;
-  }
-</style>
