@@ -1,0 +1,314 @@
+---
+/**
+ * Étude de cas d'un projet : UNE seule page modèle pour tous les projets.
+ * Toute la page est en thème sombre (data-theme="mts-nuit").
+ *
+ * getStaticPaths() est appelée au build : elle demande la liste des projets
+ * à PocketBase et Astro génère une page par projet (/projets/cielixir,
+ * /projets/olyvia, etc.). Ajouter un projet dans le back-office puis
+ * relancer le build suffit à créer sa page : aucun code à écrire.
+ */
+import Layout from '../../layouts/Layout.astro';
+import ProjetImage from '../../components/ProjetImage.astro';
+import OutilBadge from '../../components/OutilBadge.astro';
+import Timeline from '../../components/Timeline.astro';
+import TrioAppareils from '../../components/TrioAppareils.astro';
+import LigneOndulee from '../../components/LigneOndulee.astro';
+import { getProjets, getEtapes, fileUrl, type Projet } from '../../lib/pocketbase';
+import { formatPeriode, formatEquipe, formatType } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const projets = await getProjets();
+  return projets.map((projet, index) => ({
+    params: { slug: projet.slug },
+    // Le projet suivant (le dernier renvoie vers le premier)
+    props: { projet, suivant: projets[(index + 1) % projets.length] },
+  }));
+}
+
+interface Props {
+  projet: Projet;
+  suivant: Projet;
+}
+
+const { projet, suivant } = Astro.props;
+const etapes = await getEtapes(projet.id);
+const outils = projet.expand?.outils ?? [];
+const categories = projet.expand?.categorie ?? [];
+const dossier = fileUrl(projet, projet.dossier);
+
+// Images de l'aperçu, en taille d'origine (nettes dans la grande fenêtre)
+const images = projet.galerie.map((f, i) => ({
+  src: fileUrl(projet, f) as string,
+  alt: `${projet.titre}, capture ${i + 1}`,
+}));
+// Captures au format téléphone (sites pensés pour mobile)
+const imagesMobile = (projet.captures_mobile ?? []).map((f, i) => ({
+  src: fileUrl(projet, f) as string,
+  alt: `${projet.titre}, version mobile, capture ${i + 1}`,
+}));
+
+// Les fiches "infos clés" : on n'affiche que celles qui sont renseignées
+const infos = [
+  { label: 'Cadre', valeur: formatType(projet.type_projet) },
+  { label: 'Équipe', valeur: formatEquipe(projet.cadre, projet.taille_equipe) },
+  { label: 'Période', valeur: formatPeriode(projet.date_debut, projet.date_fin) },
+].filter((i) => i.valeur);
+
+// Objectifs et résultat : affichés seulement s'ils sont renseignés
+const sections = [
+  { id: 'objectifs', titre: 'Objectifs', html: projet.objectifs },
+  { id: 'resultat', titre: 'Résultat', html: projet.resultat },
+].filter((s) => s.html && s.html.trim() !== '');
+
+// « Sous le capot » : les outils rangés par couche technique,
+// à partir du champ "type" de chaque outil dans PocketBase.
+const couches = [
+  { nom: 'Front-end', types: ['langage', 'framework'] },
+  { nom: 'Back-end & données', types: ['backend', 'cms'] },
+  { nom: 'Design', types: ['design', 'audiovisuel'] },
+  { nom: 'Déploiement & gestion', types: ['deploiement', 'gestion'] },
+]
+  .map((c) => ({ ...c, outils: outils.filter((o) => c.types.includes(o.type)) }))
+  .filter((c) => c.outils.length > 0);
+
+const difficultes = projet.difficultes ?? [];
+const aChoix = Boolean(projet.choix_techniques && projet.choix_techniques.trim() !== '');
+const aCapot = aChoix || couches.length > 0 || difficultes.length > 0;
+
+// Liens du projet : affichés dès l'en-tête
+const liens = [
+  projet.lien_demo && { texte: 'Voir le site en ligne', href: projet.lien_demo, principal: true },
+  projet.lien_github && { texte: 'Code sur GitHub', href: projet.lien_github },
+  projet.lien_video && { texte: 'Voir la vidéo', href: projet.lien_video },
+].filter(Boolean) as { texte: string; href: string; principal?: boolean }[];
+---
+
+<Layout title={projet.titre} description={projet.resume} sombre>
+  <!--
+    Alternance des zones, comme sur l'accueil :
+      sombre (en-tête) → clair (contexte, objectifs, technique, processus) → sombre (aperçu).
+    Entre sombre et clair : bord en courbe douce ("bord-ondule") + ligne cyan.
+    Entre deux parties claires : la ligne cyan seule.
+  -->
+
+  <!-- ===================== ZONE SOMBRE : EN-TÊTE ===================== -->
+  <div data-theme="mts-nuit" class="bg-linear-to-b from-[#0a0f2e] to-[#111a3d] text-base-content">
+    <section class="haut-de-page pb-24" aria-labelledby="titre-projet">
+      <div class="container-site grid items-center gap-10 lg:grid-cols-2">
+        <div>
+          <nav aria-label="Fil d’Ariane" class="text-sm text-muted">
+            <ol class="flex gap-2">
+              <li><a href="/projets" class="hover:text-primary">Projets</a></li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" class="text-primary">{projet.titre}</li>
+            </ol>
+          </nav>
+
+          <h1 id="titre-projet" class="mt-4 font-display text-4xl text-primary md:text-5xl">{projet.titre}</h1>
+          <p class="mt-6 text-lg leading-relaxed">{projet.resume}</p>
+
+          {categories.length > 0 && (
+            <ul class="mt-6 flex flex-wrap gap-2" aria-label="Catégories">
+              {categories.map((c) => <li class="badge badge-outline border-primary/60 text-primary">{c.nom}</li>)}
+            </ul>
+          )}
+
+          {(liens.length > 0 || dossier) && (
+            <div class="mt-8 flex flex-wrap gap-3">
+              {liens.map((lien) => (
+                <a
+                  href={lien.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class:list={['btn btn-sm', lien.principal ? 'btn-primary' : 'btn-ghost border border-primary/40']}
+                >
+                  {lien.texte} <span aria-hidden="true">↗</span><span class="sr-only">(nouvel onglet)</span>
+                </a>
+              ))}
+              {dossier && (
+                <a href={dossier} class="btn btn-sm btn-ghost border border-primary/40" download>
+                  Télécharger le dossier <span class="sr-only">(PDF)</span>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div class="overflow-hidden rounded-box border border-primary/40 shadow-[10px_10px_0_rgb(14_163_205/0.35)]">
+          <ProjetImage projet={projet} taille="800x450" prioritaire class="aspect-video w-full" />
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== ZONE CLAIRE : LE PROJET ===================== -->
+  <div data-theme="mts" class="bord-ondule bg-page bg-(image:--fond-aquarelle) bg-cover bg-top text-base-content">
+    <LigneOndulee superpose />
+
+    <!-- ============ CONTEXTE + INFOS CLÉS ============ -->
+    <section class="section" aria-labelledby="titre-contexte">
+      <div class="container-site grid gap-12 lg:grid-cols-[3fr_2fr]">
+        <div>
+          <h2 id="titre-contexte" class="titre-section">Contexte</h2>
+          <div class="texte-riche mt-6 text-lg leading-relaxed text-muted" set:html={projet.contexte} />
+        </div>
+
+        <div class="space-y-4">
+          {projet.role && (
+            <div class="rounded-box border border-base-300 bg-base-200 p-5">
+              <h2 class="text-xs font-semibold uppercase tracking-widest text-accent">Mon rôle</h2>
+              <p class="mt-2">{projet.role}</p>
+            </div>
+          )}
+          <dl class="grid grid-cols-2 gap-4">
+            {infos.map((info) => (
+              <div class="rounded-box border border-base-300 bg-base-200 p-4">
+                <dt class="text-xs font-semibold uppercase tracking-widest text-accent">{info.label}</dt>
+                <dd class="mt-1 font-display">{info.valeur}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ OBJECTIFS / RÉSULTAT ============ -->
+    {sections.length > 0 && <LigneOndulee />}
+    {sections.length > 0 && (
+      <section class="section" aria-label="Objectifs et résultat">
+        <div class="container-site grid gap-12 md:grid-cols-2">
+          {sections.map((s) => (
+            <div>
+              <h2 id={s.id} class="titre-section text-2xl md:text-3xl">{s.titre}</h2>
+              <div class="texte-riche mt-4 leading-relaxed text-muted" set:html={s.html} />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- ============ SOUS LE CAPOT (partie technique) ============ -->
+    {aCapot && <LigneOndulee />}
+    {aCapot && (
+      <section class="section" aria-labelledby="titre-capot">
+        <div class="container-site">
+          <p class="font-mono text-sm text-primary">&lt;sous-le-capot /&gt;</p>
+          <h2 id="titre-capot" class="titre-section mt-2">Sous le capot</h2>
+
+          <!-- La stack, couche par couche -->
+          {couches.length > 0 && (
+            <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {couches.map((couche) => (
+                <div class="rounded-box border border-primary/20 bg-base-200/60 p-5">
+                  <h3 class="text-xs font-semibold uppercase tracking-widest text-accent">{couche.nom}</h3>
+                  <ul class="mt-4 flex flex-wrap gap-2">
+                    {couche.outils.map((o) => <li><OutilBadge outil={o} /></li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <!-- Les choix techniques -->
+          {aChoix && (
+            <div class="mt-12 max-w-4xl">
+              <h3 class="font-display text-2xl">Choix techniques</h3>
+              <div class="texte-riche mt-4 leading-relaxed text-muted" set:html={projet.choix_techniques} />
+            </div>
+          )}
+
+          <!-- Difficultés rencontrées : le tableau que les recruteurs tech lisent le plus -->
+          {difficultes.length > 0 && (
+            <div class="mt-12">
+              <h3 class="font-display text-2xl">Difficultés et solutions</h3>
+              <div class="mt-6 overflow-x-auto rounded-box border border-primary/20">
+                <table class="table">
+                  <thead class="bg-base-200 text-xs uppercase tracking-widest text-accent">
+                    <tr>
+                      <th scope="col">Problème</th>
+                      <th scope="col">Cause</th>
+                      <th scope="col">Solution</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {difficultes.map((d) => (
+                      <tr class="border-primary/10">
+                        <td class="font-medium">{d.probleme}</td>
+                        <td class="text-muted">{d.cause}</td>
+                        <td><span class="text-primary" aria-hidden="true">→ </span>{d.solution}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
+    <!-- ============ PROCESSUS (frise) ============ -->
+    {etapes.length > 0 && <LigneOndulee />}
+    {etapes.length > 0 && (
+      <section class="section" aria-labelledby="titre-processus">
+        <div class="container-site">
+          <h2 id="titre-processus" class="titre-section">Processus complet</h2>
+          <div class="mt-12">
+            <Timeline etapes={etapes} />
+          </div>
+        </div>
+      </section>
+    )}
+
+  </div>
+
+  <!-- ===================== ZONE SOMBRE : APERÇU ===================== -->
+  <div data-theme="mts-nuit" class="bord-ondule bg-linear-to-b from-[#0d1436] to-[#111a3d] text-base-content">
+    <LigneOndulee superpose />
+
+    <!-- ============ APERÇU DYNAMIQUE (remplace le cadre avec les mains) ============ -->
+    <section class="section" aria-labelledby="titre-apercu">
+      <div class="container-site">
+        <h2 id="titre-apercu" class="titre-section mb-10 text-center">Aperçu du projet</h2>
+
+        {projet.lien_demo ? (
+          <!-- Site web : MacBook, iPad et iPhone. Le mode « en direct » n'est proposé
+               que si le site accepte d'être affiché dans une autre page
+               (case "apercu_en_direct" dans PocketBase). -->
+          <TrioAppareils
+            titre={projet.titre}
+            url={projet.apercu_en_direct ? projet.lien_demo : undefined}
+            lien={projet.lien_demo}
+            images={images}
+            imagesMobile={imagesMobile}
+            mobileSeul={projet.format_apercu === 'mobile'}
+          />
+        ) : images.length > 0 ? (
+          <!-- Pas de site (affiches, identité, vidéo) : galerie simple -->
+          <ul class:list={['mx-auto grid gap-6', images.length === 1 ? 'max-w-lg' : 'max-w-6xl sm:grid-cols-2']}>
+            {images.map((image) => (
+              <li class="overflow-hidden rounded-box border border-primary/20 bg-base-200 p-3">
+                <img src={image.src} alt={image.alt} loading="lazy" decoding="async" class="h-auto w-full rounded-field" />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="mx-auto max-w-3xl overflow-hidden rounded-box shadow-xl">
+            <ProjetImage projet={projet} taille="800x450" class="aspect-video w-full" />
+          </div>
+        )}
+
+        <!-- Navigation entre projets -->
+        <nav aria-label="Navigation entre les projets" class="mt-16 flex flex-wrap justify-center gap-4">
+          <a href="/projets" class="btn btn-ghost border border-primary/40">Retour aux projets</a>
+          {suivant.slug !== projet.slug && (
+            <a href={`/projets/${suivant.slug}`} class="btn btn-primary h-auto max-w-full py-2 whitespace-normal">
+              Projet suivant : {suivant.titre}
+            </a>
+          )}
+        </nav>
+      </div>
+    </section>
+  </div>
+</Layout>

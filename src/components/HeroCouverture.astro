@@ -1,0 +1,144 @@
+---
+/**
+ * Couverture de l'accueil, style "couverture de magazine".
+ * Écrite uniquement en classes Tailwind (et daisyUI pour les boutons).
+ *
+ * Lire les classes :
+ *  - sans préfixe  = mobile (le style de base)
+ *  - "md:"         = à partir de 768 px (tablette et ordinateur)
+ *  - "[...]"       = valeur précise qui n'existe pas dans Tailwind,
+ *                    ex. top-[22%] ou text-[1.35rem]. Les "_" remplacent les espaces.
+ *  - "z-1" à "z-4" = ordre de superposition, du fond vers l'avant :
+ *      1 grand mot + panneau, 2 portrait, 3 traits lumineux, 4 texte.
+ *
+ * Tout ce qui est décoratif porte aria-hidden="true" : un lecteur d'écran
+ * ne lit que le titre, le texte et les liens.
+ */
+import { Image } from 'astro:assets';
+import { SITE } from '../data/site';
+import portrait from '../assets/images/moi-detoure.png';
+
+// Traits lumineux : position (top, left), longueur (width) et décalage
+// de l'animation (delay). Les valeurs changent pour chaque trait, on les
+// met donc dans un tableau plutôt que de répéter 7 fois la même balise.
+const traits = [
+  { top: '22%', left: '58%', width: '22%', delay: '0s' },
+  { top: '31%', left: '70%', width: '12%', delay: '1.2s' },
+  { top: '48%', left: '52%', width: '30%', delay: '0.6s' },
+  { top: '57%', left: '80%', width: '14%', delay: '1.8s' },
+  { top: '69%', left: '60%', width: '18%', delay: '0.3s' },
+  { top: '40%', left: '6%', width: '9%', delay: '2.2s' },
+  { top: '83%', left: '30%', width: '12%', delay: '1.5s' },
+];
+
+const technos = ['Astro', 'JavaScript', 'PocketBase', 'Tailwind', 'Figma'];
+---
+
+<section
+  data-theme="mts-nuit"
+  data-couverture
+  aria-labelledby="titre-hero"
+  class="relative isolate flex flex-col overflow-hidden pt-26 text-base-content
+         bg-radial-[120%_90%_at_78%_40%] from-[#13235a] via-[#0a0f2e] via-55% to-[#060a1f]
+         md:min-h-[max(100svh,54rem)] md:pt-32"
+>
+  <!-- Halo cyan derrière la tête -->
+  <div
+    aria-hidden="true"
+    class="absolute -right-[20%] bottom-0 aspect-square w-[26rem] rounded-full blur-[20px]
+           bg-radial from-[#35c3ea]/35 to-transparent to-65%
+           md:top-[26%] md:right-[9%] md:bottom-auto md:w-[32rem]"
+  ></div>
+
+  <!-- Grand mot en contour, derrière le portrait -->
+  <p
+    aria-hidden="true"
+    class="absolute bottom-[32%] left-1/2 z-1 -translate-x-1/2 select-none whitespace-nowrap
+           font-display text-[4.5rem] leading-none uppercase tracking-[-0.02em]
+           text-transparent [-webkit-text-stroke:1.5px_rgb(121_244_255/0.22)]
+           md:top-[12%] md:bottom-auto md:text-[clamp(4rem,13vw,13rem)]"
+  >
+    Développeuse
+  </p>
+
+  <!-- Panneau décalé derrière le portrait (ordinateur seulement) -->
+  <div
+    aria-hidden="true"
+    class="absolute right-[6%] bottom-[9%] z-1 hidden h-[52%] w-[min(26rem,32vw)]
+           translate-x-10 -translate-y-6 border border-primary/35
+           bg-linear-160 from-[#111a3d]/90 to-[#0a0f2e]/40 md:block"
+  ></div>
+
+  <!-- Traits lumineux : seules les valeurs du tableau changent d'un trait à l'autre -->
+  <div aria-hidden="true">
+    {traits.map((trait) => (
+      <span
+        class="absolute z-3 h-[3px] rounded-full opacity-55 animate-glisse
+               bg-linear-to-r from-transparent via-primary to-transparent"
+        style={`top:${trait.top}; left:${trait.left}; width:${trait.width}; animation-delay:${trait.delay}`}
+      ></span>
+    ))}
+  </div>
+
+  <!-- Portrait détouré.
+       Mobile : sous le texte, centré. Ordinateur : en bas à droite.
+       mask-b-from-78% : l'image s'efface vers le bas, à partir de 78 % de sa hauteur. -->
+  <Image
+    src={portrait}
+    alt=""
+    widths={[420, 640, 860]}
+    sizes="(min-width: 1024px) 40vw, 80vw"
+    loading="eager"
+    fetchpriority="high"
+    class="relative z-2 order-2 mx-auto mt-8 h-auto w-[min(88%,22rem)]
+           mask-b-from-78% brightness-78 saturate-90
+           md:absolute md:right-[10%] md:bottom-0 md:m-0 md:h-[70%] md:w-auto"
+  />
+
+  <!-- Contenu, toujours au premier plan -->
+  <div class="container-site relative z-4 pt-2 md:pt-[clamp(3rem,12vw,10.5rem)]">
+    <p class="text-[0.8rem] font-bold uppercase tracking-[0.25em] text-primary">Portfolio</p>
+
+    <h1
+      id="titre-hero"
+      class="mt-5 font-display text-[clamp(2.5rem,4.8vw,4.25rem)] leading-[0.95] tracking-[-0.01em]"
+    >
+      Maman Thilor<br /><span class="text-primary">SAMBE</span>
+    </h1>
+
+    <p class="mt-6 text-[1.35rem] font-semibold">Développeuse web full-stack · UX/UI</p>
+
+    <ul class="mt-4 flex max-w-[30rem] flex-wrap gap-2" aria-label="Technologies principales">
+      {technos.map((techno) => (
+        <li class="rounded-full border border-primary/35 bg-[#0a0f2e]/60 px-3.5 py-1 text-sm">
+          {techno}
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-6 flex max-w-[30rem] items-center gap-2.5 text-[0.95rem] text-muted">
+      <span class="size-2.5 flex-none rounded-full bg-green-400 ring-4 ring-green-400/20" aria-hidden="true"></span>
+      {SITE.recherche}
+    </p>
+
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a href="/projets" class="btn btn-primary btn-lg">Voir mes projets</a>
+      <a href={SITE.cv} class="btn btn-ghost btn-lg border border-primary/50" download>
+        Mon CV <span class="sr-only">(PDF)</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bas de couverture (ordinateur seulement).
+       "group" sur le lien + "group-hover:" sur la ligne : la ligne s'allonge
+       quand on survole le lien entier, pas seulement la ligne. -->
+  <a
+    href="#projets"
+    class="group container-site relative z-4 mt-auto hidden items-center gap-5 pt-12 pb-8
+           text-[0.85rem] font-bold uppercase tracking-[0.3em] md:flex"
+  >
+    <span>Découvrir</span>
+    <span class="h-0.5 w-20 bg-primary transition-[width] duration-300 group-hover:w-32" aria-hidden="true"></span>
+    <span class="sr-only">mes projets phares</span>
+  </a>
+</section>

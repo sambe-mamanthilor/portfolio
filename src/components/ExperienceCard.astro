@@ -1,0 +1,51 @@
+---
+/**
+ * Carte d'une expérience (stage, emploi, engagement associatif).
+ * La description vient de l'éditeur de PocketBase (HTML) : on l'insère
+ * avec set:html. C'est sans risque ici car c'est TOI qui écris ce contenu
+ * dans le back-office (jamais un visiteur).
+ */
+import { Image } from 'astro:assets';
+import { fileUrl, type Experience } from '../lib/pocketbase';
+import { LOGOS_SECOURS } from '../lib/medias';
+
+interface Props {
+  experience: Experience;
+}
+const { experience: xp } = Astro.props;
+
+const logoDistant = fileUrl(xp, xp.logo, '');
+const logoLocal = LOGOS_SECOURS[xp.structure.split(' ')[0].toLowerCase()];
+const altLogo = xp.logo_alt || `Logo ${xp.structure}`;
+const libelles: Record<string, string> = {
+  stage: 'Stage', emploi: 'Emploi', alternance: 'Alternance', associatif: 'Engagement associatif', freelance: 'Freelance',
+};
+---
+
+<article class="carte-xp grid gap-5 rounded-box border border-base-300 bg-base-100 p-5 sm:grid-cols-[7rem_1fr] md:p-7">
+  <div class="grid size-28 place-items-center overflow-hidden rounded-full border border-base-300 bg-white">
+    {logoDistant ? (
+      <img src={logoDistant} alt={altLogo} width="112" height="112" loading="lazy" class="size-full object-contain p-3" />
+    ) : logoLocal ? (
+      <Image src={logoLocal} alt={altLogo} width={112} height={112} class="size-full object-contain p-3" />
+    ) : (
+      <span class="font-display text-2xl text-[#0a0f2e]" aria-hidden="true">{xp.structure.slice(0, 2)}</span>
+    )}
+  </div>
+
+  <div>
+    <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+      <h3 class="font-display text-xl">{xp.poste}</h3>
+      <p class="text-sm font-semibold text-primary">{xp.periode}</p>
+    </div>
+    <p class="mt-1 text-sm font-semibold uppercase tracking-wide text-accent">{libelles[xp.type] ?? ''}</p>
+    <div class="texte-riche mt-3 text-muted" set:html={xp.description} />
+    <p class="mt-3 text-sm font-semibold">{xp.structure} · {xp.lieu}</p>
+  </div>
+</article>
+
+<style>
+  .carte-xp {
+    box-shadow: 0 1px 2px rgb(10 15 46 / 0.06);
+  }
+</style>

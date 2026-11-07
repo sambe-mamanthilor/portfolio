@@ -1,0 +1,409 @@
+---
+/**
+ * "Ce que je sais faire" : carrousel 3D de mes logiciels.
+ * Inspiration : Codrops, "Building a 3D Infinite Carousel with Reactive
+ * Background Gradients" (2025) et le portfolio de Mathias Adolfsson.
+ *
+ * Principe :
+ *  - Les cartes sont posées sur un CYLINDRE imaginaire. Pour chaque carte,
+ *    on connaît son angle sur le cylindre ; JavaScript calcule à chaque image
+ *    sa position (sin/cos), son inclinaison et sa transparence.
+ *  - On fait tourner le cylindre en glissant (souris ou doigt), avec les
+ *    flèches, au clavier ou simplement en faisant défiler la page.
+ *  - Le fond prend la couleur du DOMAINE de la carte au centre.
+ *
+ * Amélioration progressive et accessibilité :
+ *  - Sans JavaScript, la même liste s'affiche en grille : rien n'est perdu.
+ *  - La liste reste une vraie <ul> : lisible par les lecteurs d'écran.
+ *  - "Réduire les animations" activé : pas de rotation automatique.
+ */
+import { LOGICIELS, DOMAINES } from '../data/logiciels';
+---
+
+<section class="competences" data-theme="mts-nuit" aria-labelledby="titre-savoir" data-carrousel>
+  <div class="container-site">
+    <p class="sur-titre">Compétences</p>
+    <h2 id="titre-savoir" class="mt-2 font-display text-4xl md:text-5xl">Ce que je sais faire</h2>
+    <p class="mt-4 max-w-2xl text-lg text-muted">
+      Les outils que j’utilise au quotidien, et ce que je sais faire avec. Faites glisser les cartes.
+    </p>
+
+    <!-- Légende des domaines (couleur du fond) -->
+    <ul class="legende mt-6" aria-label="Domaines">
+      {Object.entries(DOMAINES).map(([cle, d]) => (
+        <li data-domaine-legende={cle} style={`--c: ${d.couleur}`}>{d.nom}</li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- La scène 3D -->
+  <div
+    class="scene"
+    role="group"
+    aria-roledescription="carrousel"
+    aria-label="Mes logiciels et compétences"
+    tabindex="0"
+    data-scene
+  >
+    <ul class="anneau" data-anneau>
+      {LOGICIELS.map((l, i) => (
+        <li class="carte" data-carte data-domaine={l.domaine} style={`--marque: ${l.couleur}`}>
+          <span class="numero" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <!-- Logo en vedette : grande pastille centrée, halo de la couleur de la marque -->
+          <span class="logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="56" height="56"><path d={l.logo} fill={l.couleur} /></svg>
+          </span>
+          <h3 class="nom">{l.nom}</h3>
+          <p class="domaine" style={`--c: ${DOMAINES[l.domaine].couleur}`}>{DOMAINES[l.domaine].nom}</p>
+          <p class="competence">{l.competence}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="container-site commandes">
+    <button type="button" class="fleche" data-precedent aria-label="Logiciel précédent">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+    </button>
+    <!-- Annonce la carte au centre aux lecteurs d'écran -->
+    <p class="actif" aria-live="polite" data-annonce></p>
+    <button type="button" class="fleche" data-suivant aria-label="Logiciel suivant">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+    </button>
+  </div>
+</section>
+
+<style>
+  /* @property permet d'ANIMER une variable CSS de couleur :
+     le fond glisse en douceur d'un domaine à l'autre. */
+  @property --teinte {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #35c3ea;
+  }
+
+  .competences {
+    --teinte: #35c3ea;
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0 4rem;
+    color: var(--color-base-content);
+    background:
+      radial-gradient(60% 55% at 50% 62%, color-mix(in srgb, var(--teinte) 32%, transparent), transparent 72%),
+      linear-gradient(180deg, #0a0f2e 0%, #0d1438 100%);
+    transition: --teinte 0.8s ease;
+  }
+
+  .sur-titre {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .legende {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+  }
+  .legende li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+  .legende li::before {
+    content: '';
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    background: var(--c);
+  }
+  .legende li[data-actif] {
+    opacity: 1;
+  }
+
+  /* ---------- Sans JavaScript : grille simple ---------- */
+  .scene {
+    margin-top: 2.5rem;
+    outline-offset: -4px;
+  }
+  .anneau {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1rem;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* ---------- Avec JavaScript : la scène 3D ---------- */
+  [data-actif-3d] .scene {
+    height: 26rem;
+    perspective: 1400px;
+    cursor: grab;
+    touch-action: pan-y; /* on garde le défilement vertical au doigt */
+    user-select: none;
+  }
+  [data-actif-3d] .scene:active {
+    cursor: grabbing;
+  }
+  [data-actif-3d] .anneau {
+    display: block;
+    position: relative;
+    height: 100%;
+    max-width: none;
+    padding: 0;
+    transform-style: preserve-3d;
+  }
+  [data-actif-3d] .carte {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--largeur-carte, 16rem);
+    margin-left: calc(var(--largeur-carte, 16rem) / -2);
+    margin-top: -10.5rem;
+    will-change: transform, opacity;
+  }
+
+  /* ---------- La carte ---------- */
+  .carte {
+    display: flex;
+    flex-direction: column;
+    min-height: 21rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgb(121 244 255 / 0.18);
+    background:
+      linear-gradient(160deg, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.02)),
+      #0e1640;
+    box-shadow: 0 30px 60px rgb(0 0 0 / 0.35);
+    transition: border-color 0.4s, box-shadow 0.4s;
+  }
+  .carte[data-centre] {
+    border-color: color-mix(in srgb, var(--teinte) 70%, transparent);
+    box-shadow: 0 30px 60px rgb(0 0 0 / 0.4), 0 0 40px color-mix(in srgb, var(--teinte) 30%, transparent);
+  }
+  /* Tout est centré : le logo et le nom sont les éléments forts de la carte */
+  .carte {
+    position: relative;
+    align-items: center;
+    text-align: center;
+  }
+  .numero {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: rgb(255 255 255 / 0.25);
+  }
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 6.5rem;
+    height: 6.5rem;
+    margin-top: 0.75rem;
+    border-radius: 1.5rem;
+    background: #fff; /* fond blanc : les logos sombres (GitHub, Miro…) restent visibles */
+    /* Halo de la couleur officielle de la marque */
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--marque) 18%, transparent),
+      0 12px 35px color-mix(in srgb, var(--marque) 45%, transparent);
+    transition: transform 0.4s ease;
+  }
+  .carte[data-centre] .logo {
+    transform: scale(1.08);
+  }
+  .nom {
+    margin-top: 1.4rem;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  .domaine {
+    margin-top: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--c) 60%, transparent);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+  }
+  .competence {
+    margin-top: auto;
+    padding-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+
+  /* ---------- Commandes ---------- */
+  .commandes {
+    display: none;
+  }
+  [data-actif-3d] .commandes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .fleche {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid rgb(121 244 255 / 0.4);
+    color: var(--color-base-content);
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .fleche:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+  .actif {
+    min-width: 14rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  @media (max-width: 767px) {
+    [data-actif-3d] .scene {
+      height: 22rem;
+    }
+    .carte {
+      --largeur-carte: 13.5rem;
+    }
+    .nom {
+      font-size: 1.5rem;
+    }
+    .domaine {
+      letter-spacing: 0.06em;
+      font-size: 0.62rem;
+    }
+    .logo {
+      width: 5.5rem;
+      height: 5.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { LOGICIELS, DOMAINES } from '../data/logiciels';
+
+  const section = document.querySelector<HTMLElement>('[data-carrousel]');
+  const scene = section?.querySelector<HTMLElement>('[data-scene]');
+  const cartes = [...(section?.querySelectorAll<HTMLElement>('[data-carte]') ?? [])];
+  const annonce = section?.querySelector<HTMLElement>('[data-annonce]');
+  const legendes = [...(section?.querySelectorAll<HTMLElement>('[data-domaine-legende]') ?? [])];
+
+  if (section && scene && cartes.length) {
+    section.setAttribute('data-actif-3d', '');
+
+    const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const n = cartes.length;
+    const pas = 360 / n; // écart angulaire entre deux cartes (en degrés)
+
+    let angle = 0; // rotation actuelle du cylindre
+    let cible = 0; // rotation visée (on s'en approche en douceur)
+    let vitesseAuto = reduit ? 0 : 0.04; // rotation automatique lente
+    let glisse = false;
+    let xDepart = 0;
+    let angleDepart = 0;
+    let derniereInteraction = 0;
+    let centrePrecedent = -1;
+
+    // Rayon du cylindre : assez grand pour que deux cartes voisines ne se
+    // chevauchent pas (écart horizontal = sin(pas) × rayon > largeur d'une carte)
+    const rayon = () => (window.innerWidth < 768 ? 500 : 620);
+
+    // Position de chaque carte selon son angle relatif au centre
+    function dessiner() {
+      const R = rayon();
+      let centre = 0;
+      let meilleur = 999;
+      cartes.forEach((carte, i) => {
+        // angle relatif, ramené entre -180° et 180°
+        let rel = ((i * pas + angle) % 360 + 540) % 360 - 180;
+        const rad = (rel * Math.PI) / 180;
+        const x = Math.sin(rad) * R;
+        // Les cartes sur les côtés AVANCENT vers nous : effet "intérieur du cylindre"
+        const z = (1 - Math.cos(rad)) * R * 0.35 - 80;
+        const visible = Math.abs(rel) < 80;
+        carte.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${-rel * 0.9}deg)`;
+        carte.style.opacity = visible ? String(1 - Math.abs(rel) / 95) : '0';
+        carte.style.visibility = visible ? 'visible' : 'hidden';
+        carte.style.zIndex = String(100 - Math.round(Math.abs(rel)));
+        if (Math.abs(rel) < meilleur) { meilleur = Math.abs(rel); centre = i; }
+      });
+
+      if (centre !== centrePrecedent) {
+        centrePrecedent = centre;
+        cartes.forEach((c, i) => c.toggleAttribute('data-centre', i === centre));
+        const l = LOGICIELS[centre];
+        section!.style.setProperty('--teinte', DOMAINES[l.domaine].couleur);
+        legendes.forEach((li) => li.toggleAttribute('data-actif', li.dataset.domaineLegende === l.domaine));
+        if (annonce) annonce.textContent = `${l.nom} · ${DOMAINES[l.domaine].nom}`;
+      }
+    }
+
+    // Boucle d'animation : rotation auto + rapprochement doux de la cible
+    function boucle() {
+      if (!glisse && performance.now() - derniereInteraction > 2500) cible -= vitesseAuto;
+      angle += (cible - angle) * 0.08;
+      dessiner();
+      requestAnimationFrame(boucle);
+    }
+
+    // Aller à la carte voisine (flèches, clavier) : on s'aligne sur la grille
+    function aller(sens: number) {
+      derniereInteraction = performance.now();
+      cible = Math.round(cible / pas) * pas - sens * pas;
+    }
+    section.querySelector('[data-precedent]')?.addEventListener('click', () => aller(-1));
+    section.querySelector('[data-suivant]')?.addEventListener('click', () => aller(1));
+    scene.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { aller(1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { aller(-1); e.preventDefault(); }
+    });
+
+    // Glisser à la souris ou au doigt
+    scene.addEventListener('pointerdown', (e) => {
+      glisse = true;
+      xDepart = e.clientX;
+      angleDepart = cible;
+      scene.setPointerCapture(e.pointerId);
+    });
+    scene.addEventListener('pointermove', (e) => {
+      if (!glisse) return;
+      cible = angleDepart + (e.clientX - xDepart) * 0.18;
+      derniereInteraction = performance.now();
+    });
+    const lacher = () => {
+      if (!glisse) return;
+      glisse = false;
+      cible = Math.round(cible / pas) * pas; // la carte la plus proche se centre
+      derniereInteraction = performance.now();
+    };
+    scene.addEventListener('pointerup', lacher);
+    scene.addEventListener('pointercancel', lacher);
+
+    // Défilement de la page : le cylindre tourne quand on descend
+    let dernierScroll = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const delta = window.scrollY - dernierScroll;
+      dernierScroll = window.scrollY;
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < window.innerHeight) cible -= delta * 0.06;
+    }, { passive: true });
+
+    dessiner();
+    requestAnimationFrame(boucle);
+  }
+</script>

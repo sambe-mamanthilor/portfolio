@@ -1,0 +1,57 @@
+---
+/**
+ * Mentions légales et données personnelles.
+ * Obligatoires pour tout site publié (LCEN) et pour le formulaire (RGPD).
+ */
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../data/site';
+---
+
+<Layout title="Mentions légales" description="Mentions légales et politique de confidentialité du portfolio de Maman Thilor SAMBE.">
+  <section class="haut-de-page section" aria-labelledby="titre-page">
+    <div class="container-site texte-riche max-w-3xl space-y-10 leading-relaxed text-muted">
+      <h1 id="titre-page" class="font-display text-5xl text-base-content">Mentions légales</h1>
+
+      <div>
+        <h2 class="titre-section text-2xl">Éditrice du site</h2>
+        <p>{SITE.nom}, étudiante en BUT MMI à l’IUT Nord Franche-Comté.</p>
+        <p>Contact : <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <p>Directrice de la publication : {SITE.nom}.</p>
+      </div>
+
+      <div>
+        <h2 class="titre-section text-2xl">Hébergement</h2>
+        <!-- À COMPLÉTER au déploiement : nom, adresse et téléphone exacts de l'hébergeur du VPS. -->
+        <p>Site et base de données hébergés sur un serveur VPS. Nom de domaine enregistré chez Infomaniak Network SA, Genève, Suisse.</p>
+      </div>
+
+      <div id="donnees" class="scroll-mt-28">
+        <h2 class="titre-section text-2xl">Données personnelles</h2>
+        <p>
+          Le formulaire de contact collecte votre prénom, votre nom, votre e-mail, votre téléphone (facultatif)
+          et votre message. Ces données servent uniquement à vous répondre. Elles ne sont ni vendues, ni
+          transmises à des tiers, ni utilisées à des fins commerciales.
+        </p>
+        <p>Elles sont conservées 12 mois au maximum, puis supprimées.</p>
+        <p>
+          Conformément au RGPD, vous pouvez demander l’accès, la rectification ou la suppression de vos
+          données en écrivant à <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="titre-section text-2xl">Cookies et mesure d’audience</h2>
+        <p>Ce site n’utilise aucun cookie et aucun outil de mesure d’audience. Les polices sont hébergées sur le site lui-même : aucune donnée n’est transmise à un service tiers lors de votre visite.</p>
+      </div>
+
+      <div>
+        <h2 class="titre-section text-2xl">Propriété intellectuelle</h2>
+        <p>
+          Les textes, visuels et réalisations présentés sont la propriété de {SITE.nom}, sauf mention
+          contraire. Les projets réalisés en équipe sont présentés avec l’accord de leurs co-auteurs. Les
+          marques et logos cités appartiennent à leurs propriétaires respectifs.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

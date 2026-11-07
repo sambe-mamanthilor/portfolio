@@ -1,0 +1,55 @@
+---
+/**
+ * Image de couverture d'un projet.
+ * 1. Si une couverture est déposée dans PocketBase : on l'utilise
+ *    (version miniature pour alléger la page).
+ * 2. Sinon : image locale de secours, optimisée par Astro.
+ * 3. Sinon : un simple aplat avec le titre, pour ne jamais casser la mise en page.
+ */
+import { Image } from 'astro:assets';
+import { fileUrl, type Projet } from '../lib/pocketbase';
+import { COUVERTURES_SECOURS } from '../lib/medias';
+
+interface Props {
+  projet: Projet;
+  /** Miniature PocketBase : "400x225" pour les cartes, "800x450" pour les pages. */
+  taille?: '400x225' | '800x450';
+  class?: string;
+  /** true pour l'image principale d'une page (chargée en priorité). */
+  prioritaire?: boolean;
+}
+
+const { projet, taille = '800x450', class: classe = '', prioritaire = false } = Astro.props;
+
+const urlDistante = fileUrl(projet, projet.couverture, taille);
+const secours = COUVERTURES_SECOURS[projet.slug];
+// Texte alternatif : celui saisi dans le back-office, sinon une description générique
+const alt = projet.couverture_alt || `Aperçu du projet ${projet.titre}`;
+const [largeur, hauteur] = taille.split('x').map(Number);
+const chargement = prioritaire ? 'eager' : 'lazy';
+---
+
+{urlDistante ? (
+  <img
+    src={urlDistante}
+    alt={alt}
+    width={largeur}
+    height={hauteur}
+    loading={chargement}
+    decoding="async"
+    class={`object-cover ${classe}`}
+  />
+) : secours ? (
+  <Image
+    src={secours}
+    alt={alt}
+    width={largeur}
+    height={hauteur}
+    loading={chargement}
+    class={`object-cover ${classe}`}
+  />
+) : (
+  <div class={`grid place-items-center bg-base-300 p-6 text-center font-display text-xl text-primary ${classe}`} role="img" aria-label={alt}>
+    {projet.titre}
+  </div>
+)}

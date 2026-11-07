@@ -54,6 +54,12 @@ export interface Outil extends BaseRecord {
   afficher_competences: boolean;
 }
 
+export interface Difficulte {
+  probleme: string;
+  cause: string;
+  solution: string;
+}
+
 export interface Projet extends BaseRecord {
   titre: string;
   slug: string;
@@ -69,11 +75,20 @@ export interface Projet extends BaseRecord {
   objectifs: string;
   choix_techniques: string;
   resultat: string;
-  recul: string;
   outils: string[];
   couverture: string;
   couverture_alt: string;
   galerie: string[];
+  /** Courte vidéo muette jouée au survol de la carte (facultatif) */
+  apercu_video?: string;
+  /** true si le site peut s'afficher en direct dans la page projet (iframe) */
+  apercu_en_direct?: boolean;
+  /** Appareils de l'aperçu : "trio" (MacBook + iPad + iPhone) ou "mobile" (iPhone seul) */
+  format_apercu?: 'trio' | 'mobile' | '';
+  /** Captures au format téléphone, pour l'iPhone quand le site n'est pas en direct */
+  captures_mobile?: string[];
+  /** Tableau « Problème / Cause / Solution » de la page projet */
+  difficultes?: Difficulte[] | null;
   dossier: string;
   lien_demo: string;
   lien_github: string;
@@ -129,9 +144,13 @@ export function getCategories() {
  * Le filtre "publié" n'est pas écrit ici : il est déjà appliqué par la
  * règle d'accès de la collection (listRule: "publie = true").
  */
+// Tri chronologique, du plus récent au plus ancien : "-" = ordre décroissant.
+// "ordre" ne sert plus qu'à départager deux projets commencés le même jour.
+const TRI_CHRONO = '-date_debut,ordre';
+
 export function getProjets() {
   return pb.collection('projets').getFullList<Projet>({
-    sort: 'ordre',
+    sort: TRI_CHRONO,
     expand: EXPAND_PROJET,
   });
 }
@@ -140,7 +159,7 @@ export function getProjets() {
 export function getProjetsMisEnAvant() {
   return pb.collection('projets').getFullList<Projet>({
     filter: 'mis_en_avant = true',
-    sort: 'ordre',
+    sort: TRI_CHRONO,
     expand: EXPAND_PROJET,
   });
 }

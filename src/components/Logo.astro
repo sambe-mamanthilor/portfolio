@@ -1,0 +1,33 @@
+---
+/**
+ * Logo "MTS" : un cercle cyan avec les initiales.
+ * Purement décoratif (aria-hidden) : c'est le lien qui l'entoure
+ * qui porte le texte accessible ("Accueil – Maman Thilor SAMBE").
+ */
+import { SITE } from '../data/site';
+
+interface Props {
+  /** Taille en pixels (diamètre). */
+  taille?: number;
+}
+const { taille = 48 } = Astro.props;
+---
+
+<span
+  class="logo inline-grid shrink-0 place-items-center rounded-full font-extrabold text-white"
+  style={`--taille: ${taille}px`}
+  aria-hidden="true"
+>
+  {SITE.initiales}
+</span>
+
+<style>
+  .logo {
+    width: var(--taille);
+    height: var(--taille);
+    font-size: calc(var(--taille) * 0.36);
+    /* Dégradé du cyan soutenu vers le bleu : reprend le logo de la maquette */
+    background: radial-gradient(circle at 30% 30%, #35c3ea, #0ea3cd 60%, #0b7fa3);
+    box-shadow: 0 0 0 2px rgb(121 244 255 / 0.25);
+  }
+</style>

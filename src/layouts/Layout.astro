@@ -5,30 +5,43 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site';
+import { getImage } from 'astro:assets';
+import fondAquarelle from '../assets/images/fond-aquarelle-leger.webp';
+import photoPartage from '../assets/images/moi.jpeg';
 
 interface Props {
   /** Titre propre à la page, ex. "Projets". Le nom du site est ajouté automatiquement. */
   title?: string;
   /** Résumé de la page (150-160 caractères) : c'est le texte affiché par Google. */
   description?: string;
-  /** Image de partage (LinkedIn, Slack...), chemin depuis /public. */
+  /** Image de partage (LinkedIn, Slack...) : adresse d'une image. Par défaut, ma photo. */
   image?: string;
+  /** true quand la page se termine par une zone sombre (pages projet) : le fond
+   *  de la page devient bleu nuit, pour que la vague du footer ne laisse pas de
+   *  bande claire. Les parties claires remettent l'aquarelle elles-mêmes. */
+  sombre?: boolean;
 }
 
-const SITE_NAME = 'Maman Thilor SAMBE';
+// Image de partage par défaut : ma photo, recadrée au format conseillé (1200 × 630)
+const partage = await getImage({ src: photoPartage, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
 
 const {
   title,
   description = "Portfolio de Maman Thilor SAMBE, étudiante en BUT MMI : développement web front-end et full-stack, intégration et UX/UI design. En recherche d'alternance et de stage.",
-  image = '/images/og-image.jpg',
+  image = partage.src,
+  sombre = false,
 } = Astro.props;
 
 // "Projets | Maman Thilor SAMBE" sur les pages internes, le nom seul sur l'accueil.
-const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME}, développeuse web`;
+const fullTitle = title ? `${title} | ${SITE.nom}` : `${SITE.nom} · ${SITE.accroche}`;
 
 // URL absolue de la page courante (utilise `site` défini dans astro.config.mjs).
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.site);
+
+// Aquarelle allégée (déjà éclaircie à l'export : 16 Ko), convertie au build
+const aquarelle = await getImage({ src: fondAquarelle, format: 'webp', width: 1920, quality: 72 });
 ---
 
 <!doctype html>
@@ -46,19 +59,22 @@ const imageURL = new URL(image, Astro.site);
     <!-- Open Graph : aperçu quand le lien est partagé sur LinkedIn -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:site_name" content={SITE.nom} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={imageURL} />
 
     <!-- Couleur de la barre du navigateur sur mobile -->
-    <meta name="theme-color" content="#010f2a" />
+    <meta name="theme-color" content="#0a0f2e" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
 
-  <body class="min-h-screen flex flex-col">
+  <body
+    class:list={['flex min-h-screen flex-col', sombre && 'bg-none bg-[#111a3d]']}
+    style={`--fond-aquarelle: url(${aquarelle.src})`}
+  >
     <!-- Lien d'évitement : premier élément atteint avec Tab.
          Il permet aux personnes qui naviguent au clavier ou avec un lecteur
          d'écran de sauter directement au contenu. Invisible tant qu'il
@@ -73,8 +89,9 @@ const imageURL = new URL(image, Astro.site);
     <Header />
 
     <!-- flex-1 : le main prend toute la hauteur disponible,
-         ce qui pousse le footer en bas même sur une page courte. -->
-    <main id="contenu" class="flex-1">
+         ce qui pousse le footer en bas même sur une page courte.
+         -mt-[5.5rem] : le contenu passe sous le header collant, comme dans la maquette. -->
+    <main id="contenu" class="-mt-[5.5rem] flex-1">
       <slot />
     </main>
 

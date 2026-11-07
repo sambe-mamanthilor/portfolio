@@ -1,0 +1,136 @@
+---
+/**
+ * Collage "polaroïds" de la section À propos (inspiration : ton collage Canva).
+ * Tout est en HTML/CSS : cadres polaroïd et scotch.
+ * Les positions sont en POURCENTAGES dans un cadre aux proportions fixes :
+ * le collage garde la même composition sur ordinateur et sur mobile.
+ *
+ * Contenu :
+ *  - ma photo (au centre, la plus grande) ;
+ *  - l'IUT, département MMI de Montbéliard ;
+ *  - deux polaroïds de logos : mes outils de dev, puis mes outils créatifs.
+ */
+import { Image } from 'astro:assets';
+import { LOGICIELS } from '../data/logiciels';
+import photoMoi from '../assets/images/moi.jpeg';
+import photoMmi from '../assets/images/collage/mmi-montbeliard.jpg';
+
+const outilsDev = LOGICIELS.filter((l) => l.domaine === 'web').slice(0, 6);
+const outilsCrea = LOGICIELS.filter((l) => l.domaine !== 'web').slice(0, 4);
+---
+
+<div class="collage" role="img" aria-label="Collage de photos : mon portrait, l’IUT MMI de Montbéliard et les logos de mes logiciels (HTML, CSS, JavaScript, Astro, Tailwind, PocketBase, Figma, Miro, Affinity, Canva).">
+  <!-- 1. IUT MMI Montbéliard -->
+  <figure class="polaroid p-mmi" aria-hidden="true">
+    <Image src={photoMmi} alt="" width={500} class="photo" />
+    <figcaption>BUT MMI · Montbéliard</figcaption>
+  </figure>
+
+  <!-- 2. Outils de développement -->
+  <figure class="polaroid p-dev" aria-hidden="true">
+    <div class="photo logos">
+      {outilsDev.map((l) => (
+        <svg viewBox="0 0 24 24"><path d={l.logo} fill={l.couleur} /></svg>
+      ))}
+    </div>
+    <figcaption>Mon code</figcaption>
+  </figure>
+
+  <!-- 3. Outils créatifs -->
+  <figure class="polaroid p-crea" aria-hidden="true">
+    <div class="photo logos logos-crea">
+      {outilsCrea.map((l) => (
+        <svg viewBox="0 0 24 24"><path d={l.logo} fill={l.couleur} /></svg>
+      ))}
+    </div>
+    <figcaption>Mes outils créa</figcaption>
+  </figure>
+
+  <!-- 4. Ma photo, au premier plan -->
+  <figure class="polaroid p-moi" aria-hidden="true">
+    <Image src={photoMoi} alt="" width={520} class="photo" />
+    <figcaption>C’est moi&nbsp;!</figcaption>
+  </figure>
+
+  <!-- Morceau de scotch cyan sur ma photo -->
+  <span class="scotch s3" aria-hidden="true"></span>
+</div>
+
+<style>
+  .collage {
+    position: relative;
+    width: 100%;
+    max-width: 34rem;
+    margin-inline: auto;
+    aspect-ratio: 4 / 4.6; /* proportions fixes : la composition ne bouge pas */
+  }
+
+  /* ---------- Polaroïd : bord blanc, bas plus épais pour la légende ---------- */
+  .polaroid {
+    position: absolute;
+    padding: 3.5% 3.5% 0;
+    background: #f7f5ef;
+    box-shadow: 0 12px 30px rgb(10 15 46 / 0.22), 0 2px 4px rgb(10 15 46 / 0.12);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .polaroid .photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+  .polaroid figcaption {
+    padding: 0.55em 0 0.7em;
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(0.75rem, 1.6vw, 1.05rem);
+    color: #2a2f45;
+  }
+  /* Au survol : le polaroïd se redresse et passe devant */
+  .polaroid:hover {
+    z-index: 20;
+    transform: rotate(0deg) scale(1.04);
+    box-shadow: 0 22px 45px rgb(10 15 46 / 0.3);
+  }
+
+  /* Grilles de logos dans les polaroïds "outils"
+     (".polaroid .logos" et pas ".logos" seul : sinon ".polaroid .photo",
+     plus précis, imposerait display: block et casserait la grille) */
+  .polaroid .logos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
+    gap: 8%;
+    padding: 12%;
+    background: #fff;
+  }
+  .polaroid .logos-crea {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 16%;
+  }
+  .logos svg {
+    width: 100%;
+    max-width: 3rem;
+    height: auto;
+  }
+
+  /* ---------- Positions (en % du cadre) ---------- */
+  .p-mmi  { left: 2%;  top: 2%;  width: 44%; transform: rotate(-6deg); z-index: 2; }
+  .p-dev  { right: 2%; top: 0;   width: 40%; transform: rotate(5deg);  z-index: 1; }
+  .p-crea { left: 0;   bottom: 2%; width: 38%; transform: rotate(-9deg); z-index: 3; }
+  .p-moi  { left: 36%; top: 30%; width: 46%; transform: rotate(3deg);  z-index: 4; }
+
+  /* ---------- Scotch : rectangle translucide aux bords en dents ---------- */
+  .scotch {
+    position: absolute;
+    width: 18%;
+    height: 6%;
+    background: rgb(40 40 45 / 0.82);
+    clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 2% 96%, 0 50%);
+    z-index: 10;
+  }
+  .s1 { left: 17%; top: 1%; transform: rotate(-12deg); }
+  .s2 { right: 10%; top: -2%; transform: rotate(18deg); }
+  .s3 { left: 52%; top: 25%; transform: rotate(-4deg); background: rgb(121 244 255 / 0.55); }
+</style>

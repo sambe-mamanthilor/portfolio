@@ -1,0 +1,36 @@
+---
+/**
+ * Fine ligne cyan ondulée qui sépare deux sections (comme dans la maquette).
+ *
+ * - <LigneOndulee />           : ligne seule, entre deux parties de même couleur.
+ * - <LigneOndulee superpose /> : posée en haut d'une zone "bord-ondule",
+ *   exactement sur la courbe qui sépare le sombre du clair.
+ *
+ * La courbe est la même que celle de la classe "bord-ondule" (global.css) :
+ * même viewBox, même tracé, pour que la ligne tombe pile sur le bord.
+ * vector-effect="non-scaling-stroke" garde un trait de 1,5 px même quand
+ * le dessin est étiré sur toute la largeur de l'écran.
+ */
+interface Props {
+  superpose?: boolean;
+}
+const { superpose = false } = Astro.props;
+---
+
+<svg
+  aria-hidden="true"
+  viewBox="0 0 1440 40"
+  preserveAspectRatio="none"
+  class:list={[
+    'pointer-events-none h-10 w-full text-[#35c3ea]',
+    superpose ? 'absolute inset-x-0 top-0 z-10' : 'block opacity-70',
+  ]}
+>
+  <path
+    d="M0 20 C 240 4, 480 4, 720 20 S 1200 36, 1440 20"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    vector-effect="non-scaling-stroke"
+  />
+</svg>
