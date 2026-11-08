@@ -28,10 +28,8 @@ const traits = [
   { top: '57%', left: '80%', width: '14%', delay: '1.8s' },
   { top: '69%', left: '60%', width: '18%', delay: '0.3s' },
   { top: '40%', left: '6%', width: '9%', delay: '2.2s' },
-  { top: '83%', left: '30%', width: '12%', delay: '1.5s' },
 ];
 
-const technos = ['Astro', 'JavaScript', 'PocketBase', 'Tailwind', 'Figma'];
 ---
 
 <section
@@ -39,35 +37,19 @@ const technos = ['Astro', 'JavaScript', 'PocketBase', 'Tailwind', 'Figma'];
   data-couverture
   aria-labelledby="titre-hero"
   class="relative isolate flex flex-col overflow-hidden pt-26 text-base-content
-         bg-radial-[120%_90%_at_78%_40%] from-[#13235a] via-[#0a0f2e] via-55% to-[#060a1f]
+         bg-radial-[120%_90%_at_78%_40%] from-[#13235a] via-[#0f1944] via-27% to-[#060a1f]
          md:min-h-[max(100svh,54rem)] md:pt-32"
 >
-  <!-- Halo cyan derrière la tête -->
-  <div
-    aria-hidden="true"
-    class="absolute -right-[20%] bottom-0 aspect-square w-[26rem] rounded-full blur-[20px]
-           bg-radial from-[#35c3ea]/35 to-transparent to-65%
-           md:top-[26%] md:right-[9%] md:bottom-auto md:w-[32rem]"
-  ></div>
-
-  <!-- Grand mot en contour, derrière le portrait -->
+  <!-- Grand mot en contour, derrière le nom et le portrait -->
   <p
     aria-hidden="true"
     class="absolute bottom-[32%] left-1/2 z-1 -translate-x-1/2 select-none whitespace-nowrap
            font-display text-[4.5rem] leading-none uppercase tracking-[-0.02em]
            text-transparent [-webkit-text-stroke:1.5px_rgb(121_244_255/0.22)]
-           md:top-[12%] md:bottom-auto md:text-[clamp(4rem,13vw,13rem)]"
+           md:top-[15%] md:bottom-auto md:text-[13vw]"
   >
     Développeuse
   </p>
-
-  <!-- Panneau décalé derrière le portrait (ordinateur seulement) -->
-  <div
-    aria-hidden="true"
-    class="absolute right-[6%] bottom-[9%] z-1 hidden h-[52%] w-[min(26rem,32vw)]
-           translate-x-10 -translate-y-6 border border-primary/35
-           bg-linear-160 from-[#111a3d]/90 to-[#0a0f2e]/40 md:block"
-  ></div>
 
   <!-- Traits lumineux : seules les valeurs du tableau changent d'un trait à l'autre -->
   <div aria-hidden="true">
@@ -80,65 +62,71 @@ const technos = ['Astro', 'JavaScript', 'PocketBase', 'Tailwind', 'Figma'];
     ))}
   </div>
 
-  <!-- Portrait détouré.
-       Mobile : sous le texte, centré. Ordinateur : en bas à droite.
-       mask-b-from-78% : l'image s'efface vers le bas, à partir de 78 % de sa hauteur. -->
-  <Image
-    src={portrait}
-    alt=""
-    widths={[420, 640, 860]}
-    sizes="(min-width: 1024px) 40vw, 80vw"
-    loading="eager"
-    fetchpriority="high"
-    class="relative z-2 order-2 mx-auto mt-8 h-auto w-[min(88%,22rem)]
-           mask-b-from-78% brightness-78 saturate-90
-           md:absolute md:right-[10%] md:bottom-0 md:m-0 md:h-[70%] md:w-auto"
-  />
+  <!-- Portrait dans un ovale, avec une bordure cyan et un halo lumineux dessous.
+       Mobile : sous le texte, centré. Ordinateur : à droite, à 30 % du haut.
+       rounded-[50%] sur un bloc plus haut que large = un ovale ;
+       overflow-hidden découpe la photo selon cet ovale.
+       La photo est presque aussi large que l’ovale (98 %) et descendue de 10 % :
+       la tête entière tient dans l'ovale, les épaules sont coupées en bas. -->
+  <div
+    class="relative z-2 order-2 mx-auto mt-10 mb-12 aspect-[420/453] w-[min(80%,19rem)] overflow-hidden rounded-[50%]
+           border-3 border-primary/25 shadow-[4px_0_4px_rgb(121_244_255/0.38),0_30px_30px_rgb(121_244_255/0.39)]
+           md:absolute md:top-[30%] md:right-[3%] md:m-0 md:w-[29.3%]"
+  >
+    <Image
+      src={portrait}
+      alt=""
+      widths={[420, 640, 860]}
+      sizes="(min-width: 768px) 30vw, 80vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute top-[10%] left-1/2 h-auto w-[98%] max-w-none -translate-x-1/2"
+    />
+  </div>
 
   <!-- Contenu, toujours au premier plan -->
-  <div class="container-site relative z-4 pt-2 md:pt-[clamp(3rem,12vw,10.5rem)]">
-    <p class="text-[0.8rem] font-bold uppercase tracking-[0.25em] text-primary">Portfolio</p>
+  <div class="container-site relative z-4 pt-2 md:pt-[100px]">
+    <div class="md:-ml-6">
+    <p class="text-[13px] font-bold uppercase tracking-[0.25em] text-primary">Portfolio</p>
 
     <h1
       id="titre-hero"
-      class="mt-5 font-display text-[clamp(2.5rem,4.8vw,4.25rem)] leading-[0.95] tracking-[-0.01em]"
+      class="mt-[18px] font-display text-[clamp(2.75rem,5.6vw,5rem)] leading-[0.95]"
     >
       Maman Thilor<br /><span class="text-primary">SAMBE</span>
     </h1>
 
-    <p class="mt-6 text-[1.35rem] font-semibold">Développeuse web full-stack · UX/UI</p>
+    <p class="mt-[22px] max-w-[52rem] text-[clamp(1.1rem,1.5vw,1.35rem)]">
+      Étudiante en 2ᵉ année de BUT Métiers du Multimédia et de l’Internet (MMI)
+      <br class="hidden md:inline" />
+      en parcours développement web &amp; dispositifs interactifs
+    </p>
 
-    <ul class="mt-4 flex max-w-[30rem] flex-wrap gap-2" aria-label="Technologies principales">
-      {technos.map((techno) => (
-        <li class="rounded-full border border-primary/35 bg-[#0a0f2e]/60 px-3.5 py-1 text-sm">
-          {techno}
-        </li>
-      ))}
-    </ul>
 
-    <p class="mt-6 flex max-w-[30rem] items-center gap-2.5 text-[0.95rem] text-muted">
+    <p class="mt-10 flex max-w-[460px] items-center gap-2.5 text-[15px] text-slate-300">
       <span class="size-2.5 flex-none rounded-full bg-green-400 ring-4 ring-green-400/20" aria-hidden="true"></span>
       {SITE.recherche}
     </p>
 
     <div class="mt-8 flex flex-wrap gap-4">
-      <a href="/projets" class="btn btn-primary btn-lg">Voir mes projets</a>
-      <a href={SITE.cv} class="btn btn-ghost btn-lg border border-primary/50" download>
+      <a href="/projets" class="btn btn-primary h-auto rounded-[20px] px-[22px] py-[14px] text-lg">Voir mes projets</a>
+      <a href={SITE.cv} class="btn btn-ghost h-auto rounded-[20px] border border-primary/50 px-[22px] py-[14px] text-lg" download>
         Mon CV <span class="sr-only">(PDF)</span>
       </a>
     </div>
+    </div>
   </div>
 
-  <!-- Bas de couverture (ordinateur seulement).
-       "group" sur le lien + "group-hover:" sur la ligne : la ligne s'allonge
-       quand on survole le lien entier, pas seulement la ligne. -->
+  <!-- Bas de couverture (ordinateur seulement) : « DÉCOUVRIR ↓ ».
+       "group" sur le lien + "group-hover:" sur la flèche : la flèche descend
+       quand on survole le lien entier. -->
   <a
     href="#projets"
-    class="group container-site relative z-4 mt-auto hidden items-center gap-5 pt-12 pb-8
-           text-[0.85rem] font-bold uppercase tracking-[0.3em] md:flex"
+    class="group container-site relative z-4 mt-auto hidden items-center gap-3 pt-12 pb-10
+           text-[13.6px] font-bold uppercase tracking-[0.3em] text-primary md:flex"
   >
     <span>Découvrir</span>
-    <span class="h-0.5 w-20 bg-primary transition-[width] duration-300 group-hover:w-32" aria-hidden="true"></span>
+    <span class="text-[22px] leading-none transition-transform duration-300 group-hover:translate-y-1" aria-hidden="true">↓</span>
     <span class="sr-only">mes projets phares</span>
   </a>
 </section>

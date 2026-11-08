@@ -1,30 +1,26 @@
 ---
 /**
- * Page À propos : présentation, soft skills, langues, parcours,
- * expériences, écosystème numérique (compétences) et passions.
+ * Page À propos, d'après la maquette Figma, avec le même principe que les
+ * pages projet :
+ *   - zone SOMBRE en haut : présentation, soft skills et langues ;
+ *   - zone CLAIRE uniforme ensuite (aquarelle) : parcours, expériences,
+ *     passions, séparés par la fine ligne cyan ondulée ;
+ *   - entre les deux : bord en courbe douce ("bord-ondule").
+ * Tout est écrit en classes utilitaires Tailwind (et daisyUI pour les boutons).
  */
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import ExperienceCard from '../components/ExperienceCard.astro';
-import OutilBadge from '../components/OutilBadge.astro';
-import { getExperiences, getCompetences, type Outil } from '../lib/pocketbase';
-import { LOGOS_ECOLES } from '../lib/medias';
+import LigneOndulee from '../components/LigneOndulee.astro';
+import { getExperiences, fileUrl } from '../lib/pocketbase';
+import { LOGOS_ECOLES, LOGOS_SECOURS } from '../lib/medias';
 import { SITE } from '../data/site';
-import photo from '../assets/images/moi.jpeg';
+import photo from '../assets/images/moi-detoure.png';
+import imgTaekwondo from '../assets/images/passions/taekwondo.png';
+import imgPeinture from '../assets/images/passions/peinture.png';
+import imgLecture from '../assets/images/passions/lecture.png';
+import imgCode from '../assets/images/passions/code.png';
 
-const [experiences, competences] = await Promise.all([getExperiences(), getCompetences()]);
-
-// Regroupe les outils par type pour l'écosystème numérique
-const GROUPES: { titre: string; types: Outil['type'][] }[] = [
-  { titre: 'Langages', types: ['langage'] },
-  { titre: 'Frameworks', types: ['framework'] },
-  { titre: 'Back-end & déploiement', types: ['backend', 'cms', 'deploiement'] },
-  { titre: 'Design & multimédia', types: ['design', 'audiovisuel', 'gestion'] },
-];
-const groupes = GROUPES.map((g) => ({
-  titre: g.titre,
-  outils: competences.filter((o) => g.types.includes(o.type)),
-})).filter((g) => g.outils.length > 0);
+const experiences = await getExperiences();
 
 const softSkills = ['Rigoureuse', 'Travail d’équipe', 'Adaptable', 'Persévérante'];
 const langues = [
@@ -35,167 +31,238 @@ const langues = [
 
 const parcours = [
   {
-    diplome: 'BUT Métiers du Multimédia et de l’Internet',
+    titre: 'BUT Métiers du Multimédia et de l’Internet',
     periode: '2025 – 2028',
-    ecole: 'IUT Nord Franche-Comté',
-    texte: 'Deuxième année en BUT MMI, parcours Développement web et dispositifs interactifs, avec une pratique complémentaire de l’UX/UI design et de la communication digitale.',
-    tags: ['Développement web', 'Création numérique', 'Communication digitale'],
+    lieu: 'IUT Nord Franche-Comté',
+    texte: 'Deuxième année en BUT MMI, dans le parcours Développement web et dispositifs interactifs, avec une pratique complémentaire de l’UX/UI design et de la communication digitale.',
+    tags: ['Création numérique', 'Développement web', 'Communication digitale'],
     logo: LOGOS_ECOLES.mmi,
     altLogo: 'Logo du département MMI',
   },
   {
-    diplome: 'Baccalauréat scientifique',
+    titre: 'Baccalauréat scientifique',
     periode: '2024 – 2025',
-    ecole: 'École privée Pape Benoît XVI',
-    texte: 'Spécialités Mathématiques, Sciences physiques et Sciences de la vie et de la Terre : une solide base en logique, en rigueur et en analyse.',
-    tags: ['Logique', 'Sciences'],
+    lieu: 'École privée Pape Benoît XVI',
+    texte: 'Spécialités Mathématiques, Sciences physiques et Sciences de la vie et de la Terre, avec une solide base en logique, rigueur et analyse scientifique.',
+    tags: ['Logique', 'Science'],
     logo: LOGOS_ECOLES.epb,
     altLogo: 'Logo de l’École privée Pape Benoît XVI',
   },
 ];
 
+// Expériences : même présentation que le parcours (texte à gauche, logo à droite)
+const libelles: Record<string, string> = {
+  stage: 'Stage', emploi: 'Emploi', alternance: 'Alternance', associatif: 'Engagement associatif', freelance: 'Freelance',
+};
+const experiencesAffichees = experiences.map((xp) => ({
+  ...xp,
+  libelle: libelles[xp.type] ?? '',
+  logoDistant: fileUrl(xp, xp.logo),
+  logoLocal: LOGOS_SECOURS[xp.structure.split(' ')[0].toLowerCase()],
+  altLogo: xp.logo_alt || `Logo ${xp.structure}`,
+}));
+
 const passions = [
-  { titre: 'Taekwondo', texte: 'Cultiver la discipline, la persévérance et le dépassement de soi à travers une pratique exigeante.' },
-  { titre: 'Art & peinture', texte: 'Développer mon sens de l’observation, de l’esthétique et de la composition à travers l’expression artistique.' },
-  { titre: 'Lecture', texte: 'Nourrir ma curiosité, enrichir ma réflexion et découvrir de nouvelles perspectives à travers les livres.' },
-  { titre: 'Création numérique', texte: 'Transformer des idées en projets concrets en associant design, technologie et innovation.' },
+  { titre: 'Taekwondo', image: imgTaekwondo, texte: 'Cultiver la discipline, la persévérance et le dépassement de soi à travers une pratique exigeante.' },
+  { titre: 'Art & peinture', image: imgPeinture, texte: 'Développer mon sens de l’observation, de l’esthétique et de la composition à travers l’expression artistique.' },
+  { titre: 'Lecture', image: imgLecture, texte: 'Nourrir ma curiosité, enrichir ma réflexion et découvrir de nouvelles perspectives à travers les livres.' },
+  { titre: 'Création numérique', image: imgCode, texte: 'Transformer des idées en projets concrets en associant design, technologie et innovation.' },
 ];
+
+// Classes communes aux pastilles (parcours) et aux logos ronds
+const pastille = 'rounded-full border border-primary/60 px-3.5 py-1 text-sm font-semibold';
+const logoRond = 'size-24 flex-none rounded-full border border-base-300 bg-white object-contain p-2 md:size-28';
 ---
 
 <Layout
   title="À propos"
-  description="Parcours, compétences, expériences et passions de Maman Thilor SAMBE, étudiante en BUT MMI spécialisée en développement web et UX/UI."
+  description="Parcours, expériences et passions de Maman Thilor SAMBE, étudiante en BUT MMI spécialisée en développement web et UX/UI."
 >
-  <!-- ============ PRÉSENTATION ============ -->
-  <section class="zone-nuit haut-de-page pb-16" data-theme="mts-nuit" aria-labelledby="titre-page">
-    <div class="container-site grid items-center gap-12 md:grid-cols-[1fr_auto]">
-      <div>
-        <h1 id="titre-page" class="font-display text-5xl">À propos</h1>
-        <div class="mt-8 max-w-2xl space-y-4 leading-relaxed text-muted">
-          <p>
-            Étudiante en 2ᵉ année de BUT Métiers du Multimédia et de l’Internet (MMI) à l’IUT Nord Franche-Comté,
-            je me spécialise dans le développement web et les dispositifs interactifs.
-          </p>
-          <p>
-            Ce qui me passionne au quotidien, c’est de concevoir des applications web complètes : de l’analyse
-            des besoins utilisateur et du design d’interface (UX/UI) jusqu’au développement full-stack et à la mise en ligne.
-          </p>
-          <p>
-            Rigoureuse, curieuse et autonome, je recherche une alternance en développement web à partir de
-            janvier 2027, et un stage à partir de fin mars 2027.
-          </p>
-        </div>
-
-        <div class="mt-10 grid gap-8 sm:grid-cols-2">
-          <div>
-            <h2 class="text-lg font-semibold text-primary">Soft skills</h2>
-            <ul class="mt-3 space-y-1.5">
-              {softSkills.map((s) => <li>{s}</li>)}
-            </ul>
-          </div>
-          <div>
-            <h2 class="text-lg font-semibold text-primary">Langues</h2>
-            <ul class="mt-3 space-y-1.5">
-              {langues.map((l) => (
-                <li>{l.nom} <span class="ml-1 rounded-field bg-base-300 px-2 py-0.5 text-sm text-primary">{l.niveau}</span></li>
-              ))}
-            </ul>
+  <!-- ===================== ZONE SOMBRE : PRÉSENTATION ===================== -->
+  <div data-theme="mts-nuit" class="bg-linear-to-b from-[#0a0f2e] to-[#111a3d] text-base-content">
+    <section class="haut-de-page pb-24" aria-labelledby="titre-page">
+      <div class="container-site grid items-center gap-12 md:grid-cols-[1fr_auto] md:gap-16">
+        <div>
+          <h1 id="titre-page" class="font-display text-5xl">À propos</h1>
+          <div class="mt-8 max-w-2xl space-y-4 text-lg leading-relaxed text-muted">
+            <p>
+              Étudiante en 2ᵉ année de BUT MMI à l’IUT Nord Franche-Comté, parcours développement web et
+              dispositifs interactifs, je conçois des applications web complètes : de l’analyse des besoins
+              et du design UX/UI jusqu’au développement full-stack et à la mise en ligne.
+            </p>
+            <p>
+              Rigoureuse, curieuse et autonome, je cherche un code propre au service d’une expérience soignée.
+              Je recherche une alternance dès janvier 2027 ou un stage dès fin mars 2027 en développement web.
+            </p>
           </div>
         </div>
+
+        <!-- Photo : même design que sur la couverture de l'accueil (ovale, bordure
+             cyan, halo dessous), à la taille de cette page. La photo détourée est
+             descendue de 10 % pour que la tête tienne entière dans l'ovale. -->
+        <div
+          class="relative mx-auto aspect-[420/453] w-60 overflow-hidden rounded-[50%] border-3 border-primary/25
+                 shadow-[4px_0_4px_rgb(121_244_255/0.38),0_30px_30px_rgb(121_244_255/0.39)] md:w-80"
+        >
+          <Image
+            src={photo}
+            alt="Portrait de Maman Thilor Sambe, souriante, portant un voile bleu marine"
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 320px, 240px"
+            loading="eager"
+            class="absolute top-[10%] left-1/2 h-auto w-[98%] max-w-none -translate-x-1/2"
+          />
+        </div>
       </div>
 
-      <Image
-        src={photo}
-        alt="Portrait de Maman Thilor Sambe, souriante, portant un voile bleu marine"
-        width={360}
-        height={360}
-        loading="eager"
-        class="photo-profil mx-auto aspect-square w-64 rounded-full object-cover md:w-80"
-      />
-    </div>
-  </section>
-
-  <!-- ============ PARCOURS ============ -->
-  <section id="parcours" class="section scroll-mt-28" aria-labelledby="titre-parcours">
-    <div class="container-site">
-      <h2 id="titre-parcours" class="titre-section">Mon parcours</h2>
-
-      <ol class="mt-10 space-y-14">
-        {parcours.map((p) => (
-          <li class="grid items-center gap-6 md:grid-cols-[1fr_auto]">
-            <div>
-              <h3 class="text-xl font-bold md:text-2xl">
-                {p.diplome} <span class="font-normal italic text-primary">· {p.periode}</span>
-              </h3>
-              <p class="mt-1 text-sm text-accent">{p.ecole}</p>
-              <p class="mt-4 max-w-2xl text-lg text-muted">{p.texte}</p>
-              <ul class="mt-4 flex flex-wrap gap-3" aria-label="Domaines">
-                {p.tags.map((t) => <li class="rounded-field border border-primary/50 px-3 py-1 text-sm font-semibold">{t}</li>)}
-              </ul>
-            </div>
-            <Image src={p.logo} alt={p.altLogo} width={128} height={128} class="size-28 rounded-full border border-base-300 bg-white object-contain p-2 md:size-32" />
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- ============ EXPÉRIENCES ============ -->
-  <section id="experiences" class="section-alt section scroll-mt-28" aria-labelledby="titre-xp">
-    <div class="container-site">
-      <h2 id="titre-xp" class="titre-section">Mes expériences</h2>
-      <ul class="mt-10 space-y-8">
-        {experiences.map((xp) => <li><ExperienceCard experience={xp} /></li>)}
-      </ul>
-    </div>
-  </section>
-
-  <!-- ============ ÉCOSYSTÈME NUMÉRIQUE ============ -->
-  <section id="competences" class="section scroll-mt-28" aria-labelledby="titre-eco">
-    <div class="container-site">
-      <h2 id="titre-eco" class="titre-section md:text-right">Mon écosystème numérique</h2>
-
-      <div class="mt-10 grid gap-8 sm:grid-cols-2">
-        {groupes.map((g) => (
-          <div class="rounded-box border border-base-300 bg-base-100 p-6">
-            <h3 class="font-display text-xl">{g.titre}</h3>
-            <ul class="mt-4 flex flex-wrap gap-3">
-              {g.outils.map((o) => <li><OutilBadge outil={o} /></li>)}
-            </ul>
-          </div>
-        ))}
+      <!-- Soft skills et langues -->
+      <div class="container-site mt-16 grid gap-10 sm:grid-cols-2">
+        <div>
+          <h2 class="font-display text-3xl font-light">Soft skills</h2>
+          <ul class="mt-5 space-y-3 font-semibold">
+            {softSkills.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 class="font-display text-3xl font-light">Mes langues</h2>
+          <ul class="mt-5 space-y-3 font-semibold">
+            {langues.map((l) => <li>{l.nom} <span class="text-primary">{l.niveau}</span></li>)}
+          </ul>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <!-- ============ PASSIONS ============ -->
-  <section id="passions" class="section-alt section scroll-mt-28" aria-labelledby="titre-passions">
-    <div class="container-site">
-      <h2 id="titre-passions" class="titre-section">Mes passions</h2>
+  <!-- ===================== ZONE CLAIRE : PARCOURS, EXPÉRIENCES, PASSIONS ===================== -->
+  <div data-theme="mts" class="bord-ondule bg-page bg-(image:--fond-aquarelle) bg-cover bg-top text-base-content">
+    <LigneOndulee superpose />
 
-      <ul class="mt-10 grid gap-8 sm:grid-cols-2">
-        {passions.map((p) => (
-          <li class="rounded-box border border-base-300 bg-base-100 p-6">
-            <h3 class="font-display text-xl">{p.titre}</h3>
-            <p class="mt-2 text-muted">{p.texte}</p>
-          </li>
-        ))}
-      </ul>
-
-      <div class="mt-12 text-center">
-        <a href={SITE.cv} class="btn btn-neutral btn-lg" download>
-          Télécharger mon CV
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14" /></svg>
-          <span class="sr-only">(PDF)</span>
-        </a>
+    <!-- ============ PARCOURS ============ -->
+    <section id="parcours" class="section scroll-mt-28" aria-labelledby="titre-parcours">
+      <div class="container-site">
+        <h2 id="titre-parcours" class="titre-section">Mon parcours</h2>
+        <ol class="mt-12 space-y-14">
+          {parcours.map((p) => (
+            <li class="flex flex-col-reverse gap-6 md:flex-row md:items-center md:justify-between">
+              <div class="max-w-3xl">
+                <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1">
+                  <h3 class="text-xl font-bold md:text-2xl">{p.titre}</h3>
+                  <p class="font-semibold text-primary italic">{p.periode}</p>
+                </div>
+                <p class="mt-1 text-sm font-semibold text-accent">{p.lieu}</p>
+                <p class="mt-4 text-lg text-muted">{p.texte}</p>
+                <ul class="mt-5 flex flex-wrap gap-3" aria-label="Domaines">
+                  {p.tags.map((t) => <li class={pastille}>{t}</li>)}
+                </ul>
+              </div>
+              <Image src={p.logo} alt={p.altLogo} width={128} height={128} class={logoRond} />
+            </li>
+          ))}
+        </ol>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ============ EXPÉRIENCES (même présentation que le parcours) ============ -->
+    {experiencesAffichees.length > 0 && <LigneOndulee />}
+    {experiencesAffichees.length > 0 && (
+      <section id="experiences" class="section scroll-mt-28" aria-labelledby="titre-xp">
+        <div class="container-site">
+          <h2 id="titre-xp" class="titre-section">Mes expériences</h2>
+          <ol class="mt-12 space-y-14">
+            {experiencesAffichees.map((xp) => (
+              <li class="flex flex-col-reverse gap-6 md:flex-row md:items-center md:justify-between">
+                <div class="max-w-3xl">
+                  <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1">
+                    <h3 class="text-xl font-bold md:text-2xl">{xp.poste}</h3>
+                    <p class="font-semibold text-primary italic">{xp.periode}</p>
+                  </div>
+                  <p class="mt-1 text-sm font-semibold text-accent">
+                    {xp.libelle && `${xp.libelle} · `}{xp.structure}{xp.lieu && ` · ${xp.lieu}`}
+                  </p>
+                  <div class="texte-riche mt-4 text-lg text-muted" set:html={xp.description} />
+                </div>
+                {xp.logoDistant ? (
+                  <img src={xp.logoDistant} alt={xp.altLogo} width="112" height="112" loading="lazy" class={logoRond} />
+                ) : xp.logoLocal ? (
+                  <Image src={xp.logoLocal} alt={xp.altLogo} width={112} height={112} class={logoRond} />
+                ) : (
+                  <span class:list={[logoRond, 'grid place-items-center font-display text-2xl text-[#0a0f2e]']} aria-hidden="true">
+                    {xp.structure.slice(0, 2)}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )}
+
+    <!-- ============ PASSIONS ============ -->
+    <LigneOndulee />
+    <section id="passions" class="section scroll-mt-28" aria-labelledby="titre-passions">
+      <div class="container-site">
+        <h2 id="titre-passions" class="titre-section">Mes passions</h2>
+        <!-- Panneaux qui s'ouvrent (ordinateur) :
+             - au repos, le 1er panneau est ouvert et les autres fermés ;
+             - au survol (ou au clavier avec Tab), le panneau visé s'ouvre
+               (flex-[3] = il prend 3 fois plus de place) et les autres se referment.
+             - [ul:not(:hover,:focus-within)>&:first-child] : variante "sur mesure"
+               qui veut dire « je suis le 1er panneau ET personne ne survole la liste ».
+             - le texte est replié avec max-h-0 (hauteur 0) pour que le titre reste en bas.
+             Sur mobile : tout est ouvert, empilé, sans animation. -->
+        <ul class="mt-12 flex flex-col gap-4 md:h-[18rem] md:flex-row">
+          {passions.map((p) => (
+            <li
+              tabindex="0"
+              class="group relative flex flex-col justify-end overflow-hidden rounded-box border border-base-300 bg-white/70 p-6
+                     outline-primary transition-[flex-grow,border-color,background-color] duration-500 ease-out
+                     motion-reduce:transition-none md:flex-1
+                     md:hover:flex-[3] md:hover:border-primary md:hover:bg-white
+                     md:focus-visible:flex-[3] md:focus-visible:border-primary md:focus-visible:bg-white
+                     md:[ul:not(:hover,:focus-within)>&:first-child]:flex-[3]
+                     md:[ul:not(:hover,:focus-within)>&:first-child]:border-primary
+                     md:[ul:not(:hover,:focus-within)>&:first-child]:bg-white"
+            >
+              <!-- Illustration (maquette Figma). mb-auto la pousse en haut du panneau ;
+                   alt="" car elle est décorative : le titre dit déjà de quoi il s'agit. -->
+              <Image
+                src={p.image}
+                alt=""
+                height={128}
+                class="relative mb-auto h-24 w-auto self-start object-contain transition-transform duration-500
+                       motion-reduce:transition-none md:h-32 md:group-hover:scale-110 md:group-focus-visible:scale-110"
+              />
+              <!-- Trait cyan qui s'allonge quand le panneau s'ouvre -->
+              <span
+                aria-hidden="true"
+                class="mb-4 block h-1 w-8 rounded-full bg-primary transition-[width] duration-500
+                       md:group-hover:w-16 md:group-focus-visible:w-16
+                       md:[ul:not(:hover,:focus-within)>li:first-child_&]:w-16"
+              ></span>
+              <h3 class="relative font-display text-2xl">{p.titre}</h3>
+              <p
+                class="relative max-w-md overflow-hidden text-muted transition-[max-height,opacity,margin] duration-500
+                       mt-2 md:mt-0 md:max-h-0 md:opacity-0
+                       md:group-hover:mt-2 md:group-hover:max-h-40 md:group-hover:opacity-100
+                       md:group-focus-visible:mt-2 md:group-focus-visible:max-h-40 md:group-focus-visible:opacity-100
+                       md:[ul:not(:hover,:focus-within)>li:first-child_&]:mt-2
+                       md:[ul:not(:hover,:focus-within)>li:first-child_&]:max-h-40
+                       md:[ul:not(:hover,:focus-within)>li:first-child_&]:opacity-100"
+              >
+                {p.texte}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-14 text-center">
+          <a href={SITE.cv} class="btn btn-primary btn-lg" download>
+            Télécharger mon CV
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14" /></svg>
+            <span class="sr-only">(PDF)</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>
-
-<style>
-  .photo-profil {
-    border: 4px solid #35c3ea;
-    box-shadow: 0 0 0 10px rgb(53 195 234 / 0.2);
-  }
-</style>

@@ -135,9 +135,19 @@ const liens = [
           )}
         </div>
 
-        <div class="overflow-hidden rounded-box border border-primary/40 shadow-[10px_10px_0_rgb(14_163_205/0.35)]">
-          <ProjetImage projet={projet} taille="800x450" prioritaire class="aspect-video w-full" />
-        </div>
+        {projet.format_apercu === 'mobile' && imagesMobile.length > 0 ? (
+          <!-- Site pensé pour mobile : la couverture est un iPhone, pas un écran d'ordinateur -->
+          <div class="mx-auto w-[240px] rounded-[44px] bg-[#111] p-[10px] shadow-[0_30px_80px_-20px_rgb(53_195_234/0.45)] ring-1 ring-white/15">
+            <div class="relative aspect-[390/800] overflow-hidden rounded-[34px] bg-white">
+              <img src={imagesMobile[0].src} alt={imagesMobile[0].alt} class="size-full object-cover object-top" />
+              <span class="absolute top-[8px] left-1/2 h-[20px] w-[70px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
+            </div>
+          </div>
+        ) : (
+          <div class="overflow-hidden rounded-box border border-primary/40 shadow-[10px_10px_0_rgb(14_163_205/0.35)]">
+            <ProjetImage projet={projet} taille="800x450" prioritaire class="aspect-video w-full" />
+          </div>
+        )}
       </div>
     </section>
   </div>
@@ -218,30 +228,29 @@ const liens = [
             </div>
           )}
 
-          <!-- Difficultés rencontrées : le tableau que les recruteurs tech lisent le plus -->
+          <!-- Difficultés rencontrées, présentées comme des tickets de bug :
+               le problème et sa cause en haut, la correction en vert en bas. -->
           {difficultes.length > 0 && (
             <div class="mt-12">
               <h3 class="font-display text-2xl">Difficultés et solutions</h3>
-              <div class="mt-6 overflow-x-auto rounded-box border border-primary/20">
-                <table class="table">
-                  <thead class="bg-base-200 text-xs uppercase tracking-widest text-accent">
-                    <tr>
-                      <th scope="col">Problème</th>
-                      <th scope="col">Cause</th>
-                      <th scope="col">Solution</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {difficultes.map((d) => (
-                      <tr class="border-primary/10">
-                        <td class="font-medium">{d.probleme}</td>
-                        <td class="text-muted">{d.cause}</td>
-                        <td><span class="text-primary" aria-hidden="true">→ </span>{d.solution}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <ol class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {difficultes.map((d, i) => (
+                  <li class="flex flex-col overflow-hidden rounded-box border border-base-300 bg-white/80">
+                    <div class="p-5">
+                      <p class="flex items-center gap-2 font-mono text-xs text-muted">
+                        <span class="size-2 rounded-full bg-orange-600" aria-hidden="true"></span>
+                        bug #{i + 1}
+                      </p>
+                      <h4 class="mt-2 font-semibold">{d.probleme}</h4>
+                      <p class="mt-1.5 text-sm text-muted"><span class="font-medium">Cause :</span> {d.cause}</p>
+                    </div>
+                    <p class="mt-auto flex gap-3 border-t border-green-200 bg-green-50 px-5 py-3 text-sm">
+                      <span class="font-mono text-xs font-semibold whitespace-nowrap text-green-700">✓ fix</span>
+                      <span><span class="sr-only">Solution : </span>{d.solution}</span>
+                    </p>
+                  </li>
+                ))}
+              </ol>
             </div>
           )}
         </div>

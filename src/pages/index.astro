@@ -16,7 +16,8 @@ import { getProjetsMisEnAvant } from '../lib/pocketbase';
 import { SITE } from '../data/site';
 import CollagePolaroid from '../components/CollagePolaroid.astro';
 
-const projets = await getProjetsMisEnAvant();
+// 3 projets phares maximum, sur une seule ligne (les plus récents)
+const projets = (await getProjetsMisEnAvant()).slice(0, 3);
 
 ---
 
@@ -89,7 +90,8 @@ const projets = await getProjetsMisEnAvant();
           Une alternance, un stage <span class="text-primary">ou un projet&nbsp;?</span>
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-lg text-muted">
-          Je réponds rapidement. Écrivez-moi, on en parle.
+          Disponible en alternance dès janvier 2027 et en stage dès fin mars 2027.
+          Je réponds rapidement&nbsp;: écrivez-moi, on en parle.
         </p>
         <div class="mt-8 flex flex-wrap justify-center gap-4">
           <a href="/contact" class="btn btn-primary btn-lg">Me contacter</a>

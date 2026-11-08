@@ -63,6 +63,8 @@ export interface Difficulte {
 export interface Projet extends BaseRecord {
   titre: string;
   slug: string;
+  /** Titre plus court, affiché sur la carte projet (sinon on prend "titre") */
+  titre_court?: string;
   resume: string;
   categorie: string[];
   type_projet: 'sae' | 'personnel' | 'professionnel' | 'cours' | '';
