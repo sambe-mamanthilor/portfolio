@@ -1,17 +1,25 @@
 ---
-/** Page affichée quand une adresse n'existe pas. */
+/**
+ * Page affichée quand une adresse n'existe pas.
+ * Il n'y a qu'une seule page 404 pour tout le site : on regarde si l'adresse
+ * demandée commence par /en pour choisir la langue.
+ */
 import Layout from '../layouts/Layout.astro';
+import { bouton } from '../lib/boutons';
+import { tr, lien, type Lang } from '../i18n';
+
+const lang: Lang = Astro.url.pathname.startsWith('/en') ? 'en' : 'fr';
 ---
 
-<Layout title="Page introuvable">
+<Layout title={tr(lang, 'Page introuvable', 'Page not found')}>
   <section class="zone-nuit haut-de-page pb-24 text-center" data-theme="mts-nuit" aria-labelledby="titre-page">
     <div class="container-site">
       <p class="font-display text-8xl text-primary" aria-hidden="true">404</p>
-      <h1 id="titre-page" class="mt-4 font-display text-4xl">Cette page s’est perdue</h1>
-      <p class="mt-4 text-lg text-muted">L’adresse demandée n’existe pas, ou plus.</p>
+      <h1 id="titre-page" class="mt-4 font-display text-4xl">{tr(lang, 'Cette page s’est perdue', 'This page got lost')}</h1>
+      <p class="mt-4 text-lg text-muted">{tr(lang, 'L’adresse demandée n’existe pas, ou plus.', 'The page you’re looking for doesn’t exist, or no longer does.')}</p>
       <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <a href="/" class="btn btn-primary">Retour à l’accueil</a>
-        <a href="/projets" class="btn btn-neutral border-primary/40">Voir mes projets</a>
+        <a href={lien(lang, '/')} class={bouton('principal')}>{tr(lang, 'Retour à l’accueil', 'Back to home')}</a>
+        <a href={lien(lang, '/projets')} class={bouton('secondaire')}>{tr(lang, 'Voir mes projets', 'See my projects')}</a>
       </div>
     </div>
   </section>

@@ -1,0 +1,212 @@
+---
+/**
+ * Page Projets : recherche + filtre par catégorie + grille de cartes.
+ *
+ * Principe d'"amélioration progressive" :
+ *  - sans JavaScript, toutes les cartes s'affichent (rien n'est perdu) ;
+ *  - avec JavaScript, la recherche et le filtre masquent les cartes
+ *    qui ne correspondent pas.
+ * Les informations utiles au filtre et au tri sont rangées dans des
+ * attributs data-* sur chaque carte, générés au build depuis PocketBase.
+ *
+ * Animations :
+ *  - filtre et tri animés avec l'API View Transitions du navigateur :
+ *    on modifie la page, le navigateur anime tout seul le passage de
+ *    l'ancien état au nouveau (les cartes glissent à leur nouvelle place) ;
+ *  - apparition des cartes en cascade quand elles entrent à l'écran.
+ * Navigateurs sans View Transitions ou "réduire les animations" activé :
+ * le changement est simplement instantané.
+ */
+import Layout from '../layouts/Layout.astro';
+import { bouton } from '../lib/boutons';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getProjets, getCategories } from '../lib/pocketbase';
+import { langue, tr, champ } from '../i18n';
+
+const lang = langue(Astro);
+
+const [tousProjets, categories] = await Promise.all([getProjets(), getCategories()]);
+
+// Ordre par défaut (aussi sans JavaScript) : du plus récent au plus ancien
+const projets = [...tousProjets].sort((a, b) => (b.date_debut || '').localeCompare(a.date_debut || ''));
+
+// On n'affiche que les catégories qui ont au moins un projet
+const categoriesUtiles = categories.filter((c) => projets.some((p) => p.categorie.includes(c.id)));
+
+// Texte dans lequel la recherche s'effectue : titre, résumé et outils
+const texteRecherche = (p: (typeof projets)[number]) =>
+  [champ(p, 'titre', lang), champ(p, 'resume', lang), ...(p.expand?.outils ?? []).map((o) => o.nom)].join(' ').toLowerCase();
+---
+
+<Layout
+  title={tr(lang, 'Projets', 'Projects')}
+  description={tr(lang,
+    'Projets de Maman Thilor SAMBE : applications web, data visualisation, UX/UI design, identité visuelle et audiovisuel.',
+    'Projects by Maman Thilor SAMBE: web apps, data visualisation, UX/UI design, visual identity and video.')}
+>
+  <section class="haut-de-page pb-4" aria-labelledby="titre-page">
+    <div class="container-site">
+      <h1 id="titre-page" class="font-display text-5xl">{tr(lang, 'Mes', 'My')} <span class="text-primary">{tr(lang, 'projets', 'projects')}</span></h1>
+
+      <!-- Barre de recherche + filtres -->
+      <div class="barre-filtres mt-10 flex flex-col gap-4 rounded-box border border-base-300 p-4 lg:flex-row lg:items-center" data-filtres hidden>
+        <label class="input flex flex-1 items-center gap-2 bg-base-100">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          <span class="sr-only">{tr(lang, 'Rechercher un projet', 'Search projects')}</span>
+          <input type="search" placeholder={tr(lang, 'Rechercher une technologie (Astro, PocketBase, Figma…)', 'Search a technology (Astro, PocketBase, Figma…)')} data-recherche class="grow" />
+        </label>
+
+        <div role="group" aria-label={tr(lang, 'Filtrer par catégorie', 'Filter by category')} class="flex flex-wrap gap-2">
+          <button type="button" class={bouton('secondaire', 'petit')} aria-pressed="true" data-filtre="tous">{tr(lang, 'Tous', 'All')}</button>
+          {categoriesUtiles.map((c) => (
+            <button type="button" class={bouton('secondaire', 'petit')} aria-pressed="false" data-filtre={c.id}>{champ(c, 'nom', lang)}</button>
+          ))}
+        </div>
+
+        <!-- Tri par date -->
+        <label class="flex items-center gap-2 text-sm font-semibold whitespace-nowrap">
+          {tr(lang, 'Trier', 'Sort')}
+          <select class="select select-sm rounded-field bg-base-100" data-tri>
+            <option value="recent">{tr(lang, 'Plus récents', 'Newest first')}</option>
+            <option value="ancien">{tr(lang, 'Plus anciens', 'Oldest first')}</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Annonce le nombre de résultats aux lecteurs d'écran -->
+      <p class="mt-4 text-sm text-muted" aria-live="polite" data-compteur>{projets.length} {tr(lang, 'projets', 'projects')}</p>
+    </div>
+  </section>
+
+  <section class="section pt-8" aria-label={tr(lang, 'Liste des projets', 'Project list')}>
+    <div class="container-site">
+      <ul class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3" data-grille>
+        {projets.map((projet) => (
+          <li
+            class="carte-anim"
+            data-carte
+            data-categories={projet.categorie.join(' ')}
+            data-texte={texteRecherche(projet)}
+            data-date={projet.date_debut}
+            style={`view-transition-name: projet-${projet.slug}`}
+          >
+            <ProjectCard projet={projet} niveauTitre="h2" />
+          </li>
+        ))}
+      </ul>
+      <p class="mt-10 hidden text-center text-muted" data-aucun>{tr(lang, 'Aucun projet ne correspond à cette recherche.', 'No project matches this search.')}</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Barre de filtres : blanc translucide posé sur l'aquarelle */
+  .barre-filtres {
+    background: rgb(255 255 255 / 0.65);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgb(10 15 46 / 0.06);
+  }
+
+  /* Apparition en cascade : la carte monte et apparaît quand elle entre à l'écran.
+     Seulement si JavaScript a préparé la grille (sinon tout reste visible). */
+  [data-anime] .carte-anim {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: calc(var(--rang, 0) * 90ms);
+  }
+  [data-anime] .carte-anim[data-visible] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Durée des transitions de filtre et de tri */
+  ::view-transition-group(*) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  [aria-pressed='true'] {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+    border-color: var(--color-primary);
+  }
+</style>
+
+<script>
+  const zone = document.querySelector<HTMLElement>('[data-filtres]');
+  const champ = document.querySelector<HTMLInputElement>('[data-recherche]');
+  const boutons = [...document.querySelectorAll<HTMLButtonElement>('[data-filtre]')];
+  const cartes = [...document.querySelectorAll<HTMLElement>('[data-carte]')];
+  const compteur = document.querySelector<HTMLElement>('[data-compteur]');
+  const aucun = document.querySelector<HTMLElement>('[data-aucun]');
+  const grille = document.querySelector<HTMLElement>('[data-grille]');
+  const tri = document.querySelector<HTMLSelectElement>('[data-tri]');
+  const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Applique un changement de la page en l'animant si le navigateur sait le faire
+  function animer(changement: () => void) {
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+    if (doc.startViewTransition && !reduit) doc.startViewTransition(changement);
+    else changement();
+  }
+
+  // Les filtres ne s'affichent que si JavaScript fonctionne
+  zone?.removeAttribute('hidden');
+
+  let categorie = 'tous';
+
+  function appliquer() {
+    const recherche = (champ?.value ?? '').trim().toLowerCase();
+    let visibles = 0;
+
+    for (const carte of cartes) {
+      const okCategorie = categorie === 'tous' || (carte.dataset.categories ?? '').split(' ').includes(categorie);
+      const okRecherche = !recherche || (carte.dataset.texte ?? '').includes(recherche);
+      const visible = okCategorie && okRecherche;
+      carte.hidden = !visible;
+      if (visible) visibles++;
+    }
+
+    if (compteur) compteur.textContent = document.documentElement.lang === 'en'
+        ? `${visibles} project${visibles > 1 ? 's' : ''}`
+        : `${visibles} projet${visibles > 1 ? 's' : ''}`;
+    aucun?.classList.toggle('hidden', visibles > 0);
+  }
+
+  for (const bouton of boutons) {
+    bouton.addEventListener('click', () => {
+      categorie = bouton.dataset.filtre ?? 'tous';
+      boutons.forEach((b) => b.setAttribute('aria-pressed', String(b === bouton)));
+      animer(appliquer);
+    });
+  }
+
+  champ?.addEventListener('input', appliquer);
+
+  // ---------- Tri par date ----------
+  // On réordonne les <li> dans la grille selon leur data-date.
+  function trier() {
+    const sens = tri?.value === 'ancien' ? 1 : -1;
+    const ordre = [...cartes].sort((a, b) => sens * (a.dataset.date ?? '').localeCompare(b.dataset.date ?? ''));
+    ordre.forEach((carte) => grille?.appendChild(carte));
+  }
+  tri?.addEventListener('change', () => animer(trier));
+
+  // ---------- Apparition en cascade ----------
+  if (grille && !reduit && 'IntersectionObserver' in window) {
+    grille.setAttribute('data-anime', '');
+    const observateur = new IntersectionObserver((entrees) => {
+      entrees.forEach((entree) => {
+        if (!entree.isIntersecting) return;
+        entree.target.setAttribute('data-visible', '');
+        observateur.unobserve(entree.target);
+      });
+    }, { threshold: 0.15 });
+    // Le délai dépend de la colonne (0, 1, 2) : effet de vague ligne par ligne
+    cartes.forEach((carte, i) => {
+      carte.style.setProperty('--rang', String(i % 3));
+      observateur.observe(carte);
+    });
+  }
+</script>

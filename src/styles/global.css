@@ -127,6 +127,21 @@
     from { transform: translateX(-12px); opacity: 0.25; }
     to   { transform: translateX(12px);  opacity: 0.7; }
   }
+
+  /* Animations d'arrivée de la couverture (classes "animate-apparait"
+     et "animate-clignote"). Le moment de départ se règle avec un délai :
+     [animation-delay:2s]. "both" = l'élément reste invisible pendant le délai. */
+  --animate-apparait: apparait 0.8s ease-out both;
+  @keyframes apparait {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Curseur de la machine à écrire : visible / invisible, sans fondu */
+  --animate-clignote: clignote 1s steps(1) infinite;
+  @keyframes clignote {
+    50% { opacity: 0; }
+  }
 }
 
 /* 6. Styles de base */
@@ -209,8 +224,21 @@
     list-style: disc;
     padding-left: 1.25rem;
   }
+  .texte-riche li::marker {
+    color: var(--color-primary);
+  }
   .texte-riche li + li {
     margin-top: 0.4rem;
+  }
+  /* Liens écrits dans PocketBase : soulignés, couleur principale */
+  .texte-riche a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .texte-riche a:hover {
+    text-decoration-thickness: 2px;
   }
   .texte-riche strong {
     color: var(--color-base-content);

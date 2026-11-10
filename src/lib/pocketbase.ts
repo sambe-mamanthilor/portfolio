@@ -67,7 +67,7 @@ export interface Projet extends BaseRecord {
   titre_court?: string;
   resume: string;
   categorie: string[];
-  type_projet: 'sae' | 'personnel' | 'professionnel' | 'cours' | '';
+  type_projet: 'sae' | 'projet' | 'personnel' | 'professionnel' | 'cours' | '';
   cadre: 'individuel' | 'collectif' | '';
   taille_equipe: number;
   role: string;
@@ -77,6 +77,8 @@ export interface Projet extends BaseRecord {
   objectifs: string;
   choix_techniques: string;
   resultat: string;
+  /** « Ce que j'en retiens » : ce que j'ai appris, ce que je referais autrement */
+  recul?: string;
   outils: string[];
   couverture: string;
   couverture_alt: string;

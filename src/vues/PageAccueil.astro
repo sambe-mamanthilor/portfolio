@@ -1,0 +1,150 @@
+---
+/**
+ * Page d'accueil. L'ordre suit ce qu'un recruteur cherche, dans l'ordre :
+ *  1. Couverture        → QUI je suis (nom, rôle, stack, disponibilité)
+ *  2. Projets phares    → la PREUVE que je sais faire (cible du lien "Découvrir")
+ *  3. Savoir-faire      → carrousel 3D : logiciels, domaine et compétence
+ *  4. À propos          → petit paragraphe + collage polaroïds, bouton vers la page À propos
+ *  5. Bandeau contact   → l'action finale
+ * Les projets viennent de PocketBase (au build) ; le reste est écrit ici.
+ */
+import Layout from '../layouts/Layout.astro';
+import { bouton } from '../lib/boutons';
+import ProjectCard from '../components/ProjectCard.astro';
+import HeroCouverture from '../components/HeroCouverture.astro';
+import CarrouselCompetences from '../components/CarrouselCompetences.astro';
+import { getProjetsMisEnAvant } from '../lib/pocketbase';
+import { SITE } from '../data/site';
+import CollagePolaroid from '../components/CollagePolaroid.astro';
+import { langue, tr, lien } from '../i18n';
+
+const lang = langue(Astro);
+
+// 3 projets phares maximum, sur une seule ligne (les plus récents)
+const projets = (await getProjetsMisEnAvant()).slice(0, 3);
+
+---
+
+<Layout>
+  <!-- ============ 1. COUVERTURE ============ -->
+  <HeroCouverture />
+
+  <!-- ============ 2. PROJETS PHARES (cible de "Découvrir") ============ -->
+  <section id="projets" class="section scroll-mt-24" aria-labelledby="titre-projets">
+    <div class="container-site">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="sur-titre">{tr(lang, 'Réalisations', 'Work')}</p>
+          <h2 id="titre-projets" class="mt-2 font-display text-4xl md:text-5xl">{tr(lang, 'Mes projets phares', 'Featured projects')}</h2>
+        </div>
+        <a href={lien(lang, '/projets')} class="lien-fleche">
+          {tr(lang, 'Voir tous mes projets', 'See all my projects')}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </div>
+
+      <ul class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {projets.map((projet) => (
+          <li><ProjectCard projet={projet} /></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 3. SAVOIR-FAIRE : carrousel 3D des logiciels ============ -->
+  <CarrouselCompetences />
+
+  <!-- ============ 4. À PROPOS : texte à gauche, qualités à droite, bouton en bas ============ -->
+  <section class="section" aria-labelledby="titre-apropos">
+    <div class="container-site">
+      <div class="grid gap-12 md:grid-cols-2 md:items-center md:gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
+        <!-- Texte -->
+        <div>
+          <p class="sur-titre">{tr(lang, 'À propos', 'About me')}</p>
+          <h2 id="titre-apropos" class="mt-2 font-display text-4xl leading-tight md:text-5xl">
+            {tr(lang, 'Derrière le code,', 'Behind the code,')}<br /><span class="text-primary">{tr(lang, 'une idée qui prend vie', 'an idea coming to life')}</span>
+          </h2>
+          <!-- Un seul petit paragraphe (consigne du sujet) : le détail est sur la page À propos -->
+          {lang === 'fr' ? (
+            <p class="mt-8 max-w-xl text-lg leading-relaxed text-muted">
+              Ce qui me fait avancer&nbsp;? Voir une idée devenir un site que les gens utilisent vraiment.
+              J’aime <strong class="text-base-content">comprendre le besoin</strong>, <strong class="text-base-content">dessiner l’interface</strong>
+              puis <strong class="text-base-content">écrire le code</strong> qui la fait vivre, jusqu’à la mise en ligne.
+            </p>
+          ) : (
+            <p class="mt-8 max-w-xl text-lg leading-relaxed text-muted">
+              What drives me? Seeing an idea become a website that people actually use.
+              I love <strong class="text-base-content">understanding the need</strong>, <strong class="text-base-content">designing the interface</strong>
+              and <strong class="text-base-content">writing the code</strong> that brings it to life, all the way to launch.
+            </p>
+          )}
+        </div>
+
+        <!-- Collage façon polaroïds : ma photo, l'IUT MMI et mes logiciels -->
+        <CollagePolaroid />
+      </div>
+
+      <!-- Bouton en bas : mène à la page À propos -->
+      <div class="mt-14 text-center">
+        <a href={lien(lang, '/a-propos')} class={bouton('principal')}>
+          {tr(lang, 'Découvrir mon parcours', 'Discover my background')}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. BANDEAU CONTACT ============ -->
+  <section class="pb-24" aria-labelledby="titre-contact">
+    <div class="container-site">
+      <div class="bandeau rounded-box px-6 py-14 text-center md:px-16" data-theme="mts-nuit">
+        <h2 id="titre-contact" class="font-display text-3xl md:text-5xl">
+          {tr(lang, 'Une alternance, un stage', 'A work-study position, an internship')} <span class="text-primary">{tr(lang, 'ou un projet ?', 'or a project?')}</span>
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-lg text-muted">
+          {tr(lang,
+            'Disponible en alternance dès janvier 2027 et en stage dès fin mars 2027. Je réponds rapidement : écrivez-moi, on en parle.',
+            'Available for a work-study position from January 2027 and for an internship from late March 2027. I reply quickly: drop me a line and let’s talk.')}
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href={lien(lang, '/contact')} class={bouton('principal')}>{tr(lang, 'Me contacter', 'Contact me')}</a>
+          <a href={`mailto:${SITE.email}`} class={bouton('secondaire')}>{SITE.email}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Petit libellé au-dessus des titres de section */
+  .sur-titre {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .lien-fleche {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 0.15rem;
+  }
+  .lien-fleche svg {
+    transition: transform 0.2s;
+  }
+  .lien-fleche:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Bandeau contact : rappel de la couverture (bleu nuit + halo cyan) */
+  .bandeau {
+    background:
+      radial-gradient(60% 120% at 50% 0%, rgb(53 195 234 / 0.25), transparent 70%),
+      #0a0f2e;
+    color: var(--color-base-content);
+  }
+</style>

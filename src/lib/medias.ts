@@ -19,6 +19,7 @@ import microTrottoir from '../assets/images/projets/micro-trottoir.png';
 
 import logoLoum from '../assets/images/logos/loum.png';
 import logoProco from '../assets/images/logos/proco.png';
+import logoAesbm from '../assets/images/logos/aesbm.png';
 import logoMmi from '../assets/images/logos/mmi.png';
 import logoEpb from '../assets/images/logos/epb.jpeg';
 
@@ -29,6 +30,7 @@ import logoEpb from '../assets/images/logos/epb.jpeg';
 export const LOGOS_SECOURS: Record<string, ImageMetadata> = {
   'loum': logoLoum,
   'proco': logoProco,
+  'aesbm': logoAesbm,
 };
 
 /** Logos des établissements (section Parcours). */

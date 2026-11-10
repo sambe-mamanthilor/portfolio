@@ -9,11 +9,13 @@
  *  - ordinateur : ligne au centre, étapes alternées gauche / droite.
  */
 import type { Etape } from '../lib/pocketbase';
+import { langue, tr, champ } from '../i18n';
 
 interface Props {
   etapes: Etape[];
 }
 const { etapes } = Astro.props;
+const lang = langue(Astro);
 ---
 
 <ol class="frise relative mx-auto max-w-4xl" data-frise>
@@ -21,9 +23,9 @@ const { etapes } = Astro.props;
     <li class:list={['etape relative pb-12 pl-10 md:w-1/2', index % 2 === 0 ? 'md:pl-0 md:pr-12 md:text-right' : 'md:ml-auto md:pl-12']}>
       <span class="point" aria-hidden="true" />
       <h3 class="text-lg font-semibold text-primary">
-        <span class="sr-only">Étape {index + 1} : </span>{etape.titre}
+        <span class="sr-only">{tr(lang, 'Étape', 'Step')} {index + 1}{tr(lang, ' : ', ': ')}</span>{champ(etape, 'titre', lang)}
       </h3>
-      <div class="texte-riche mt-2 text-muted" set:html={etape.description} />
+      <div class="texte-riche mt-2 text-muted" set:html={champ(etape, 'description', lang)} />
     </li>
   ))}
 </ol>

@@ -7,6 +7,7 @@
  * 3. Sinon : un simple aplat avec le titre, pour ne jamais casser la mise en page.
  */
 import { Image } from 'astro:assets';
+import { langue, tr, champ } from '../i18n';
 import { fileUrl, type Projet } from '../lib/pocketbase';
 import { COUVERTURES_SECOURS } from '../lib/medias';
 
@@ -24,7 +25,8 @@ const { projet, taille = '800x450', class: classe = '', prioritaire = false } = 
 const urlDistante = fileUrl(projet, projet.couverture, taille);
 const secours = COUVERTURES_SECOURS[projet.slug];
 // Texte alternatif : celui saisi dans le back-office, sinon une description générique
-const alt = projet.couverture_alt || `Aperçu du projet ${projet.titre}`;
+const lang = langue(Astro);
+const alt = champ(projet, 'couverture_alt', lang) || `${tr(lang, 'Aperçu du projet', 'Preview of the project')} ${champ(projet, 'titre', lang)}`;
 const [largeur, hauteur] = taille.split('x').map(Number);
 const chargement = prioritaire ? 'eager' : 'lazy';
 ---
@@ -50,6 +52,6 @@ const chargement = prioritaire ? 'eager' : 'lazy';
   />
 ) : (
   <div class={`grid place-items-center bg-base-300 p-6 text-center font-display text-xl text-primary ${classe}`} role="img" aria-label={alt}>
-    {projet.titre}
+    {champ(projet, 'titre', lang)}
   </div>
 )}

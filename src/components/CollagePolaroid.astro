@@ -11,15 +11,17 @@
  *  - deux polaroïds de logos : mes outils de dev, puis mes outils créatifs.
  */
 import { Image } from 'astro:assets';
+import { langue, tr } from '../i18n';
 import { LOGICIELS } from '../data/logiciels';
 import photoMoi from '../assets/images/moi.jpeg';
 import photoMmi from '../assets/images/collage/mmi-montbeliard.jpg';
 
 const outilsDev = LOGICIELS.filter((l) => l.domaine === 'web').slice(0, 6);
 const outilsCrea = LOGICIELS.filter((l) => l.domaine !== 'web').slice(0, 4);
+const lang = langue(Astro);
 ---
 
-<div class="collage" role="img" aria-label="Collage de photos : mon portrait, l’IUT MMI de Montbéliard et les logos de mes logiciels (HTML, CSS, JavaScript, Astro, Tailwind, PocketBase, Figma, Miro, Affinity, Canva).">
+<div class="collage" role="img" aria-label={tr(lang, 'Collage de photos : mon portrait, l’IUT MMI de Montbéliard et les logos de mes logiciels (HTML, CSS, JavaScript, Astro, Tailwind, PocketBase, Figma, Miro, Affinity, Canva).', 'Photo collage: my portrait, the MMI department in Montbéliard and the logos of my tools (HTML, CSS, JavaScript, Astro, Tailwind, PocketBase, Figma, Miro, Affinity, Canva).')}>
   <!-- 1. IUT MMI Montbéliard -->
   <figure class="polaroid p-mmi" aria-hidden="true">
     <Image src={photoMmi} alt="" width={500} class="photo" />
@@ -33,7 +35,7 @@ const outilsCrea = LOGICIELS.filter((l) => l.domaine !== 'web').slice(0, 4);
         <svg viewBox="0 0 24 24"><path d={l.logo} fill={l.couleur} /></svg>
       ))}
     </div>
-    <figcaption>Mon code</figcaption>
+    <figcaption>{tr(lang, 'Mon code', 'My code')}</figcaption>
   </figure>
 
   <!-- 3. Outils créatifs -->
@@ -43,13 +45,13 @@ const outilsCrea = LOGICIELS.filter((l) => l.domaine !== 'web').slice(0, 4);
         <svg viewBox="0 0 24 24"><path d={l.logo} fill={l.couleur} /></svg>
       ))}
     </div>
-    <figcaption>Mes outils créa</figcaption>
+    <figcaption>{tr(lang, 'Mes outils créa', 'My creative tools')}</figcaption>
   </figure>
 
   <!-- 4. Ma photo, au premier plan -->
   <figure class="polaroid p-moi" aria-hidden="true">
     <Image src={photoMoi} alt="" width={520} class="photo" />
-    <figcaption>C’est moi&nbsp;!</figcaption>
+    <figcaption>{tr(lang, 'C’est moi !', 'That’s me!')}</figcaption>
   </figure>
 
   <!-- Morceau de scotch cyan sur ma photo -->

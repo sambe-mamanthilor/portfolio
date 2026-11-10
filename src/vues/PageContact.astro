@@ -1,0 +1,538 @@
+---
+/**
+ * Page Contact : formulaire PLEIN ÉCRAN, une question à la fois.
+ * Inspiration : Codrops "Fullscreen Form Interface".
+ *
+ * Amélioration progressive :
+ *  - SANS JavaScript : toutes les questions s'affichent l'une sous l'autre,
+ *    c'est un formulaire classique (il reste utilisable).
+ *  - AVEC JavaScript : une seule question visible, barre de progression,
+ *    touche Entrée pour avancer, flèche pour revenir.
+ *
+ * Le message est envoyé dans PocketBase (collection "messages"), consultable
+ * dans le back-office. L'envoi part du navigateur du visiteur : l'adresse
+ * publique de PocketBase est dans PUBLIC_POCKETBASE_URL.
+ */
+import Layout from '../layouts/Layout.astro';
+import { bouton } from '../lib/boutons';
+import { SITE } from '../data/site';
+import { langue, tr, lien } from '../i18n';
+
+const lang = langue(Astro);
+
+const objets = [
+  { valeur: 'alternance', label: tr(lang, 'Une alternance', 'A work-study position') },
+  { valeur: 'stage', label: tr(lang, 'Un stage', 'An internship') },
+  { valeur: 'projet', label: tr(lang, 'Un projet web', 'A web project') },
+  { valeur: 'autre', label: tr(lang, 'Autre chose', 'Something else') },
+];
+const total = 5;
+---
+
+<Layout
+  title="Contact"
+  description={tr(lang,
+    'Contactez Maman Thilor SAMBE pour une alternance, un stage, un projet web ou une collaboration.',
+    'Contact Maman Thilor SAMBE about a work-study position, an internship, a web project or a collaboration.')}
+>
+  <section class="contact" aria-labelledby="titre-page">
+    <!-- Barre de progression (remplie par le script) -->
+    <div class="progression" aria-hidden="true"><span data-barre></span></div>
+
+    <div class="container-site contenu">
+      <div class="entete-contact">
+        <h1 id="titre-page" class="font-display text-3xl md:text-4xl">
+          {lang === 'fr' ? <>Parlons-<span class="text-primary">en</span>.</> : <>Let’s <span class="text-primary">talk</span>.</>}
+        </h1>
+        <p class="compteur" aria-hidden="true" data-compteur>01 / 0{total}</p>
+      </div>
+
+      <form class="formulaire" data-formulaire novalidate>
+        <!-- Piège à robots : invisible pour les humains, rempli par les robots -->
+        <div class="piege" aria-hidden="true">
+          <label for="site_web">{tr(lang, 'Ne pas remplir', 'Do not fill in')}</label>
+          <input id="site_web" name="site_web" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <ol class="etapes" data-etapes>
+          <!-- 1. Nom -->
+          <li class="etape" data-etape>
+            <fieldset>
+              <legend class="question"><span class="num">01</span>{tr(lang, 'Comment vous appelez-vous ?', 'What’s your name?')}</legend>
+              <div class="grid gap-6 md:grid-cols-2">
+                <div class="champ">
+                  <label for="prenom">{tr(lang, 'Prénom', 'First name')}</label>
+                  <input id="prenom" name="prenom" type="text" autocomplete="given-name" required maxlength="80" placeholder={tr(lang, 'Votre prénom', 'Your first name')} />
+                </div>
+                <div class="champ">
+                  <label for="nom">{tr(lang, 'Nom', 'Last name')}</label>
+                  <input id="nom" name="nom" type="text" autocomplete="family-name" required maxlength="80" placeholder={tr(lang, 'Votre nom', 'Your last name')} />
+                </div>
+              </div>
+            </fieldset>
+          </li>
+
+          <!-- 2. Objet -->
+          <li class="etape" data-etape>
+            <fieldset>
+              <legend class="question"><span class="num">02</span>{tr(lang, 'Vous me contactez pour…', 'You’re contacting me about…')}</legend>
+              <div class="choix">
+                {objets.map((o, i) => (
+                  <label class="option">
+                    <input type="radio" name="objet" value={o.valeur} required checked={i === 0} />
+                    <span>{o.label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          </li>
+
+          <!-- 3. Coordonnées -->
+          <li class="etape" data-etape>
+            <fieldset>
+              <legend class="question"><span class="num">03</span>{tr(lang, 'Où puis-je vous répondre ?', 'Where can I reply to you?')}</legend>
+              <div class="grid gap-6 md:grid-cols-2">
+                <div class="champ">
+                  <label for="email">E-mail</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required maxlength="150" placeholder={tr(lang, 'vous@entreprise.fr', 'you@company.com')} />
+                </div>
+                <div class="champ">
+                  <label for="telephone">{tr(lang, 'Téléphone', 'Phone')} <span class="facultatif">{tr(lang, '(facultatif)', '(optional)')}</span></label>
+                  <input id="telephone" name="telephone" type="tel" autocomplete="tel" maxlength="30" placeholder={tr(lang, '06 00 00 00 00', '+41 00 000 00 00')} />
+                </div>
+              </div>
+            </fieldset>
+          </li>
+
+          <!-- 4. Message -->
+          <li class="etape" data-etape>
+            <fieldset>
+              <legend class="question"><span class="num">04</span>{tr(lang, 'Votre message', 'Your message')}</legend>
+              <div class="champ">
+                <label for="message" class="sr-only">Message</label>
+                <textarea id="message" name="message" rows="4" required minlength="10" maxlength="5000" placeholder={tr(lang, 'Parlez-moi de votre entreprise, du poste ou du projet…', 'Tell me about your company, the position or the project…')}></textarea>
+              </div>
+            </fieldset>
+          </li>
+
+          <!-- 5. Consentement + envoi -->
+          <li class="etape" data-etape>
+            <fieldset>
+              <legend class="question"><span class="num">05</span>{tr(lang, 'Dernière étape', 'Last step')}</legend>
+              <label class="consentement">
+                <input id="consentement" name="consentement" type="checkbox" required class="checkbox checkbox-primary" />
+                <span>
+                  {tr(lang, 'J’accepte que mes données soient utilisées uniquement pour répondre à mon message', 'I agree that my data will only be used to reply to my message')}
+                  (<a href={lien(lang, '/mentions-legales#donnees')} class="underline">{tr(lang, 'mentions légales', 'legal notice')}</a>).
+                </span>
+              </label>
+              <button type="submit" class:list={[bouton('principal'), 'mt-8']} data-envoyer>
+                {tr(lang, 'Envoyer le message', 'Send message')}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </button>
+            </fieldset>
+          </li>
+        </ol>
+
+        <!-- Message d'erreur / de succès, annoncé aux lecteurs d'écran -->
+        <p class="statut" role="status" aria-live="polite" data-statut></p>
+
+        <!-- Navigation entre les questions (affichée seulement avec JavaScript) -->
+        <div class="navigation-etapes" data-navigation hidden>
+          <button type="button" class={bouton('secondaire')} data-precedent>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
+            {tr(lang, 'Retour', 'Back')}
+          </button>
+          <button type="button" class={bouton('principal')} data-suivant>
+            {tr(lang, 'Continuer', 'Continue')} <kbd class="touche" aria-hidden="true">{tr(lang, 'Entrée ↵', 'Enter ↵')}</kbd>
+          </button>
+        </div>
+      </form>
+
+      <!-- Écran de remerciement -->
+      <div class="merci" data-merci hidden tabindex="-1">
+        <p class="font-display text-3xl md:text-5xl">{tr(lang, 'Merci', 'Thank you')} <span class="text-primary" data-merci-prenom></span>{tr(lang, ' !', '!')}</p>
+        <p class="mt-4 text-lg text-muted">{tr(lang, 'Votre message est bien arrivé. Je vous réponds au plus vite.', 'Your message has been received. I’ll get back to you as soon as possible.')}</p>
+        <a href={lien(lang, '/projets')} class:list={[bouton('principal'), 'mt-8']}>{tr(lang, 'En attendant, voir mes projets', 'Meanwhile, see my projects')}</a>
+      </div>
+    </div>
+
+    <!-- Contact direct, toujours visible en bas -->
+    <div class="container-site direct">
+      <p class="text-sm text-muted">{tr(lang, 'Vous préférez écrire directement ?', 'Prefer to write directly?')}</p>
+      <ul class="flex flex-wrap gap-x-8 gap-y-2 font-semibold">
+        <li><a href={`mailto:${SITE.email}`} class="lien-direct">{SITE.email}</a></li>
+        <li><a href={`tel:${SITE.telephoneLien}`} class="lien-direct">{SITE.telephone}</a></li>
+        <li><a href={SITE.linkedin} class="lien-direct" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">{tr(lang, '(nouvel onglet)', '(new tab)')}</span></a></li>
+        <li><a href={SITE.github} class="lien-direct" target="_blank" rel="noopener noreferrer">GitHub <span class="sr-only">{tr(lang, '(nouvel onglet)', '(new tab)')}</span></a></li>
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    padding-top: 7.5rem;
+    /* Thème clair : on laisse voir le dégradé cyan léger de la page,
+       avec un halo cyan discret en haut à droite */
+    background: radial-gradient(50% 45% at 90% 10%, rgb(53 195 234 / 0.14), transparent 70%);
+  }
+
+  .progression {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-base-300);
+  }
+  .progression span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #0ea3cd, #79f4ff);
+    transition: width 0.5s ease;
+  }
+
+  .contenu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .entete-contact {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .compteur {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-muted);
+  }
+
+  .formulaire {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 0;
+  }
+
+  /* ---------- Sans JavaScript : toutes les étapes à la suite ---------- */
+  .etape + .etape {
+    margin-top: 3.5rem;
+  }
+
+  /* ---------- Avec JavaScript : une seule étape à la fois ---------- */
+  [data-plein-ecran] .etape {
+    display: none;
+    margin-top: 0;
+  }
+  [data-plein-ecran] .etape[data-active] {
+    display: block;
+    animation: entree 0.5s ease both;
+  }
+  [data-plein-ecran] .etape[data-active][data-retour] {
+    animation-name: entree-retour;
+  }
+  @keyframes entree {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes entree-retour {
+    from { opacity: 0; transform: translateY(-40px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .question {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.15;
+  }
+  .question .num {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .champ {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .champ label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .facultatif {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  /* Champs "soulignés" : grands, sans boîte, comme dans le Fullscreen Form */
+  .champ input,
+  .champ textarea {
+    width: 100%;
+    padding: 0.5rem 0;
+    border: 0;
+    border-bottom: 2px solid #b9dbe6;
+    background: transparent;
+    color: var(--color-base-content);
+    font-size: 1.15rem;
+    transition: border-color 0.25s;
+  }
+  .champ textarea {
+    resize: vertical;
+    line-height: 1.5;
+  }
+  .champ input::placeholder,
+  .champ textarea::placeholder {
+    color: #94a3b8;
+  }
+  .champ input:focus,
+  .champ textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+  .champ [aria-invalid='true'] {
+    border-color: #b91c1c;
+  }
+
+  /* Choix de l'objet : grandes pastilles cliquables */
+  .choix {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .option input {
+    position: absolute;
+    opacity: 0;
+  }
+  .option span {
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    border: 1px solid var(--color-base-300);
+    border-radius: 999px;
+    background: var(--color-base-100);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .option span:hover {
+    border-color: var(--color-primary);
+  }
+  .option input:checked + span {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+  .option input:focus-visible + span {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .consentement {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    max-width: 42rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .consentement .checkbox {
+    margin-top: 0.15rem;
+  }
+
+  .statut {
+    min-height: 1.5rem;
+    margin-top: 1.5rem;
+    font-weight: 600;
+  }
+
+  .navigation-etapes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .navigation-etapes[hidden] {
+    display: none;
+  }
+  .touche {
+    margin-left: 0.4rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.3rem;
+    background: rgb(255 255 255 / 0.25);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+  }
+
+  .merci {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .merci[hidden] {
+    display: none;
+  }
+
+  .direct {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    /* 4rem d'air + la hauteur de la vague du footer, qui remonte par-dessus */
+    padding-bottom: 8.5rem;
+    border-top: 1px solid var(--color-base-300);
+  }
+  .lien-direct:hover {
+    color: var(--color-primary);
+  }
+
+  .piege {
+    position: absolute;
+    left: -9999px;
+  }
+
+  @media (max-width: 767px) {
+    .touche { display: none; }
+  }
+</style>
+
+<script>
+  const URL_PB = import.meta.env.PUBLIC_POCKETBASE_URL ?? 'http://127.0.0.1:8090';
+  // Messages du formulaire dans la langue de la page
+  const EN = document.documentElement.lang === 'en';
+  const MSG = {
+    email: EN ? 'This email address doesn’t look valid.' : 'Cette adresse e-mail ne semble pas valide.',
+    champ: EN ? 'Please fill in this field.' : 'Merci de compléter ce champ.',
+    envoi: EN ? 'Sending…' : 'Envoi en cours…',
+    echec: EN ? 'Sending failed. You can email me directly (bottom of the page).' : 'L’envoi a échoué. Vous pouvez m’écrire directement par e-mail (en bas de page).',
+  };
+  const formulaire = document.querySelector<HTMLFormElement>('[data-formulaire]');
+  const etapes = [...document.querySelectorAll<HTMLElement>('[data-etape]')];
+  const barre = document.querySelector<HTMLElement>('[data-barre]');
+  const compteur = document.querySelector<HTMLElement>('[data-compteur]');
+  const navigation = document.querySelector<HTMLElement>('[data-navigation]');
+  const precedent = document.querySelector<HTMLButtonElement>('[data-precedent]');
+  const suivant = document.querySelector<HTMLButtonElement>('[data-suivant]');
+  const statut = document.querySelector<HTMLElement>('[data-statut]');
+  const bouton = document.querySelector<HTMLButtonElement>('[data-envoyer]');
+  const merci = document.querySelector<HTMLElement>('[data-merci]');
+
+  let courante = 0;
+
+  function afficher(message: string, erreur = false) {
+    if (!statut) return;
+    statut.textContent = message;
+    statut.style.color = erreur ? '#b91c1c' : '#047857';
+  }
+
+  // Affiche l'étape n, met à jour la barre, le compteur et les boutons
+  function aller(n: number) {
+    const retour = n < courante;
+    courante = Math.max(0, Math.min(n, etapes.length - 1));
+    etapes.forEach((e, i) => {
+      e.toggleAttribute('data-active', i === courante);
+      e.toggleAttribute('data-retour', i === courante && retour);
+    });
+    const pourcentage = ((courante + 1) / etapes.length) * 100;
+    if (barre) barre.style.width = `${pourcentage}%`;
+    if (compteur) compteur.textContent = `0${courante + 1} / 0${etapes.length}`;
+    if (precedent) precedent.style.visibility = courante === 0 ? 'hidden' : 'visible';
+    // Dernière étape : on cache "Continuer", c'est le bouton "Envoyer" qui prend le relais
+    if (suivant) suivant.hidden = courante === etapes.length - 1;
+    afficher('');
+    // Focus sur le premier champ de l'étape (pratique au clavier)
+    etapes[courante].querySelector<HTMLElement>('input:not([type=radio]), textarea, input:checked')?.focus({ preventScroll: true });
+  }
+
+  // Vérifie les champs de l'étape courante avant d'avancer
+  function etapeValide() {
+    const champs = [...etapes[courante].querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')];
+    champs.forEach((c) => c.setAttribute('aria-invalid', String(!c.checkValidity())));
+    const invalide = champs.find((c) => !c.checkValidity());
+    if (invalide) {
+      afficher(invalide.type === 'email' ? MSG.email : MSG.champ, true);
+      invalide.focus();
+      return false;
+    }
+    return true;
+  }
+
+  if (formulaire && etapes.length) {
+    // Active le mode plein écran (sans JS, le formulaire reste classique)
+    formulaire.setAttribute('data-plein-ecran', '');
+    if (navigation) navigation.hidden = false;
+    aller(0);
+
+    suivant?.addEventListener('click', () => { if (etapeValide()) aller(courante + 1); });
+    precedent?.addEventListener('click', () => aller(courante - 1));
+
+    // Entrée = étape suivante (sauf dans le message, où Entrée fait un retour à la ligne)
+    formulaire.addEventListener('keydown', (e) => {
+      const cible = e.target as HTMLElement;
+      if (e.key === 'Enter' && cible.tagName !== 'TEXTAREA' && courante < etapes.length - 1) {
+        e.preventDefault();
+        if (etapeValide()) aller(courante + 1);
+      }
+    });
+    // Cliquer un choix d'objet fait avancer tout seul
+    // (pointerup et non click : au clavier, les flèches changent le choix sans avancer)
+    formulaire.querySelectorAll('input[name=objet]').forEach((r) =>
+      r.closest('label')?.addEventListener('pointerup', () => setTimeout(() => aller(2), 250)),
+    );
+
+    // Envoi
+    formulaire.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!etapeValide()) return;
+
+      const donnees = new FormData(formulaire);
+      // Piège à robots rempli : on fait semblant que tout va bien
+      if (donnees.get('site_web')) {
+        formulaire.hidden = true;
+        if (merci) merci.hidden = false;
+        return;
+      }
+      donnees.delete('site_web');
+      donnees.set('consentement', 'true');
+
+      bouton?.setAttribute('disabled', '');
+      afficher(MSG.envoi);
+      try {
+        const reponse = await fetch(`${URL_PB}/api/collections/messages/records`, { method: 'POST', body: donnees });
+        if (!reponse.ok) throw new Error(String(reponse.status));
+        const prenom = String(donnees.get('prenom') ?? '');
+        document.querySelector('[data-merci-prenom]')!.textContent = prenom;
+        formulaire.hidden = true;
+        if (compteur) compteur.hidden = true;
+        if (barre) barre.style.width = '100%';
+        if (merci) { merci.hidden = false; merci.focus(); }
+      } catch {
+        afficher(MSG.echec, true);
+      } finally {
+        bouton?.removeAttribute('disabled');
+      }
+    });
+  }
+</script>

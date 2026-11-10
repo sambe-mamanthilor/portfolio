@@ -11,8 +11,15 @@ export const SITE = {
   prenom: 'Maman Thilor',
   nomFamille: 'SAMBE',
   initiales: 'MTS',
-  accroche: 'Développeuse web & UX/UI · étudiante en BUT MMI',
-  recherche: 'En recherche d’alternance dès janvier 2027 ou de stage dès fin mars 2027',
+  // Textes en deux langues : SITE.accroche.fr / SITE.accroche.en
+  accroche: {
+    fr: 'Développeuse web & UX/UI · étudiante en BUT MMI',
+    en: 'Web developer & UX/UI designer · BUT MMI student',
+  },
+  recherche: {
+    fr: 'En recherche d’alternance dès janvier 2027 ou de stage dès fin mars 2027',
+    en: 'Looking for a work-study position from January 2027 or an internship from late March 2027',
+  },
   email: 'mamansambe47@gmail.com',
   telephone: '06 78 64 38 05',
   telephoneLien: '+33678643805',
@@ -22,10 +29,10 @@ export const SITE = {
   cv: '/documents/cv_Maman-Thilor_Sambe_but_mmi.pdf',
 } as const;
 
-/** Liens de la navigation principale (header). */
+/** Liens de la navigation principale (header). Le préfixe /en est ajouté en anglais. */
 export const NAVIGATION = [
-  { href: '/', label: 'Accueil' },
-  { href: '/a-propos', label: 'À propos' },
-  { href: '/projets', label: 'Projets' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: { fr: 'Accueil', en: 'Home' } },
+  { href: '/a-propos', label: { fr: 'À propos', en: 'About' } },
+  { href: '/projets', label: { fr: 'Projets', en: 'Projects' } },
+  { href: '/contact', label: { fr: 'Contact', en: 'Contact' } },
 ] as const;

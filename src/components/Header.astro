@@ -21,20 +21,25 @@
  */
 import Logo from './Logo.astro';
 import { NAVIGATION, SITE } from '../data/site';
+import { langue, tr, lien, autreLangue } from '../i18n';
 
-// Chemin actuel sans "/" final, pour comparer avec les liens
-const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
+const lang = langue(Astro);
+// Lien vers la même page dans l'autre langue (bouton FR | EN)
+const autre = autreLangue(Astro.url.pathname);
+
+// Chemin actuel sans "/en" ni "/" final, pour comparer avec les liens
+const chemin = Astro.url.pathname.replace(/^\/en(?=\/|$)/, '').replace(/\/$/, '') || '/';
 const estActif = (href: string) =>
   href === '/' ? chemin === '/' : chemin === href || chemin.startsWith(`${href}/`);
 ---
 
 <header class="entete sticky top-0 z-40 bg-transparent px-4 pt-4" data-theme="mts-nuit" data-entete>
   <nav
-    aria-label="Navigation principale"
+    aria-label={tr(lang, 'Navigation principale', 'Main navigation')}
     class="nav-pilule relative mx-auto flex items-center justify-between gap-4 rounded-full px-3 py-2 md:px-5"
     data-nav
   >
-    <a href="/" class="rounded-full" aria-label={`Accueil – ${SITE.nom}`}>
+    <a href={lien(lang, '/')} class="rounded-full" aria-label={`${tr(lang, 'Accueil', 'Home')} – ${SITE.nom}`}>
       <Logo taille={46} />
     </a>
 
@@ -45,8 +50,10 @@ const estActif = (href: string) =>
       aria-expanded="false"
       aria-controls="menu-principal"
       data-menu-bouton
+      data-texte-ouvrir={tr(lang, 'Ouvrir le menu', 'Open menu')}
+      data-texte-fermer={tr(lang, 'Fermer le menu', 'Close menu')}
     >
-      <span class="sr-only" data-menu-libelle>Ouvrir le menu</span>
+      <span class="sr-only" data-menu-libelle>{tr(lang, 'Ouvrir le menu', 'Open menu')}</span>
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
         <path d="M4 7h16M4 12h16M4 17h16" />
       </svg>
@@ -56,17 +63,43 @@ const estActif = (href: string) =>
       id="menu-principal"
       class="menu-liste absolute inset-x-0 top-[calc(100%+0.5rem)] hidden flex-col gap-1 rounded-box p-3 md:static md:flex md:flex-row md:items-center md:gap-2 md:p-0"
     >
-      {NAVIGATION.map((lien) => (
+      {NAVIGATION.map((l) => (
         <li>
           <a
-            href={lien.href}
+            href={lien(lang, l.href)}
             class="lien-nav block rounded-full px-4 py-2 font-bold"
-            aria-current={estActif(lien.href) ? 'page' : undefined}
+            aria-current={estActif(l.href) ? 'page' : undefined}
           >
-            {lien.label}
+            {l.label[lang]}
           </a>
         </li>
       ))}
+      <!-- Changer de langue (option C) : un globe + un interrupteur FR | EN.
+           La langue actuelle est surlignée (ce n'est pas un lien) ;
+           l'autre est un lien vers la même page dans cette langue.
+           hreflang et lang aident les lecteurs d'écran à bien prononcer. -->
+      <li class="flex items-center gap-2 px-4 py-2 md:ml-2 md:px-0">
+        <svg class="text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18" />
+        </svg>
+        <div role="group" aria-label={tr(lang, 'Langue', 'Language')} class="inline-flex rounded-full border-[1.5px] border-primary p-0.5 text-sm font-bold">
+          {(['fr', 'en'] as const).map((code) =>
+            code === lang ? (
+              <span aria-current="true" class="rounded-full bg-primary px-3 py-1 text-primary-content">{code.toUpperCase()}</span>
+            ) : (
+              <a
+                href={autre.href}
+                hreflang={code}
+                lang={code}
+                aria-label={code === 'en' ? 'English version' : 'Version française'}
+                class="rounded-full px-3 py-1 text-primary transition-colors hover:bg-primary/20"
+              >
+                {code.toUpperCase()}
+              </a>
+            ),
+          )}
+        </div>
+      </li>
     </ul>
   </nav>
 </header>
@@ -171,7 +204,7 @@ const estActif = (href: string) =>
     if (!nav || !bouton || !libelle) return;
     nav.toggleAttribute('data-ouvert', ouvrir);
     bouton.setAttribute('aria-expanded', String(ouvrir));
-    libelle.textContent = ouvrir ? 'Fermer le menu' : 'Ouvrir le menu';
+    libelle.textContent = (ouvrir ? bouton.dataset.texteFermer : bouton.dataset.texteOuvrir) ?? '';
   }
 
   bouton?.addEventListener('click', () => {

@@ -16,7 +16,11 @@
  * Désactivé si "réduire les animations" est activé.
  */
 import ProjetImage from './ProjetImage.astro';
+import { bouton } from '../lib/boutons';
 import { fileUrl, type Projet } from '../lib/pocketbase';
+import { langue, tr, lien, champ } from '../i18n';
+
+const lang = langue(Astro);
 
 interface Props {
   projet: Projet;
@@ -27,6 +31,8 @@ interface Props {
 const { projet, niveauTitre = 'h3' } = Astro.props;
 const Titre = niveauTitre;
 const categories = projet.expand?.categorie ?? [];
+// Titre court s'il existe (dans la bonne langue), sinon le titre complet
+const titre = champ(projet, 'titre_court', lang) || champ(projet, 'titre', lang);
 
 const video = fileUrl(projet, projet.apercu_video);
 const images = video
@@ -48,7 +54,7 @@ const aApercu = Boolean(video) || images.length >= 2;
 
     {aApercu && (
       <>
-        <span class="pastille" aria-hidden="true">{video ? 'Vidéo' : 'Aperçu'}</span>
+        <span class="pastille" aria-hidden="true">{video ? tr(lang, 'Vidéo', 'Video') : tr(lang, 'Aperçu', 'Preview')}</span>
         <span class="barre" aria-hidden="true"></span>
       </>
     )}
@@ -56,21 +62,21 @@ const aApercu = Boolean(video) || images.length >= 2;
 
   <div class="flex flex-1 flex-col gap-3 border-t border-base-300 p-5">
     {categories.length > 0 && (
-      <ul class="flex flex-wrap gap-2" aria-label="Catégories">
+      <ul class="flex flex-wrap gap-2" aria-label={tr(lang, 'Catégories', 'Categories')}>
         {categories.map((c) => (
-          <li class="badge badge-sm badge-outline border-primary/50 text-primary">{c.nom}</li>
+          <li class="badge badge-sm badge-outline border-primary/50 text-primary">{champ(c, 'nom', lang)}</li>
         ))}
       </ul>
     )}
 
-    <Titre class="font-display text-xl">{projet.titre_court || projet.titre}</Titre>
-    <p class="flex-1 text-sm leading-relaxed text-muted">{projet.resume}</p>
+    <Titre class="font-display text-xl">{titre}</Titre>
+    <p class="flex-1 text-sm leading-relaxed text-muted">{champ(projet, 'resume', lang)}</p>
 
     <a
-      href={`/projets/${projet.slug}`}
-      class="btn btn-outline btn-primary btn-sm mt-2 self-start after:absolute after:inset-0 after:content-['']"
+      href={lien(lang, `/projets/${projet.slug}`)}
+      class:list={[bouton('secondaire', 'petit'), "mt-2 self-start after:absolute after:inset-0 after:content-['']"]}
     >
-      Découvrir<span class="sr-only"> le projet {projet.titre_court || projet.titre}</span>
+      {tr(lang, 'Découvrir', 'Discover')}<span class="sr-only"> {tr(lang, 'le projet', 'the project')} {titre}</span>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
     </a>
   </div>

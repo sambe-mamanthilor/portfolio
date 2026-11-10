@@ -18,20 +18,23 @@
  *  - "Réduire les animations" activé : pas de rotation automatique.
  */
 import { LOGICIELS, DOMAINES } from '../data/logiciels';
+import { langue, tr, champ } from '../i18n';
+
+const lang = langue(Astro);
 ---
 
 <section class="competences" data-theme="mts-nuit" aria-labelledby="titre-savoir" data-carrousel>
   <div class="container-site">
-    <p class="sur-titre">Compétences</p>
-    <h2 id="titre-savoir" class="mt-2 font-display text-4xl md:text-5xl">Ce que je sais faire</h2>
+    <p class="sur-titre">{tr(lang, 'Compétences', 'Skills')}</p>
+    <h2 id="titre-savoir" class="mt-2 font-display text-4xl md:text-5xl">{tr(lang, 'Ce que je sais faire', 'What I can do')}</h2>
     <p class="mt-4 max-w-2xl text-lg text-muted">
-      Les outils que j’utilise au quotidien, et ce que je sais faire avec. Faites glisser les cartes.
+      {tr(lang, 'Les outils que j’utilise au quotidien, et ce que je sais faire avec. Faites glisser les cartes.', 'The tools I use every day, and what I do with them. Drag the cards.')}
     </p>
 
     <!-- Légende des domaines (couleur du fond) -->
-    <ul class="legende mt-6" aria-label="Domaines">
+    <ul class="legende mt-6" aria-label={tr(lang, 'Domaines', 'Fields')}>
       {Object.entries(DOMAINES).map(([cle, d]) => (
-        <li data-domaine-legende={cle} style={`--c: ${d.couleur}`}>{d.nom}</li>
+        <li data-domaine-legende={cle} style={`--c: ${d.couleur}`}>{champ(d, 'nom', lang)}</li>
       ))}
     </ul>
   </div>
@@ -40,8 +43,8 @@ import { LOGICIELS, DOMAINES } from '../data/logiciels';
   <div
     class="scene"
     role="group"
-    aria-roledescription="carrousel"
-    aria-label="Mes logiciels et compétences"
+    aria-roledescription={tr(lang, 'carrousel', 'carousel')}
+    aria-label={tr(lang, 'Mes logiciels et compétences', 'My tools and skills')}
     tabindex="0"
     data-scene
   >
@@ -54,20 +57,20 @@ import { LOGICIELS, DOMAINES } from '../data/logiciels';
             <svg viewBox="0 0 24 24" width="56" height="56"><path d={l.logo} fill={l.couleur} /></svg>
           </span>
           <h3 class="nom">{l.nom}</h3>
-          <p class="domaine" style={`--c: ${DOMAINES[l.domaine].couleur}`}>{DOMAINES[l.domaine].nom}</p>
-          <p class="competence">{l.competence}</p>
+          <p class="domaine" style={`--c: ${DOMAINES[l.domaine].couleur}`}>{champ(DOMAINES[l.domaine], 'nom', lang)}</p>
+          <p class="competence">{champ(l, 'competence', lang)}</p>
         </li>
       ))}
     </ul>
   </div>
 
   <div class="container-site commandes">
-    <button type="button" class="fleche" data-precedent aria-label="Logiciel précédent">
+    <button type="button" class="fleche" data-precedent aria-label={tr(lang, 'Logiciel précédent', 'Previous tool')}>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
     </button>
     <!-- Annonce la carte au centre aux lecteurs d'écran -->
     <p class="actif" aria-live="polite" data-annonce></p>
-    <button type="button" class="fleche" data-suivant aria-label="Logiciel suivant">
+    <button type="button" class="fleche" data-suivant aria-label={tr(lang, 'Logiciel suivant', 'Next tool')}>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
     </button>
   </div>
@@ -349,7 +352,7 @@ import { LOGICIELS, DOMAINES } from '../data/logiciels';
         const l = LOGICIELS[centre];
         section!.style.setProperty('--teinte', DOMAINES[l.domaine].couleur);
         legendes.forEach((li) => li.toggleAttribute('data-actif', li.dataset.domaineLegende === l.domaine));
-        if (annonce) annonce.textContent = `${l.nom} · ${DOMAINES[l.domaine].nom}`;
+        if (annonce) annonce.textContent = `${l.nom} · ${document.documentElement.lang === 'en' ? DOMAINES[l.domaine].nom_en : DOMAINES[l.domaine].nom}`;
       }
     }
 

@@ -1,0 +1,65 @@
+---
+/**
+ * Mentions légales et données personnelles.
+ * Obligatoires pour tout site publié (LCEN) et pour le formulaire (RGPD).
+ * En anglais : "Legal notice", même contenu traduit.
+ */
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../data/site';
+import { langue, tr } from '../i18n';
+
+const lang = langue(Astro);
+---
+
+<Layout
+  title={tr(lang, 'Mentions légales', 'Legal notice')}
+  description={tr(lang,
+    'Mentions légales et politique de confidentialité du portfolio de Maman Thilor SAMBE.',
+    'Legal notice and privacy policy of Maman Thilor SAMBE’s portfolio.')}
+>
+  <section class="haut-de-page section" aria-labelledby="titre-page">
+    <div class="container-site texte-riche max-w-3xl space-y-10 leading-relaxed text-muted">
+      <h1 id="titre-page" class="font-display text-5xl text-base-content">{tr(lang, 'Mentions légales', 'Legal notice')}</h1>
+
+      <div>
+        <h2 class="titre-section text-2xl">{tr(lang, 'Éditrice du site', 'Site publisher')}</h2>
+        <p>{SITE.nom}, {tr(lang, 'étudiante en BUT MMI à l’IUT Nord Franche-Comté.', 'BUT MMI student at IUT Nord Franche-Comté, France.')}</p>
+        <p>{tr(lang, 'Contact :', 'Contact:')} <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <p>{tr(lang, 'Directrice de la publication :', 'Publication director:')} {SITE.nom}.</p>
+      </div>
+
+      <div>
+        <h2 class="titre-section text-2xl">{tr(lang, 'Hébergement', 'Hosting')}</h2>
+        <p>{tr(lang,
+          'Le site, sa base de données et le nom de domaine sont hébergés par',
+          'The website, its database and the domain name are hosted by')}
+          <a class="underline" href="https://www.infomaniak.com" rel="noopener noreferrer" target="_blank">Infomaniak</a>.</p>
+      </div>
+
+      <div id="donnees" class="scroll-mt-28">
+        <h2 class="titre-section text-2xl">{tr(lang, 'Données personnelles', 'Personal data')}</h2>
+        <p>{tr(lang,
+          'Le formulaire de contact collecte votre prénom, votre nom, votre e-mail, votre téléphone (facultatif) et votre message. Ces données servent uniquement à vous répondre. Elles ne sont ni vendues, ni transmises à des tiers, ni utilisées à des fins commerciales.',
+          'The contact form collects your first name, last name, email, phone number (optional) and message. This data is only used to reply to you. It is never sold, shared with third parties or used for commercial purposes.')}</p>
+        <p>{tr(lang, 'Elles sont conservées 12 mois au maximum, puis supprimées.', 'It is kept for a maximum of 12 months, then deleted.')}</p>
+        <p>{tr(lang,
+          'Conformément au RGPD, vous pouvez demander l’accès, la rectification ou la suppression de vos données en écrivant à',
+          'Under the GDPR, you can request access to, correction or deletion of your data by writing to')} <a class="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      </div>
+
+      <div>
+        <h2 class="titre-section text-2xl">{tr(lang, 'Cookies et mesure d’audience', 'Cookies and analytics')}</h2>
+        <p>{tr(lang,
+          'Ce site n’utilise aucun cookie et aucun outil de mesure d’audience. Les polices sont hébergées sur le site lui-même : aucune donnée n’est transmise à un service tiers lors de votre visite.',
+          'This website uses no cookies and no analytics tools. Fonts are hosted on the site itself: no data is sent to any third-party service when you visit.')}</p>
+      </div>
+
+      <div>
+        <h2 class="titre-section text-2xl">{tr(lang, 'Propriété intellectuelle', 'Intellectual property')}</h2>
+        <p>{tr(lang,
+          `Les textes, visuels et réalisations présentés sont la propriété de ${SITE.nom}, sauf mention contraire. Les projets réalisés en équipe sont présentés avec l’accord de leurs co-auteurs. Les marques et logos cités appartiennent à leurs propriétaires respectifs.`,
+          `The texts, visuals and work shown here belong to ${SITE.nom}, unless stated otherwise. Team projects are presented with the agreement of their co-authors. All trademarks and logos mentioned belong to their respective owners.`)}</p>
+      </div>
+    </div>
+  </section>
+</Layout>

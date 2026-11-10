@@ -7,6 +7,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../data/site';
 import { getImage } from 'astro:assets';
+import { langue, tr, autreLangue } from '../i18n';
 import fondAquarelle from '../assets/images/fond-aquarelle-leger.webp';
 import photoPartage from '../assets/images/moi.jpeg';
 
@@ -26,15 +27,28 @@ interface Props {
 // Image de partage par défaut : ma photo, recadrée au format conseillé (1200 × 630)
 const partage = await getImage({ src: photoPartage, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
 
+const lang = langue(Astro);
+
 const {
   title,
-  description = "Portfolio de Maman Thilor SAMBE, étudiante en BUT MMI : développement web front-end et full-stack, intégration et UX/UI design. En recherche d'alternance et de stage.",
+  description = tr(
+    lang,
+    "Portfolio de Maman Thilor SAMBE, étudiante en BUT MMI : développement web front-end et back-end, intégration et UX/UI design. En recherche d'alternance et de stage.",
+    'Portfolio of Maman Thilor SAMBE, BUT MMI student in France: front-end and back-end web development, integration and UX/UI design. Looking for a work-study position or an internship.',
+  ),
   image = partage.src,
   sombre = false,
 } = Astro.props;
 
 // "Projets | Maman Thilor SAMBE" sur les pages internes, le nom seul sur l'accueil.
-const fullTitle = title ? `${title} | ${SITE.nom}` : `${SITE.nom} · ${SITE.accroche}`;
+const fullTitle = title ? `${title} | ${SITE.nom}` : `${SITE.nom} · ${SITE.accroche[lang]}`;
+
+// Même page dans l'autre langue : pour les balises hreflang (Google sait qu'il
+// existe une version anglaise et la propose aux visiteurs anglophones)
+const chemin = Astro.url.pathname;
+const autre = autreLangue(chemin);
+const urlFr = new URL(lang === 'fr' ? chemin : autre.href, Astro.site);
+const urlEn = new URL(lang === 'en' ? chemin : autre.href, Astro.site);
 
 // URL absolue de la page courante (utilise `site` défini dans astro.config.mjs).
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -45,7 +59,7 @@ const aquarelle = await getImage({ src: fondAquarelle, format: 'webp', width: 19
 ---
 
 <!doctype html>
-<html lang="fr" data-theme="mts">
+<html lang={lang} data-theme="mts">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -55,10 +69,13 @@ const aquarelle = await getImage({ src: fondAquarelle, format: 'webp', width: 19
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="fr" href={urlFr} />
+    <link rel="alternate" hreflang="en" href={urlEn} />
+    <link rel="alternate" hreflang="x-default" href={urlFr} />
 
     <!-- Open Graph : aperçu quand le lien est partagé sur LinkedIn -->
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale" content={tr(lang, 'fr_FR', 'en_GB')} />
     <meta property="og:site_name" content={SITE.nom} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -83,7 +100,7 @@ const aquarelle = await getImage({ src: fondAquarelle, format: 'webp', width: 19
       href="#contenu"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 btn btn-primary"
     >
-      Aller au contenu
+      {tr(lang, 'Aller au contenu', 'Skip to content')}
     </a>
 
     <Header />

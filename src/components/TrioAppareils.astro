@@ -22,6 +22,8 @@
  * Toute la scène est dessinée pour 1200 × 640 px, puis réduite par le script
  * pour tenir dans la largeur disponible (variable CSS --echelle).
  */
+import { langue, tr } from '../i18n';
+
 interface Props {
   titre: string;
   /** Adresse du site, SEULEMENT s'il accepte l'affichage en direct. */
@@ -37,6 +39,8 @@ interface Props {
 }
 
 const { titre, url, lien = url, images, imagesMobile = [], mobileSeul = false } = Astro.props;
+const lang = langue(Astro);
+const ouvrir = (version: string) => tr(lang, `Ouvrir ${titre} en grand, version ${version}`, `Open ${titre} full size, ${version} version`);
 const trio = Boolean(url) && !mobileSeul;
 // En mode iPhone seul, on préfère les captures mobiles (sinon celles d'ordinateur)
 const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
@@ -63,7 +67,7 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
           <span class="absolute top-[10px] left-1/2 z-10 h-[24px] w-[84px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
         </div>
       </div>
-      {url && <button type="button" data-ouvrir="mobile" class="absolute inset-0 cursor-zoom-in" aria-label={`Ouvrir ${titre} en grand, version mobile`}></button>}
+      {url && <button type="button" data-ouvrir="mobile" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir('mobile')}></button>}
     </div>
   ) : (
     <div data-cadre-scene class="relative aspect-[1200/640] w-full">
@@ -96,7 +100,7 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
           <div class:list={['relative h-[18px] rounded-b-[14px] bg-linear-to-b from-[#d9dbe0] via-[#b8bbc2] to-[#8d9097]', trio ? '-mx-[60px] w-[880px]' : '-mx-[64px] w-[928px]']} aria-hidden="true">
             <span class="absolute top-0 left-1/2 h-[6px] w-[130px] -translate-x-1/2 rounded-b-[8px] bg-[#9a9da4]"></span>
           </div>
-          {trio && <button type="button" data-ouvrir="ordinateur" class="absolute inset-0 cursor-zoom-in" aria-label={`Ouvrir ${titre} en grand, version ordinateur`}></button>}
+          {trio && <button type="button" data-ouvrir="ordinateur" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir(tr(lang, 'ordinateur', 'desktop'))}></button>}
         </div>
   
         {trio && (
@@ -109,7 +113,7 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
                   <div data-ecran data-largeur="768" class="absolute inset-0"></div>
                 </div>
               </div>
-              <button type="button" data-ouvrir="tablette" class="absolute inset-0 cursor-zoom-in" aria-label={`Ouvrir ${titre} en grand, version tablette`}></button>
+              <button type="button" data-ouvrir="tablette" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir(tr(lang, 'tablette', 'tablet'))}></button>
             </div>
   
             <!-- ================= IPHONE ================= -->
@@ -125,7 +129,7 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
                   <span class="absolute top-[7px] left-1/2 z-10 h-[16px] w-[56px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
                 </div>
               </div>
-              <button type="button" data-ouvrir="mobile" class="absolute inset-0 cursor-zoom-in" aria-label={`Ouvrir ${titre} en grand, version mobile`}></button>
+              <button type="button" data-ouvrir="mobile" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir('mobile')}></button>
             </div>
           </>
         )}
@@ -135,20 +139,20 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
 
   <figcaption class="mt-6 flex flex-col items-center gap-3 text-center text-sm text-muted">
     {mobileSeul ? (
-      <p>Site pensé d'abord pour mobile{url ? ' : il tourne en direct dans le téléphone.' : '.'}</p>
+      <p>{tr(lang, 'Site pensé d’abord pour mobile', 'Mobile-first website')}{url ? tr(lang, ' : il tourne en direct dans le téléphone.', ': it runs live inside the phone.') : '.'}</p>
     ) : trio ? (
       <>
         <p class="flex items-center gap-2">
           <span class="size-2 animate-pulse rounded-full bg-green-400" aria-hidden="true"></span>
-          Site en direct dans les trois appareils. Cliquez sur un appareil pour naviguer dedans.
+          {tr(lang, 'Site en direct dans les trois appareils. Cliquez sur un appareil pour naviguer dedans.', 'The site runs live on all three devices. Click a device to browse inside it.')}
         </p>
       </>
     ) : (
-      <p>Captures du site {titre}.</p>
+      <p>{tr(lang, 'Captures du site', 'Screenshots of the site')} {titre}.</p>
     )}
     {lien && (
       <a href={lien} target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
-        Ouvrir le site dans un nouvel onglet ↗
+        {tr(lang, 'Ouvrir le site dans un nouvel onglet ↗', 'Open the site in a new tab ↗')}
       </a>
     )}
   </figcaption>
@@ -161,7 +165,7 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
       <div class="modal-box flex max-h-none w-auto max-w-none flex-col items-center gap-4 overflow-visible bg-transparent p-0 shadow-none">
         <div class="flex w-full items-center justify-between gap-4">
           <p data-grand-titre class="text-sm font-semibold text-primary"></p>
-          <form method="dialog"><button class="btn btn-sm btn-circle" aria-label="Fermer">✕</button></form>
+          <form method="dialog"><button class="btn btn-sm btn-circle" aria-label={tr(lang, 'Fermer', 'Close')}>✕</button></form>
         </div>
 
         <!-- MacBook agrandi -->
@@ -190,13 +194,15 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
           <span class="absolute top-[24px] left-1/2 z-10 h-[26px] w-[90px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
         </div>
       </div>
-      <form method="dialog" class="modal-backdrop bg-black/70"><button>Fermer</button></form>
+      <form method="dialog" class="modal-backdrop bg-black/70"><button>{tr(lang, 'Fermer', 'Close')}</button></form>
     </dialog>
   )}
 </figure>
 
 <script>
-  const NOMS = { ordinateur: 'Version ordinateur', tablette: 'Version tablette', mobile: 'Version mobile' };
+  const NOMS = document.documentElement.lang === 'en'
+    ? { ordinateur: 'Desktop version', tablette: 'Tablet version', mobile: 'Mobile version' }
+    : { ordinateur: 'Version ordinateur', tablette: 'Version tablette', mobile: 'Version mobile' };
   const TAILLES = { ordinateur: [1440, 900], tablette: [768, 1024], mobile: [390, 844] } as const;
   type Appareil = keyof typeof TAILLES;
 
@@ -205,7 +211,7 @@ const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
     const echelle = boite.clientWidth / largeur;
     const iframe = document.createElement('iframe');
     iframe.src = url;
-    iframe.title = 'Site du projet, affiché en direct';
+    iframe.title = document.documentElement.lang === 'en' ? 'Project website, shown live' : 'Site du projet, affiché en direct';
     iframe.loading = 'lazy';
     iframe.tabIndex = interactive ? 0 : -1;
     // Pas de fond blanc : pendant le chargement (ou si le site est hors ligne),

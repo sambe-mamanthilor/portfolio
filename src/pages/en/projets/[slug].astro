@@ -1,0 +1,14 @@
+---
+// English version of each project page. Shared content: src/vues/PageProjet.astro
+import PageProjet from '../../../vues/PageProjet.astro';
+import { getProjets } from '../../../lib/pocketbase';
+
+export async function getStaticPaths() {
+  const projets = await getProjets();
+  return projets.map((projet, index) => ({
+    params: { slug: projet.slug },
+    props: { projet, suivant: projets[(index + 1) % projets.length] },
+  }));
+}
+---
+<PageProjet {...Astro.props} />
