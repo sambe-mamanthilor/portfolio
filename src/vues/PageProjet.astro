@@ -1,0 +1,354 @@
+---
+/**
+ * Étude de cas d'un projet : UNE seule page modèle pour tous les projets.
+ * Toute la page est en thème sombre (data-theme="mts-nuit").
+ *
+ * Le contenu de la page ; la liste des projets (getStaticPaths) est dans
+ * src/pages/projets/[slug].astro (français) et src/pages/en/projets/[slug].astro (anglais).
+ */
+import Layout from '../layouts/Layout.astro';
+import { bouton } from '../lib/boutons';
+import ProjetImage from '../components/ProjetImage.astro';
+import OutilBadge from '../components/OutilBadge.astro';
+import Timeline from '../components/Timeline.astro';
+import TrioAppareils from '../components/TrioAppareils.astro';
+import LigneOndulee from '../components/LigneOndulee.astro';
+import { getProjets, getEtapes, fileUrl, type Projet } from '../lib/pocketbase';
+import { formatPeriode, formatEquipe, formatType } from '../lib/format';
+import { langue, tr, lien, champ } from '../i18n';
+
+interface Props {
+  projet: Projet;
+  suivant: Projet;
+}
+
+const { projet: brut, suivant } = Astro.props;
+const lang = langue(Astro);
+
+// Tous les textes du projet dans la bonne langue : en anglais, on prend les
+// champs "_en" de PocketBase s'ils sont remplis (sinon le français).
+const TEXTES = ['titre', 'titre_court', 'resume', 'contexte', 'objectifs', 'resultat', 'role', 'choix_techniques', 'recul', 'difficultes', 'couverture_alt'];
+const projet: Projet = { ...brut, ...Object.fromEntries(TEXTES.map((t) => [t, champ(brut, t, lang)])) };
+const titreSuivant = champ(suivant, 'titre', lang);
+const etapes = await getEtapes(projet.id);
+const outils = projet.expand?.outils ?? [];
+const categories = projet.expand?.categorie ?? [];
+const dossier = fileUrl(projet, projet.dossier);
+
+// Images de l'aperçu, en taille d'origine (nettes dans la grande fenêtre)
+const images = projet.galerie.map((f, i) => ({
+  src: fileUrl(projet, f) as string,
+  alt: `${projet.titre}, ${tr(lang, 'capture', 'screenshot')} ${i + 1}`,
+}));
+// Captures au format téléphone (sites pensés pour mobile)
+const imagesMobile = (projet.captures_mobile ?? []).map((f, i) => ({
+  src: fileUrl(projet, f) as string,
+  alt: `${projet.titre}, ${tr(lang, 'version mobile, capture', 'mobile version, screenshot')} ${i + 1}`,
+}));
+
+// Les fiches "infos clés" : on n'affiche que celles qui sont renseignées
+const infos = [
+  { label: tr(lang, 'Cadre', 'Context'), valeur: formatType(projet.type_projet, lang) },
+  { label: tr(lang, 'Équipe', 'Team'), valeur: formatEquipe(projet.cadre, projet.taille_equipe, lang) },
+  { label: tr(lang, 'Période', 'Period'), valeur: formatPeriode(projet.date_debut, projet.date_fin, lang) },
+].filter((i) => i.valeur);
+
+// Objectifs et résultat : affichés seulement s'ils sont renseignés
+const sections = [
+  { id: 'objectifs', titre: tr(lang, 'Objectifs', 'Goals'), html: projet.objectifs },
+  { id: 'resultat', titre: tr(lang, 'Résultat', 'Outcome'), html: projet.resultat },
+].filter((s) => s.html && s.html.trim() !== '');
+
+// « Ce que j'en retiens » : seulement si le champ "recul" est rempli
+const aRecul = Boolean(projet.recul && projet.recul.trim() !== '');
+
+// « Sous le capot » : les outils rangés par couche technique,
+// à partir du champ "type" de chaque outil dans PocketBase.
+const couches = [
+  { nom: 'Front-end', types: ['langage', 'framework'] },
+  { nom: tr(lang, 'Back-end & données', 'Back-end & data'), types: ['backend', 'cms'] },
+  { nom: 'Design', types: ['design', 'audiovisuel'] },
+  { nom: tr(lang, 'Déploiement & gestion', 'Deployment & management'), types: ['deploiement', 'gestion'] },
+]
+  .map((c) => ({ ...c, outils: outils.filter((o) => c.types.includes(o.type)) }))
+  .filter((c) => c.outils.length > 0);
+
+const difficultes = projet.difficultes ?? [];
+const aChoix = Boolean(projet.choix_techniques && projet.choix_techniques.trim() !== '');
+const aCapot = aChoix || couches.length > 0 || difficultes.length > 0;
+
+// Liens du projet : affichés dès l'en-tête
+const liens = [
+  projet.lien_demo && { texte: tr(lang, 'Voir le site en ligne', 'View live site'), href: projet.lien_demo, principal: true },
+  projet.lien_github && { texte: tr(lang, 'Code sur GitHub', 'Code on GitHub'), href: projet.lien_github },
+  projet.lien_video && { texte: tr(lang, 'Voir la vidéo', 'Watch the video'), href: projet.lien_video },
+].filter(Boolean) as { texte: string; href: string; principal?: boolean }[];
+---
+
+<Layout title={projet.titre} description={projet.resume} sombre>
+  <!--
+    Alternance des zones, comme sur l'accueil :
+      sombre (en-tête) → clair (contexte, objectifs, technique, processus) → sombre (aperçu).
+    Entre sombre et clair : bord en courbe douce ("bord-ondule") + ligne cyan.
+    Entre deux parties claires : la ligne cyan seule.
+  -->
+
+  <!-- ===================== ZONE SOMBRE : EN-TÊTE ===================== -->
+  <div data-theme="mts-nuit" class="bg-linear-to-b from-[#0a0f2e] to-[#111a3d] text-base-content">
+    <section class="haut-de-page pb-24" aria-labelledby="titre-projet">
+      <div class="container-site grid items-center gap-10 lg:grid-cols-2">
+        <div>
+          <nav aria-label={tr(lang, 'Fil d’Ariane', 'Breadcrumb')} class="text-sm text-muted">
+            <ol class="flex gap-2">
+              <li><a href={lien(lang, '/projets')} class="hover:text-primary">{tr(lang, 'Projets', 'Projects')}</a></li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" class="text-primary">{projet.titre}</li>
+            </ol>
+          </nav>
+
+          <h1 id="titre-projet" class="mt-4 font-display text-4xl text-primary md:text-5xl">{projet.titre}</h1>
+          <p class="mt-6 text-lg leading-relaxed">{projet.resume}</p>
+
+          {categories.length > 0 && (
+            <ul class="mt-6 flex flex-wrap gap-2" aria-label={tr(lang, 'Catégories', 'Categories')}>
+              {categories.map((c) => <li class="badge badge-outline border-primary/60 text-primary">{champ(c, 'nom', lang)}</li>)}
+            </ul>
+          )}
+
+          {(liens.length > 0 || dossier) && (
+            <div class="mt-8 flex flex-wrap gap-3">
+              {liens.map((lien) => (
+                <a
+                  href={lien.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={bouton(lien.principal ? 'principal' : 'secondaire', 'petit')}
+                >
+                  {lien.texte} <span aria-hidden="true">↗</span><span class="sr-only">{tr(lang, '(nouvel onglet)', '(new tab)')}</span>
+                </a>
+              ))}
+              {dossier && (
+                <a href={dossier} class={bouton('secondaire', 'petit')} download>
+                  {tr(lang, 'Télécharger le dossier', 'Download the report')} <span class="sr-only">(PDF)</span>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        {projet.format_apercu === 'mobile' && imagesMobile.length > 0 ? (
+          <!-- Site pensé pour mobile : la couverture est un iPhone, pas un écran d'ordinateur -->
+          <div class="mx-auto w-[240px] rounded-[44px] bg-[#111] p-[10px] shadow-[0_30px_80px_-20px_rgb(53_195_234/0.45)] ring-1 ring-white/15">
+            <div class="relative aspect-[390/800] overflow-hidden rounded-[34px] bg-white">
+              <img src={imagesMobile[0].src} alt={imagesMobile[0].alt} class="size-full object-cover object-top" />
+              <span class="absolute top-[8px] left-1/2 h-[20px] w-[70px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
+            </div>
+          </div>
+        ) : (
+          <div class="overflow-hidden rounded-box border border-primary/40 shadow-[10px_10px_0_rgb(14_163_205/0.35)]">
+            <ProjetImage projet={projet} taille="800x450" prioritaire class="aspect-video w-full" />
+          </div>
+        )}
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== ZONE CLAIRE : LE PROJET ===================== -->
+  <div data-theme="mts" class="bord-ondule bg-page bg-(image:--fond-aquarelle) bg-cover bg-top text-base-content">
+    <LigneOndulee superpose />
+
+    <!-- ============ CONTEXTE + INFOS CLÉS ============ -->
+    <section class="section" aria-labelledby="titre-contexte">
+      <div class="container-site grid gap-12 lg:grid-cols-[3fr_2fr]">
+        <div>
+          <h2 id="titre-contexte" class="titre-section">{tr(lang, 'Contexte', 'Context')}</h2>
+          <div class="texte-riche mt-6 text-lg leading-relaxed text-muted" set:html={projet.contexte} />
+        </div>
+
+        <div class="space-y-4">
+          {projet.role && (
+            <div class="rounded-box border border-base-300 bg-base-200 p-5">
+              <h2 class="text-xs font-semibold uppercase tracking-widest text-accent">{tr(lang, 'Mon rôle', 'My role')}</h2>
+              <p class="mt-2">{projet.role}</p>
+            </div>
+          )}
+          <dl class="grid grid-cols-2 gap-4">
+            {infos.map((info) => (
+              <div class="rounded-box border border-base-300 bg-base-200 p-4">
+                <dt class="text-xs font-semibold uppercase tracking-widest text-accent">{info.label}</dt>
+                <dd class="mt-1 font-display">{info.valeur}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ OBJECTIFS / RÉSULTAT ============ -->
+    {sections.length > 0 && <LigneOndulee />}
+    {sections.length > 0 && (
+      <section class="section" aria-label={tr(lang, 'Objectifs et résultat', 'Goals and outcome')}>
+        <div class="container-site grid gap-12 md:grid-cols-2">
+          {sections.map((s) => (
+            <div>
+              <h2 id={s.id} class="titre-section text-2xl md:text-3xl">{s.titre}</h2>
+              <div class="texte-riche mt-4 leading-relaxed text-muted" set:html={s.html} />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+  </div>
+
+  <!-- ===================== ZONE SOMBRE : SOUS LE CAPOT ===================== -->
+  <!-- La partie technique passe en sombre : elle casse le long défilement
+       clair et rappelle l'univers du code (comme un éditeur en mode sombre).
+       data-theme="mts-nuit" change toutes les couleurs automatiquement. -->
+  {aCapot && (
+    <div data-theme="mts-nuit" class="bord-ondule zone-nuit text-base-content">
+      <LigneOndulee superpose />
+      <section class="section" aria-labelledby="titre-capot">
+        <div class="container-site">
+          <p class="font-mono text-sm text-primary">{tr(lang, '<sous-le-capot />', '<under-the-hood />')}</p>
+          <h2 id="titre-capot" class="titre-section mt-2">{tr(lang, 'Sous le capot', 'Under the hood')}</h2>
+
+          <!-- La stack, couche par couche -->
+          {couches.length > 0 && (
+            <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {couches.map((couche) => (
+                <div class="rounded-box border border-primary/20 bg-base-200/60 p-5">
+                  <h3 class="text-xs font-semibold uppercase tracking-widest text-accent">{couche.nom}</h3>
+                  <ul class="mt-4 flex flex-wrap gap-2">
+                    {couche.outils.map((o) => <li><OutilBadge outil={o} /></li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <!-- Les choix techniques -->
+          {aChoix && (
+            <div class="mt-12 max-w-4xl">
+              <h3 class="font-display text-2xl">{tr(lang, 'Choix techniques', 'Technical choices')}</h3>
+              <div class="texte-riche mt-4 leading-relaxed text-muted" set:html={projet.choix_techniques} />
+            </div>
+          )}
+
+          <!-- Difficultés rencontrées, présentées comme des tickets de bug :
+               le problème et sa cause en haut, la correction en vert en bas. -->
+          {difficultes.length > 0 && (
+            <div class="mt-12">
+              <h3 class="font-display text-2xl">{tr(lang, 'Difficultés et solutions', 'Challenges and solutions')}</h3>
+              <ol class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {difficultes.map((d, i) => (
+                  <li class="flex flex-col overflow-hidden rounded-box border border-white/10 bg-white/5">
+                    <div class="p-5">
+                      <p class="flex items-center gap-2 font-mono text-xs text-muted">
+                        <span class="size-2 rounded-full bg-orange-400" aria-hidden="true"></span>
+                        bug #{i + 1}
+                      </p>
+                      <h4 class="mt-2 font-semibold">{d.probleme}</h4>
+                      <p class="mt-1.5 text-sm text-muted"><span class="font-medium">{tr(lang, 'Cause :', 'Cause:')}</span> {d.cause}</p>
+                    </div>
+                    <p class="mt-auto flex gap-3 border-t border-green-400/20 bg-green-400/10 px-5 py-3 text-sm">
+                      <span class="font-mono text-xs font-semibold whitespace-nowrap text-green-300">✓ fix</span>
+                      <span><span class="sr-only">{tr(lang, 'Solution : ', 'Solution: ')}</span>{d.solution}</span>
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  )}
+
+  <!-- ===================== ZONE CLAIRE : PROCESSUS ET BILAN ===================== -->
+  {(etapes.length > 0 || aRecul) && (
+  <div data-theme="mts" class="bord-ondule bg-page bg-(image:--fond-aquarelle) bg-cover bg-top text-base-content">
+    <LigneOndulee superpose />
+
+    <!-- ============ PROCESSUS (frise) ============ -->
+    {etapes.length > 0 && (
+      <section class="section" aria-labelledby="titre-processus">
+        <div class="container-site">
+          <h2 id="titre-processus" class="titre-section">{tr(lang, 'Processus complet', 'Full process')}</h2>
+          <div class="mt-12">
+            <Timeline etapes={etapes} />
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- ============ CE QUE J'EN RETIENS (champ "recul") ============
+         Affiché seulement s'il est rempli. Bordure cyan à gauche = citation. -->
+    {aRecul && etapes.length > 0 && <LigneOndulee />}
+    {aRecul && (
+      <section class="section" aria-labelledby="titre-recul">
+        <div class="container-site">
+          <h2 id="titre-recul" class="titre-section">{tr(lang, 'Ce que j’en retiens', 'What I learned')}</h2>
+          <div
+            class="texte-riche mt-6 max-w-3xl border-l-4 border-primary pl-6 text-lg leading-relaxed text-muted"
+            set:html={projet.recul}
+          />
+        </div>
+      </section>
+    )}
+
+  </div>
+  )}
+
+  <!-- ===================== ZONE SOMBRE : APERÇU ===================== -->
+  <div data-theme="mts-nuit" class="bord-ondule bg-linear-to-b from-[#0d1436] to-[#111a3d] text-base-content">
+    <LigneOndulee superpose />
+
+    <!-- ============ APERÇU DYNAMIQUE (remplace le cadre avec les mains) ============ -->
+    <section class="section" aria-labelledby="titre-apercu">
+      <div class="container-site">
+        <h2 id="titre-apercu" class="titre-section mb-10 text-center">{tr(lang, 'Aperçu du projet', 'Project preview')}</h2>
+
+        {projet.lien_demo ? (
+          <!-- Site web : MacBook, iPad et iPhone. Le mode « en direct » n'est proposé
+               que si le site accepte d'être affiché dans une autre page
+               (case "apercu_en_direct" dans PocketBase). -->
+          <TrioAppareils
+            titre={projet.titre}
+            url={projet.apercu_en_direct ? projet.lien_demo : undefined}
+            lien={projet.lien_demo}
+            images={images}
+            imagesMobile={imagesMobile}
+            mobileSeul={projet.format_apercu === 'mobile'}
+          />
+        ) : images.length > 0 ? (
+          <!-- Pas de site (affiches, identité, vidéo) : galerie simple -->
+          <ul class:list={[
+            'mx-auto grid gap-6',
+            images.length === 1 ? 'max-w-lg' : images.length === 3 ? 'max-w-6xl sm:grid-cols-3' : 'max-w-6xl sm:grid-cols-2',
+          ]}>
+            {images.map((image) => (
+              <li class="overflow-hidden rounded-box border border-primary/20 bg-base-200 p-3">
+                <img src={image.src} alt={image.alt} loading="lazy" decoding="async" class="h-auto w-full rounded-field" />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="mx-auto max-w-3xl overflow-hidden rounded-box shadow-xl">
+            <ProjetImage projet={projet} taille="800x450" class="aspect-video w-full" />
+          </div>
+        )}
+
+        <!-- Navigation entre projets -->
+        <nav aria-label={tr(lang, 'Navigation entre les projets', 'Project navigation')} class="mt-16 flex flex-wrap justify-center gap-4">
+          <a href={lien(lang, '/projets')} class={bouton('secondaire')}>{tr(lang, 'Retour aux projets', 'Back to projects')}</a>
+          {suivant.slug !== projet.slug && (
+            <a href={lien(lang, `/projets/${suivant.slug}`)} class:list={[bouton('principal'), 'max-w-full whitespace-normal']}>
+              {tr(lang, 'Projet suivant :', 'Next project:')} {titreSuivant}
+            </a>
+          )}
+        </nav>
+      </div>
+    </section>
+  </div>
+</Layout>

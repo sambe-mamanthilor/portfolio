@@ -1,0 +1,299 @@
+---
+/**
+ * Aperçu d'un site dans trois vrais appareils : MacBook, iPad et iPhone.
+ *
+ * Chaque appareil affiche le site À SA VRAIE LARGEUR (1440, 768 et 390 px),
+ * puis l'image est réduite pour tenir dans l'appareil. Le site affiche donc
+ * réellement sa version ordinateur, tablette et mobile : c'est une preuve du
+ * responsive, pas trois copies de la même image.
+ *
+ * - Site autorisé en direct (url) : les trois appareils chargent le vrai site.
+ * - Sinon : seul le MacBook s'affiche, avec les captures qui défilent
+ *   (une capture d'ordinateur dans un iPhone n'aurait pas de sens).
+ * - Clic sur un appareil : il s'ouvre en grand (fenêtre <dialog>) et on
+ *   peut naviguer dans le site.
+ * - Animations au défilement (écran qui s'ouvre, appareils qui glissent) :
+ *   classes anim-ecran, anim-gauche, anim-droite, définies dans global.css.
+ *
+ * Mode « iPhone seul » (mobileSeul) : pour les sites ou applications pensés
+ * d'abord pour mobile. Un seul grand iPhone, avec le site en direct ou les
+ * captures au format téléphone (imagesMobile) qui défilent.
+ *
+ * Toute la scène est dessinée pour 1200 × 640 px, puis réduite par le script
+ * pour tenir dans la largeur disponible (variable CSS --echelle).
+ */
+import { langue, tr } from '../i18n';
+
+interface Props {
+  titre: string;
+  /** Adresse du site, SEULEMENT s'il accepte l'affichage en direct. */
+  url?: string;
+  /** Adresse du site en ligne, pour le lien « Ouvrir ». */
+  lien?: string;
+  /** Captures du site (utilisées si pas de direct, et pendant le chargement) */
+  images: { src: string; alt: string }[];
+  /** Captures au format téléphone (390 px de large) */
+  imagesMobile?: { src: string; alt: string }[];
+  /** true : un seul iPhone (site ou application pensé pour mobile) */
+  mobileSeul?: boolean;
+}
+
+const { titre, url, lien = url, images, imagesMobile = [], mobileSeul = false } = Astro.props;
+const lang = langue(Astro);
+const ouvrir = (version: string) => tr(lang, `Ouvrir ${titre} en grand, version ${version}`, `Open ${titre} full size, ${version} version`);
+const trio = Boolean(url) && !mobileSeul;
+// En mode iPhone seul, on préfère les captures mobiles (sinon celles d'ordinateur)
+const imagesIphone = imagesMobile.length > 0 ? imagesMobile : images;
+---
+
+<figure data-trio data-url={url} class="mx-auto max-w-6xl">
+  {mobileSeul ? (
+    <div class="anim-droite relative mx-auto w-[300px] max-w-full">
+      <div class="relative rounded-[52px] bg-[#111] p-[12px] shadow-[0_30px_80px_-20px_rgb(53_195_234/0.35)] ring-1 ring-white/15">
+        <span class="absolute top-[130px] -left-[4px] h-[34px] w-[4px] rounded-l bg-[#2a2a2a]" aria-hidden="true"></span>
+        <span class="absolute top-[180px] -left-[4px] h-[56px] w-[4px] rounded-l bg-[#2a2a2a]" aria-hidden="true"></span>
+        <span class="absolute top-[165px] -right-[4px] h-[80px] w-[4px] rounded-r bg-[#2a2a2a]" aria-hidden="true"></span>
+        <div class="relative aspect-[390/800] overflow-hidden rounded-[40px] bg-white">
+          {imagesIphone.map((image, i) => (
+            <img
+              src={image.src}
+              alt={url ? '' : image.alt}
+              data-diapo
+              loading={i === 0 ? 'eager' : 'lazy'}
+              class:list={['absolute inset-0 size-full object-cover object-top transition-opacity duration-700', i === 0 ? 'opacity-100' : 'opacity-0']}
+            />
+          ))}
+          {url && <div data-ecran data-largeur="390" class="absolute inset-0"></div>}
+          <span class="absolute top-[10px] left-1/2 z-10 h-[24px] w-[84px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
+        </div>
+      </div>
+      {url && <button type="button" data-ouvrir="mobile" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir('mobile')}></button>}
+    </div>
+  ) : (
+    <div data-cadre-scene class="relative aspect-[1200/640] w-full">
+      <div
+        data-scene
+        class="absolute top-0 left-0 h-[640px] w-[1200px] origin-top-left scale-(--echelle)"
+        style="--echelle: 0.5"
+      >
+        <!-- ================= MACBOOK ================= -->
+        <div class:list={['absolute top-[10px]', trio ? 'left-[220px]' : 'left-[200px]']}>
+          <!-- Écran (le "couvercle"), qui s'ouvre au défilement -->
+          <div class:list={['anim-ecran relative rounded-t-[22px] bg-[#0b0b0b] p-[14px] pb-[22px] shadow-2xl ring-1 ring-white/10', trio ? 'w-[760px]' : 'w-[800px]']}>
+            <span class="absolute top-[5px] left-1/2 size-[5px] -translate-x-1/2 rounded-full bg-[#2a2a2a]" aria-hidden="true"></span>
+            <div class:list={['relative overflow-hidden rounded-[4px] bg-white', trio ? 'h-[442px]' : 'h-[465px]']}>
+              {/* Captures : diaporama, ou image d'attente avant le chargement du site */}
+              {images.map((image, i) => (
+                <img
+                  src={image.src}
+                  alt={trio ? '' : image.alt}
+                  data-diapo
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  class:list={['absolute inset-0 size-full object-cover object-top transition-opacity duration-700', i === 0 ? 'opacity-100' : 'opacity-0']}
+                />
+              ))}
+              {trio && <div data-ecran data-largeur="1440" class="absolute inset-0"></div>}
+            </div>
+            <span class="absolute bottom-[6px] left-1/2 -translate-x-1/2 text-[9px] tracking-wide text-white/40" aria-hidden="true">MacBook Pro</span>
+          </div>
+          <!-- Base (vue de face) -->
+          <div class:list={['relative h-[18px] rounded-b-[14px] bg-linear-to-b from-[#d9dbe0] via-[#b8bbc2] to-[#8d9097]', trio ? '-mx-[60px] w-[880px]' : '-mx-[64px] w-[928px]']} aria-hidden="true">
+            <span class="absolute top-0 left-1/2 h-[6px] w-[130px] -translate-x-1/2 rounded-b-[8px] bg-[#9a9da4]"></span>
+          </div>
+          {trio && <button type="button" data-ouvrir="ordinateur" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir(tr(lang, 'ordinateur', 'desktop'))}></button>}
+        </div>
+  
+        {trio && (
+          <>
+            <!-- ================= IPAD ================= -->
+            <div class="anim-gauche absolute top-[210px] left-[20px]">
+              <div class="relative w-[300px] rounded-[30px] bg-[#111] p-[14px] shadow-2xl ring-1 ring-white/15">
+                <span class="absolute top-[5px] left-1/2 size-[4px] -translate-x-1/2 rounded-full bg-[#333]" aria-hidden="true"></span>
+                <div class="relative h-[372px] overflow-hidden rounded-[16px] bg-white">
+                  <div data-ecran data-largeur="768" class="absolute inset-0"></div>
+                </div>
+              </div>
+              <button type="button" data-ouvrir="tablette" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir(tr(lang, 'tablette', 'tablet'))}></button>
+            </div>
+  
+            <!-- ================= IPHONE ================= -->
+            <div class="anim-droite absolute top-[240px] left-[930px]">
+              <div class="relative w-[184px] rounded-[42px] bg-[#111] p-[9px] shadow-2xl ring-1 ring-white/15">
+                <!-- Boutons sur la tranche -->
+                <span class="absolute top-[90px] -left-[3px] h-[26px] w-[3px] rounded-l bg-[#2a2a2a]" aria-hidden="true"></span>
+                <span class="absolute top-[125px] -left-[3px] h-[40px] w-[3px] rounded-l bg-[#2a2a2a]" aria-hidden="true"></span>
+                <span class="absolute top-[115px] -right-[3px] h-[56px] w-[3px] rounded-r bg-[#2a2a2a]" aria-hidden="true"></span>
+                <div class="relative h-[360px] overflow-hidden rounded-[34px] bg-white">
+                  <div data-ecran data-largeur="390" class="absolute inset-0"></div>
+                  <!-- Dynamic Island -->
+                  <span class="absolute top-[7px] left-1/2 z-10 h-[16px] w-[56px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
+                </div>
+              </div>
+              <button type="button" data-ouvrir="mobile" class="absolute inset-0 cursor-zoom-in" aria-label={ouvrir('mobile')}></button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )}
+
+  <figcaption class="mt-6 flex flex-col items-center gap-3 text-center text-sm text-muted">
+    {mobileSeul ? (
+      <p>{tr(lang, 'Site pensé d’abord pour mobile', 'Mobile-first website')}{url ? tr(lang, ' : il tourne en direct dans le téléphone.', ': it runs live inside the phone.') : '.'}</p>
+    ) : trio ? (
+      <>
+        <p class="flex items-center gap-2">
+          <span class="size-2 animate-pulse rounded-full bg-green-400" aria-hidden="true"></span>
+          {tr(lang, 'Site en direct dans les trois appareils. Cliquez sur un appareil pour naviguer dedans.', 'The site runs live on all three devices. Click a device to browse inside it.')}
+        </p>
+      </>
+    ) : (
+      <p>{tr(lang, 'Captures du site', 'Screenshots of the site')} {titre}.</p>
+    )}
+    {lien && (
+      <a href={lien} target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+        {tr(lang, 'Ouvrir le site dans un nouvel onglet ↗', 'Open the site in a new tab ↗')}
+      </a>
+    )}
+  </figcaption>
+
+  <!-- Fenêtre « en grand » (ouverte au clic sur un appareil).
+       Elle contient les trois appareils agrandis ; le script n'affiche que
+       celui sur lequel on a cliqué, et place le site interactif dans son écran. -->
+  {url && (
+    <dialog data-grand class="modal">
+      <div class="modal-box flex max-h-none w-auto max-w-none flex-col items-center gap-4 overflow-visible bg-transparent p-0 shadow-none">
+        <div class="flex w-full items-center justify-between gap-4">
+          <p data-grand-titre class="text-sm font-semibold text-primary"></p>
+          <form method="dialog"><button class="btn btn-sm btn-circle" aria-label={tr(lang, 'Fermer', 'Close')}>✕</button></form>
+        </div>
+
+        <!-- MacBook agrandi -->
+        <div data-grand-appareil="ordinateur" class="hidden flex-col items-center">
+          <div class="relative rounded-t-[24px] bg-[#0b0b0b] p-[16px] pb-[26px] ring-1 ring-white/10">
+            <span class="absolute top-[6px] left-1/2 size-[6px] -translate-x-1/2 rounded-full bg-[#2a2a2a]" aria-hidden="true"></span>
+            <div data-grand-ecran class="relative overflow-hidden rounded-[4px] bg-white"></div>
+          </div>
+          <div class="relative h-[20px] w-[calc(100%+120px)] rounded-b-[16px] bg-linear-to-b from-[#d9dbe0] via-[#b8bbc2] to-[#8d9097]" aria-hidden="true">
+            <span class="absolute top-0 left-1/2 h-[7px] w-[150px] -translate-x-1/2 rounded-b-[8px] bg-[#9a9da4]"></span>
+          </div>
+        </div>
+
+        <!-- iPad agrandi -->
+        <div data-grand-appareil="tablette" class="relative hidden rounded-[40px] bg-[#111] p-[20px] ring-1 ring-white/15">
+          <span class="absolute top-[7px] left-1/2 size-[6px] -translate-x-1/2 rounded-full bg-[#333]" aria-hidden="true"></span>
+          <div data-grand-ecran class="relative overflow-hidden rounded-[20px] bg-white"></div>
+        </div>
+
+        <!-- iPhone agrandi -->
+        <div data-grand-appareil="mobile" class="relative hidden rounded-[56px] bg-[#111] p-[13px] ring-1 ring-white/15">
+          <span class="absolute top-[150px] -left-[4px] h-[34px] w-[4px] rounded-l bg-[#2a2a2a]" aria-hidden="true"></span>
+          <span class="absolute top-[200px] -left-[4px] h-[60px] w-[4px] rounded-l bg-[#2a2a2a]" aria-hidden="true"></span>
+          <span class="absolute top-[180px] -right-[4px] h-[86px] w-[4px] rounded-r bg-[#2a2a2a]" aria-hidden="true"></span>
+          <div data-grand-ecran class="relative overflow-hidden rounded-[44px] bg-white"></div>
+          <span class="absolute top-[24px] left-1/2 z-10 h-[26px] w-[90px] -translate-x-1/2 rounded-full bg-black" aria-hidden="true"></span>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop bg-black/70"><button>{tr(lang, 'Fermer', 'Close')}</button></form>
+    </dialog>
+  )}
+</figure>
+
+<script>
+  const NOMS = document.documentElement.lang === 'en'
+    ? { ordinateur: 'Desktop version', tablette: 'Tablet version', mobile: 'Mobile version' }
+    : { ordinateur: 'Version ordinateur', tablette: 'Version tablette', mobile: 'Version mobile' };
+  const TAILLES = { ordinateur: [1440, 900], tablette: [768, 1024], mobile: [390, 844] } as const;
+  type Appareil = keyof typeof TAILLES;
+
+  /** Crée une iframe à la vraie largeur du site, réduite pour tenir dans "boite". */
+  function iframeReduite(url: string, largeur: number, boite: HTMLElement, interactive: boolean) {
+    const echelle = boite.clientWidth / largeur;
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.title = document.documentElement.lang === 'en' ? 'Project website, shown live' : 'Site du projet, affiché en direct';
+    iframe.loading = 'lazy';
+    iframe.tabIndex = interactive ? 0 : -1;
+    // Pas de fond blanc : pendant le chargement (ou si le site est hors ligne),
+    // la capture placée dessous reste visible.
+    iframe.className = 'absolute top-0 left-0 origin-top-left border-0';
+    if (!interactive) iframe.classList.add('pointer-events-none');
+    iframe.style.width = `${largeur}px`;
+    iframe.style.height = `${boite.clientHeight / echelle}px`;
+    iframe.style.transform = `scale(${echelle})`;
+    boite.append(iframe);
+    return iframe;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-trio]').forEach((trio) => {
+    const url = trio.dataset.url;
+    const cadre = trio.querySelector<HTMLElement>('[data-cadre-scene]');
+    const scene = trio.querySelector<HTMLElement>('[data-scene]');
+
+    // 1. La scène (1200 px de large) est réduite à la largeur disponible
+    //    (pas de scène en mode iPhone seul)
+    if (cadre && scene) {
+      const ajuster = () => scene.style.setProperty('--echelle', String(cadre.clientWidth / 1200));
+      new ResizeObserver(ajuster).observe(cadre);
+      ajuster();
+    }
+
+    // 2. Diaporama des captures dans le MacBook (si pas de site en direct)
+    const diapos = [...trio.querySelectorAll<HTMLElement>('[data-diapo]')];
+    const calme = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!url && diapos.length > 1 && !calme) {
+      let i = 0;
+      setInterval(() => {
+        diapos[i].classList.replace('opacity-100', 'opacity-0');
+        i = (i + 1) % diapos.length;
+        diapos[i].classList.replace('opacity-0', 'opacity-100');
+      }, 3500);
+    }
+
+    if (!url) return;
+
+    // 3. Le site en direct dans chaque appareil, chargé quand la scène approche de l'écran
+    new IntersectionObserver((entrees, observateur) => {
+      if (!entrees[0].isIntersecting) return;
+      observateur.disconnect();
+      trio.querySelectorAll<HTMLElement>('[data-ecran]').forEach((ecran) => {
+        iframeReduite(url, Number(ecran.dataset.largeur), ecran, false);
+      });
+    }, { rootMargin: '300px' }).observe(trio);
+
+    // 4. Clic sur un appareil : il s'ouvre en grand, AVEC son cadre, et le site devient interactif
+    const fenetre = trio.querySelector<HTMLDialogElement>('[data-grand]')!;
+    const titreGrand = trio.querySelector<HTMLElement>('[data-grand-titre]')!;
+    const appareilsGrands = [...trio.querySelectorAll<HTMLElement>('[data-grand-appareil]')];
+    // Place prise par le cadre autour de l'écran (bordures, base du MacBook, titre)
+    const MARGES = { ordinateur: [160, 150], tablette: [60, 140], mobile: [40, 130] } as const;
+
+    const vider = () => appareilsGrands.forEach((a) => a.querySelector('[data-grand-ecran]')!.replaceChildren());
+
+    trio.querySelectorAll<HTMLButtonElement>('[data-ouvrir]').forEach((bouton) => {
+      bouton.addEventListener('click', () => {
+        const appareil = bouton.dataset.ouvrir as Appareil;
+        const [largeur, hauteur] = TAILLES[appareil];
+        const [margeL, margeH] = MARGES[appareil];
+        // Écran le plus grand possible dans la fenêtre du navigateur, sans dépasser la taille réelle
+        const echelle = Math.min(1, (window.innerWidth - margeL) / largeur, (window.innerHeight - margeH) / hauteur);
+
+        vider();
+        appareilsGrands.forEach((a) => {
+          const actif = a.dataset.grandAppareil === appareil;
+          a.classList.toggle('hidden', !actif);
+          a.classList.toggle(a.dataset.grandAppareil === 'ordinateur' ? 'flex' : 'block', actif);
+        });
+        const ecran = trio.querySelector<HTMLElement>(`[data-grand-appareil="${appareil}"] [data-grand-ecran]`)!;
+        ecran.style.width = `${largeur * echelle}px`;
+        ecran.style.height = `${hauteur * echelle}px`;
+        titreGrand.textContent = NOMS[appareil];
+        fenetre.showModal();
+        iframeReduite(url, largeur, ecran, true);
+      });
+    });
+
+    // Fermer la fenêtre arrête le site (son, animations)
+    fenetre.addEventListener('close', vider);
+  });
+</script>

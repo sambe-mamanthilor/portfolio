@@ -1,148 +1,359 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* =========================================================
+   GLOBAL.CSS — point d'entrée unique des styles du portfolio
+   Tailwind CSS 4 + daisyUI 5
+   ========================================================= */
 
-/* ======================
-   BASE
-====================== */
+/* 1. Tailwind : génère uniquement les classes utilisées dans le code. */
+@import "tailwindcss";
 
+/* 2. Polices auto-hébergées (installées avec npm, voir Layout.astro).
+      Pas d'appel à Google Fonts : plus rapide, et aucune adresse IP
+      de visiteur envoyée à Google (point RGPD pour QUALITE.md). */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/playfair-display";
+
+/* 3. daisyUI sans ses thèmes prédéfinis : on n'embarque que le nôtre. */
+@plugin "daisyui" {
+  themes: false;
+}
+
+/* 4. Deux thèmes, nommés par RÔLE (on écrit `bg-primary`, jamais `bg-[#79f4ff]`).
+      Direction "Contraste équilibré" (page Comparaison du Figma) :
+      - "mts" (clair, par défaut) : tout le contenu, pour respirer et limiter le bleu ;
+      - "mts-nuit" (sombre) : seulement le haut de page, la navigation et le pied de page.
+      Un même composant change de couleurs selon la zone : il suffit de mettre
+      data-theme="mts-nuit" sur la section. */
+@plugin "daisyui/theme" {
+  name: "mts";
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;      /* cartes (blanc, posées sur l'ivoire) */
+  --color-base-200: #e6f4f8;      /* encadrés : cyan très pâle */
+  --color-base-300: #cde6ee;      /* bordures : cyan grisé */
+  --color-base-content: #0a0f2e;  /* texte : le bleu nuit devient l'encre */
+
+  /* Sur fond blanc, le cyan clair #79f4ff est illisible (1,3:1).
+     On prend un cyan foncé : texte blanc dessus = 4,6:1 (WCAG AA). */
+  --color-primary: #0b7fa3;
+  --color-primary-content: #ffffff;
+  --color-secondary: #0ea3cd;
+  --color-secondary-content: #0a0f2e;
+  --color-accent: #0b7fa3;
+  --color-accent-content: #ffffff;
+  --color-neutral: #0a0f2e;       /* boutons sombres */
+  --color-neutral-content: #ffffff;
+
+  --color-info: #0284c7;
+  --color-info-content: #ffffff;
+  --color-success: #047857;
+  --color-success-content: #ffffff;
+  --color-warning: #b45309;
+  --color-warning-content: #ffffff;
+  --color-error: #b91c1c;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 1.25rem;
+  --radius-field: 1.25rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "mts-nuit";
+  default: false;
+  color-scheme: dark;
+
+  --color-base-100: #0a0f2e;      /* bleu nuit de la maquette */
+  --color-base-200: #111a3d;
+  --color-base-300: #1c2a55;
+  --color-base-content: #f8fafc;
+
+  --color-primary: #79f4ff;       /* cyan clair : lisible sur le bleu nuit (13:1) */
+  --color-primary-content: #0a0f2e;
+  --color-secondary: #0ea3cd;
+  --color-secondary-content: #0a0f2e;
+  --color-accent: #35c3ea;
+  --color-accent-content: #0a0f2e;
+  --color-neutral: #111a3d;
+  --color-neutral-content: #79f4ff;
+
+  --color-info: #38bdf8;
+  --color-info-content: #0a0f2e;
+  --color-success: #4ade80;
+  --color-success-content: #0a0f2e;
+  --color-warning: #fbbf24;
+  --color-warning-content: #0a0f2e;
+  --color-error: #f87171;
+  --color-error-content: #0a0f2e;
+
+  --radius-selector: 1.25rem;
+  --radius-field: 1.25rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+/* Texte secondaire (classe text-muted), différent selon la zone.
+   On redéfinit la variable DANS chaque zone : une variable CSS qui en
+   utilise une autre (var(--x)) est calculée là où elle est déclarée,
+   puis héritée telle quelle. La déclarer seulement à la racine
+   donnerait le gris foncé partout, même sur le bleu nuit. */
+[data-theme="mts"] { --color-muted: #475569; }        /* gris ardoise : 7,6:1 sur blanc */
+[data-theme="mts-nuit"] { --color-muted: #cbd5e1; }   /* 12,8:1 sur bleu nuit */
+
+/* 5. Tokens Tailwind propres au projet (hors couleurs daisyUI). */
+@theme {
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-display: "Playfair Display Variable", Georgia, serif;
+
+  /* Couleur de secours des pages claires (le dégradé est posé sur body) */
+  --color-page: #eef8fb;
+
+  /* Texte secondaire : valeur par défaut, ajustée par zone plus haut */
+  --color-muted: #475569;
+
+  /* Animation des traits lumineux de la couverture.
+     Déclarée ici, elle devient une classe Tailwind : "animate-glisse". */
+  --animate-glisse: glisse 6s ease-in-out infinite alternate;
+  @keyframes glisse {
+    from { transform: translateX(-12px); opacity: 0.25; }
+    to   { transform: translateX(12px);  opacity: 0.7; }
+  }
+
+  /* Animations d'arrivée de la couverture (classes "animate-apparait"
+     et "animate-clignote"). Le moment de départ se règle avec un délai :
+     [animation-delay:2s]. "both" = l'élément reste invisible pendant le délai. */
+  --animate-apparait: apparait 0.8s ease-out both;
+  @keyframes apparait {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Curseur de la machine à écrire : visible / invisible, sans fondu */
+  --animate-clignote: clignote 1s steps(1) infinite;
+  @keyframes clignote {
+    50% { opacity: 0; }
+  }
+}
+
+/* 6. Styles de base */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-light text-dark;
-    letter-spacing: -0.01em;
+    @apply bg-page text-base-content font-sans antialiased;
+    /* Aquarelle légère pour toutes les parties claires.
+       Les zones bleu nuit (couverture, carrousel, pied de page) la recouvrent. */
+    background-image: var(--fond-aquarelle);
+    background-size: cover;
+    background-position: center;
+  }
+  /* Sur ordinateur, l'aquarelle reste fixe pendant le défilement : elle couvre
+     toujours l'écran sans être étirée sur toute la hauteur de la page.
+     (Désactivé sur mobile, où "fixed" est mal géré, notamment sur iPhone.) */
+  @media (hover: hover) and (min-width: 1024px) {
+    body {
+      background-attachment: fixed;
+    }
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold text-dark;
-    letter-spacing: -0.02em;
+  h1, h2, h3 {
+    @apply font-display;
   }
 
-  a {
-    @apply text-primary transition-colors duration-300;
-  }
-
-  a:hover {
-    @apply text-secondary;
+  /* Contour de focus visible au clavier : obligatoire en accessibilité.
+     :focus-visible ne s'affiche pas au clic souris, seulement au clavier. */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
   }
 }
 
-/* ======================
-   LAYOUT
-====================== */
-
+/* 7. Classes réutilisables du site
+      On les crée seulement pour des combinaisons répétées sur plusieurs
+      pages : ailleurs, on écrit directement les classes Tailwind. */
 @layer components {
-  .container-custom {
-    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  /* Largeur maximale et marges latérales communes à toutes les sections */
+  .container-site {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
-  .section-padding {
-    @apply py-20 lg:py-28;
+  /* Espacement vertical d'une section */
+  .section {
+    @apply py-16 md:py-24;
   }
 
-  /* Boutons */
-
-  .btn-primary {
-    @apply px-8 py-3 bg-primary text-white rounded-xl font-semibold shadow-md hover:bg-secondary hover:shadow-lg transition-all duration-300;
+  /* Titre de section (Playfair, cyan) */
+  .titre-section {
+    @apply font-display text-3xl text-primary md:text-4xl;
   }
 
-  .btn-secondary {
-    @apply px-8 py-3 bg-secondary text-white rounded-xl font-semibold shadow-md hover:bg-primary hover:shadow-lg transition-all duration-300;
+  /* Haut de page : laisse la place au header collant */
+  .haut-de-page {
+    @apply pt-32 md:pt-40;
   }
 
-  .btn-outline {
-    @apply px-8 py-3 border-2 border-primary text-primary rounded-xl font-semibold hover:bg-primary hover:text-white transition-all duration-300;
+  /* Zone sombre (haut de page) : à utiliser AVEC data-theme="mts-nuit".
+     Léger dégradé vertical pour éviter un aplat trop plat. */
+  .zone-nuit {
+    background: linear-gradient(180deg, #0a0f2e 0%, #111a3d 100%);
+    color: var(--color-base-content);
   }
 
-  .btn-gradient {
-    @apply px-8 py-4 rounded-full text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300;
-    background: linear-gradient(
-      135deg,
-      #0ea5e9,
-      #06b6d4
-    );
+  /* Section alternée : voile blanc translucide posé sur le dégradé.
+     Le dégradé reste continu, la section se distingue juste un peu. */
+  .section-alt {
+    background: rgb(255 255 255 / 0.5);
   }
 
-  /* Cartes */
-
-  .card {
-    @apply bg-white border border-border rounded-3xl p-6 shadow-md transition-all duration-300;
+  /* Texte riche venant de l'éditeur PocketBase (listes, gras, paragraphes) */
+  .texte-riche p + p {
+    margin-top: 0.75rem;
   }
-
-  .card:hover {
-    @apply shadow-xl;
-    transform: translateY(-6px);
+  .texte-riche ul {
+    list-style: disc;
+    padding-left: 1.25rem;
   }
-
-  /* Tags */
-
-  .skill-tag {
-    @apply px-4 py-2 rounded-full text-sm font-semibold;
-    background: #ecfeff;
-    color: #155e75;
+  .texte-riche li::marker {
+    color: var(--color-primary);
   }
-}
-
-/* ======================
-   BLOB HERO
-====================== */
-
-.organic-blob {
-  border-radius:
-    45% 55% 52% 48% /
-    48% 45% 55% 52%;
-
-  animation: blobShift 8s ease-in-out infinite;
-}
-
-@keyframes blobShift {
-  0%,100% {
-    border-radius:
-      45% 55% 52% 48% /
-      48% 45% 55% 52%;
+  .texte-riche li + li {
+    margin-top: 0.4rem;
   }
-
-  25% {
-    border-radius:
-      50% 50% 45% 55% /
-      55% 45% 50% 50%;
+  /* Liens écrits dans PocketBase : soulignés, couleur principale */
+  .texte-riche a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
-
-  50% {
-    border-radius:
-      60% 40% 50% 50% /
-      50% 50% 40% 60%;
+  .texte-riche a:hover {
+    text-decoration-thickness: 2px;
   }
-
-  75% {
-    border-radius:
-      45% 55% 55% 45% /
-      45% 55% 45% 55%;
+  .texte-riche strong {
+    color: var(--color-base-content);
   }
 }
 
-/* ======================
-   SCROLLBAR
-====================== */
+/* 8. Respect du réglage système "réduire les animations".
+      Toutes les animations et transitions du site sont coupées
+      pour les personnes sensibles au mouvement. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: #06b6d4;
-  border-radius: 999px;
+/* ---------------------------------------------------------------
+   Classe "vague" : bord supérieur en forme de vague (utilisée par le footer).
+   C'est un masque CSS : la vague (SVG) occupe le haut, un rectangle plein
+   le reste. Pour changer la hauteur de la vague : modifier --hauteur-vague.
+   --------------------------------------------------------------- */
+@utility vague {
+  --hauteur-vague: 3rem;
+  padding-top: var(--hauteur-vague);
+  --forme-vague: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 80 C 160 10, 320 10, 480 60 S 800 120, 960 50 S 1280 0, 1440 60 V120 H0 Z'/%3E%3C/svg%3E");
+  -webkit-mask:
+    var(--forme-vague) top / 100% var(--hauteur-vague) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--hauteur-vague) - 1px) / 100% 100% no-repeat;
+  mask:
+    var(--forme-vague) top / 100% var(--hauteur-vague) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--hauteur-vague) - 1px) / 100% 100% no-repeat;
+
+  @media (min-width: 768px) {
+    --hauteur-vague: 4.5rem;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
+/* ---------------------------------------------------------------
+   Animations au défilement de l'aperçu (MacBook, iPad, iPhone).
+   "animation-timeline: view()" relie l'animation à la position de
+   l'élément dans l'écran au lieu du temps : elle avance quand on fait
+   défiler la page, et recule quand on remonte.
+   - anim-ecran  : l'écran du MacBook s'ouvre (rotation depuis sa charnière)
+   - anim-gauche : l'iPad arrive par la gauche
+   - anim-droite : l'iPhone arrive par la droite
+   Les navigateurs qui ne connaissent pas view() (Firefox) et les personnes
+   qui demandent moins d'animations voient directement l'état final.
+   --------------------------------------------------------------- */
+@keyframes ouvrir-ecran {
+  from { transform: perspective(1800px) rotateX(-80deg); }
+  to   { transform: perspective(1800px) rotateX(0deg); }
+}
+@keyframes arriver-gauche {
+  from { transform: translateX(-120px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+@keyframes arriver-droite {
+  from { transform: translateX(120px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+@utility anim-ecran {
+  transform-origin: bottom center;
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: ouvrir-ecran linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+  }
+}
+@utility anim-gauche {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: arriver-gauche linear both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 45%;
+    }
+  }
+}
+@utility anim-droite {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: arriver-droite linear both;
+      animation-timeline: view();
+      animation-range: entry 35% cover 50%;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------
+   Classe "bord-ondule" : haut d'une zone en courbe douce, pour passer
+   d'une partie sombre à une partie claire (ou l'inverse), comme dans la
+   maquette. Même principe que "vague" (masque CSS), en beaucoup plus plat.
+   La zone remonte sur la précédente (marge négative) : sous la courbe,
+   on voit donc la couleur de la zone d'avant.
+   À utiliser avec le composant <LigneOndulee superpose />, qui trace la
+   fine ligne cyan exactement sur la courbe.
+   --------------------------------------------------------------- */
+@utility bord-ondule {
+  --hauteur-onde: 2.5rem;
+  position: relative;
+  margin-top: calc(-1 * var(--hauteur-onde));
+  --forme-onde: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 C 240 4, 480 4, 720 20 S 1200 36, 1440 20 V40 H0 Z'/%3E%3C/svg%3E");
+  -webkit-mask:
+    var(--forme-onde) top / 100% var(--hauteur-onde) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--hauteur-onde) - 1px) / 100% 100% no-repeat;
+  mask:
+    var(--forme-onde) top / 100% var(--hauteur-onde) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--hauteur-onde) - 1px) / 100% 100% no-repeat;
 }

@@ -1,91 +1,117 @@
 ---
+// Layout : la structure HTML commune à TOUTES les pages.
+// Chaque page l'utilise comme ceci :
+//   <Layout title="Projets" description="...">contenu</Layout>
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site';
+import { getImage } from 'astro:assets';
+import { langue, tr, autreLangue } from '../i18n';
+import fondAquarelle from '../assets/images/fond-aquarelle-leger.webp';
+import photoPartage from '../assets/images/moi.jpeg';
+
 interface Props {
+  /** Titre propre à la page, ex. "Projets". Le nom du site est ajouté automatiquement. */
   title?: string;
+  /** Résumé de la page (150-160 caractères) : c'est le texte affiché par Google. */
   description?: string;
+  /** Image de partage (LinkedIn, Slack...) : adresse d'une image. Par défaut, ma photo. */
+  image?: string;
+  /** true quand la page se termine par une zone sombre (pages projet) : le fond
+   *  de la page devient bleu nuit, pour que la vague du footer ne laisse pas de
+   *  bande claire. Les parties claires remettent l'aquarelle elles-mêmes. */
+  sombre?: boolean;
 }
 
-const { title = "Maman Thilor SAMBE - Portfolio", description = "Portfolio de Maman Thilor SAMBE, développeuse web, designer UX et créative numérique" } = Astro.props;
+// Image de partage par défaut : ma photo, recadrée au format conseillé (1200 × 630)
+const partage = await getImage({ src: photoPartage, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+
+const lang = langue(Astro);
+
+const {
+  title,
+  description = tr(
+    lang,
+    "Portfolio de Maman Thilor SAMBE, étudiante en BUT MMI : développement web front-end et back-end, intégration et UX/UI design. En recherche d'alternance et de stage.",
+    'Portfolio of Maman Thilor SAMBE, BUT MMI student in France: front-end and back-end web development, integration and UX/UI design. Looking for a work-study position or an internship.',
+  ),
+  image = partage.src,
+  sombre = false,
+} = Astro.props;
+
+// "Projets | Maman Thilor SAMBE" sur les pages internes, le nom seul sur l'accueil.
+const fullTitle = title ? `${title} | ${SITE.nom}` : `${SITE.nom} · ${SITE.accroche[lang]}`;
+
+// Même page dans l'autre langue : pour les balises hreflang (Google sait qu'il
+// existe une version anglaise et la propose aux visiteurs anglophones)
+const chemin = Astro.url.pathname;
+const autre = autreLangue(chemin);
+const urlFr = new URL(lang === 'fr' ? chemin : autre.href, Astro.site);
+const urlEn = new URL(lang === 'en' ? chemin : autre.href, Astro.site);
+
+// URL absolue de la page courante (utilise `site` défini dans astro.config.mjs).
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.site);
+
+// Aquarelle allégée (déjà éclaircie à l'export : 16 Ko), convertie au build
+const aquarelle = await getImage({ src: fondAquarelle, format: 'webp', width: 1920, quality: 72 });
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={lang} data-theme="mts">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&family=Alexandria:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- SEO -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="fr" href={urlFr} />
+    <link rel="alternate" hreflang="en" href={urlEn} />
+    <link rel="alternate" hreflang="x-default" href={urlFr} />
+
+    <!-- Open Graph : aperçu quand le lien est partagé sur LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={tr(lang, 'fr_FR', 'en_GB')} />
+    <meta property="og:site_name" content={SITE.nom} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+
+    <!-- Couleur de la barre du navigateur sur mobile -->
+    <meta name="theme-color" content="#0a0f2e" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body>
+
+  <body
+    class:list={['flex min-h-screen flex-col', sombre && 'bg-none bg-[#111a3d]']}
+    style={`--fond-aquarelle: url(${aquarelle.src})`}
+  >
+    <!-- Lien d'évitement : premier élément atteint avec Tab.
+         Il permet aux personnes qui naviguent au clavier ou avec un lecteur
+         d'écran de sauter directement au contenu. Invisible tant qu'il
+         n'a pas le focus (sr-only + focus:not-sr-only). -->
+    <a
+      href="#contenu"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 btn btn-primary"
+    >
+      {tr(lang, 'Aller au contenu', 'Skip to content')}
+    </a>
+
     <Header />
-    <main>
+
+    <!-- flex-1 : le main prend toute la hauteur disponible,
+         ce qui pousse le footer en bas même sur une page courte.
+         -mt-[5.5rem] : le contenu passe sous le header collant, comme dans la maquette. -->
+    <main id="contenu" class="-mt-[5.5rem] flex-1">
       <slot />
     </main>
+
     <Footer />
   </body>
 </html>
-
-<style is:global>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    font-family: 'Alexandria', 'Inter', sans-serif;
-  }
-
-  h1, h2, .section-title {
-    font-family: 'Playfair Display', serif;
-  }
-
-  h3, h4 {
-    font-family: 'Alexandria', 'Inter', sans-serif;
-  }
-
-  /* Formes organiques */
-  .organic-blob {
-    position: relative;
-    border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
-    animation: blobShift 8s ease-in-out infinite;
-  }
-
-  @keyframes blobShift {
-    0%, 100% {
-      border-radius: 45% 55% 52% 48% / 48% 45% 55% 52%;
-    }
-    25% {
-      border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
-    }
-    50% {
-      border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
-    }
-    75% {
-      border-radius: 45% 55% 55% 45% / 45% 55% 45% 55%;
-    }
-  }
-
-  /* Gradient artistique */
-  .gradient-artistic {
-    background: linear-gradient(135deg, #fef3e2 0%, #f5d5e3 50%, #e8dcc8 100%);
-  }
-
-  /* Divider artistique */
-  .divider-artistic {
-    position: relative;
-    height: 2px;
-    background: linear-gradient(to right, transparent, #d97706, #ec4899, transparent);
-    border: none;
-  }
-</style>

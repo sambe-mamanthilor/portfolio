@@ -1,405 +1,221 @@
 ---
-interface Props {
-  title?: string;
-}
+/**
+ * Header : navigation principale, avec DEUX états.
+ *
+ *  - "Sur la couverture" (accueil, en haut de page) : menu discret, sans
+ *    fond, liens en texte blanc, page active soulignée en cyan.
+ *  - "Pilule" (partout ailleurs, et dès qu'on a dépassé la couverture) :
+ *    la barre arrondie bleu nuit avec le halo cyan.
+ *
+ * Comment ça marche : la couverture porte l'attribut data-couverture.
+ * Un IntersectionObserver (API du navigateur, plus léger qu'un écouteur
+ * "scroll") nous prévient quand elle sort de l'écran ; on bascule alors
+ * l'attribut data-sur-couverture du header. Tout le visuel est en CSS.
+ * Sans JavaScript : la pilule s'affiche toujours (rien n'est perdu).
+ *
+ * Accessibilité :
+ *  - <nav aria-label> : les lecteurs d'écran annoncent "Navigation principale" ;
+ *  - aria-current="page" : indique la page sur laquelle on se trouve ;
+ *  - le bouton du menu mobile annonce son état (aria-expanded)
+ *    et se referme avec la touche Échap.
+ */
+import Logo from './Logo.astro';
+import { NAVIGATION, SITE } from '../data/site';
+import { langue, tr, lien, autreLangue } from '../i18n';
 
-const { title } = Astro.props;
+const lang = langue(Astro);
+// Lien vers la même page dans l'autre langue (bouton FR | EN)
+const autre = autreLangue(Astro.url.pathname);
+
+// Chemin actuel sans "/en" ni "/" final, pour comparer avec les liens
+const chemin = Astro.url.pathname.replace(/^\/en(?=\/|$)/, '').replace(/\/$/, '') || '/';
+const estActif = (href: string) =>
+  href === '/' ? chemin === '/' : chemin === href || chemin.startsWith(`${href}/`);
 ---
 
-<header class="fixed top-0 left-0 right-0 z-[9999]">
-  <div class="px-4 pt-4">
-
-    <nav
-      class="
-        container-custom
-        mx-auto
-        flex
-        items-center
-        justify-between
-        rounded-full
-        border
-        border-cyan-400/20
-        bg-slate-950/75
-        backdrop-blur-xl
-        shadow-2xl
-        px-6
-        py-4
-      "
+<header class="entete sticky top-0 z-40 bg-transparent px-4 pt-4" data-theme="mts-nuit" data-entete>
+  <nav
+    aria-label={tr(lang, 'Navigation principale', 'Main navigation')}
+    class="nav-pilule relative mx-auto flex items-center justify-between gap-4 rounded-full px-3 py-2 md:px-5"
+    data-nav
   >
-
-    <!-- Logo -->
-
-    <a href="/" class="flex items-center gap-4 group">
-
-      <div
-        class="
-          w-12
-          h-12
-          rounded-full
-          bg-gradient-to-br
-          from-cyan-400
-          to-sky-600
-          flex
-          items-center
-          justify-center
-          shadow-lg
-          shadow-cyan-500/30
-          transition
-          duration-300
-          group-hover:scale-110
-        "
-      >
-        <span class="text-white font-bold tracking-wider">
-          MTS
-        </span>
-      </div>
-
-     
-
+    <a href={lien(lang, '/')} class="rounded-full" aria-label={`${tr(lang, 'Accueil', 'Home')} – ${SITE.nom}`}>
+      <Logo taille={46} />
     </a>
 
-    <!-- Desktop -->
-
-    <ul class="hidden lg:flex items-center gap-10">
-
-      <li>
-        <a
-          href="/#hero"
-          class="
-            relative
-            text-slate-200
-            font-medium
-            transition
-            hover:text-cyan-300
-            after:absolute
-            after:left-0
-            after:-bottom-2
-            after:w-0
-            after:h-[2px]
-            after:bg-cyan-400
-            after:transition-all
-            hover:after:w-full
-          "
-        >
-          Accueil
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="/#about"
-          class="
-            relative
-            text-slate-200
-            font-medium
-            transition
-            hover:text-cyan-300
-            after:absolute
-            after:left-0
-            after:-bottom-2
-            after:w-0
-            after:h-[2px]
-            after:bg-cyan-400
-            after:transition-all
-            hover:after:w-full
-          "
-        >
-          À propos
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="/#competences"
-          class="
-            relative
-            text-slate-200
-            font-medium
-            transition
-            hover:text-cyan-300
-            after:absolute
-            after:left-0
-            after:-bottom-2
-            after:w-0
-            after:h-[2px]
-            after:bg-cyan-400
-            after:transition-all
-            hover:after:w-full
-          "
-        >
-          Compétences
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="/#projects"
-          class="
-            relative
-            text-slate-200
-            font-medium
-            transition
-            hover:text-cyan-300
-            after:absolute
-            after:left-0
-            after:-bottom-2
-            after:w-0
-            after:h-[2px]
-            after:bg-cyan-400
-            after:transition-all
-            hover:after:w-full
-          "
-        >
-          Projets
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="/#formation"
-          class="
-            relative
-            text-slate-200
-            font-medium
-            transition
-            hover:text-cyan-300
-            after:absolute
-            after:left-0
-            after:-bottom-2
-            after:w-0
-            after:h-[2px]
-            after:bg-cyan-400
-            after:transition-all
-            hover:after:w-full
-          "
-        >
-          Parcours
-        </a>
-      </li>
-
-      <li>
-        <a
-          href="/#experiences"
-          class="
-            relative
-            text-slate-200
-            font-medium
-            transition
-            hover:text-cyan-300
-            after:absolute
-            after:left-0
-            after:-bottom-2
-            after:w-0
-            after:h-[2px]
-            after:bg-cyan-400
-            after:transition-all
-            hover:after:w-full
-          "
-        >
-          Expériences
-        </a>
-      </li>
-
-      <li>
-
-        <a
-          href="/contact"
-          class="
-            px-7
-            py-3
-            rounded-full
-            bg-gradient-to-r
-            from-cyan-500
-            to-sky-600
-            text-white
-            font-semibold
-            shadow-lg
-            hover:shadow-cyan-500/40
-            hover:scale-105
-            transition-all
-            duration-300
-          "
-        >
-          Contact
-        </a>
-
-      </li>
-
-    </ul>
-
-    <!-- Bouton mobile -->
-
+    <!-- Bouton du menu : visible uniquement sur mobile (md:hidden) -->
     <button
-      id="mobile-menu-btn"
-      class="
-        lg:hidden
-        w-12
-        h-12
-        rounded-full
-        border
-        border-cyan-400/20
-        bg-slate-900/70
-        text-white
-        flex
-        items-center
-        justify-center
-      "
+      type="button"
+      class="grid size-11 place-items-center rounded-full text-base-content md:hidden"
+      aria-expanded="false"
+      aria-controls="menu-principal"
+      data-menu-bouton
+      data-texte-ouvrir={tr(lang, 'Ouvrir le menu', 'Open menu')}
+      data-texte-fermer={tr(lang, 'Fermer le menu', 'Close menu')}
     >
-
-      <svg
-        class="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"
-        />
+      <span class="sr-only" data-menu-libelle>{tr(lang, 'Ouvrir le menu', 'Open menu')}</span>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" />
       </svg>
-
     </button>
-        <!-- Mobile Menu -->
 
-    <div
-      id="mobile-menu"
-      class="
-        hidden
-        absolute
-        top-24
-        left-4
-        right-4
-        rounded-3xl
-        border
-        border-cyan-400/20
-        bg-slate-950/95
-        backdrop-blur-xl
-        shadow-2xl
-        overflow-hidden
-      "
+    <ul
+      id="menu-principal"
+      class="menu-liste absolute inset-x-0 top-[calc(100%+0.5rem)] hidden flex-col gap-1 rounded-box p-3 md:static md:flex md:flex-row md:items-center md:gap-2 md:p-0"
     >
-
-      <ul class="flex flex-col py-6">
-
+      {NAVIGATION.map((l) => (
         <li>
-          <a href="/#hero" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
-            Accueil
-          </a>
-        </li>
-
-        <li>
-          <a href="/#about" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
-            À propos
-          </a>
-        </li>
-
-        <li>
-          <a href="/#competences" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
-            Compétences
-          </a>
-        </li>
-
-        <li>
-          <a href="/#projects" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
-            Projets
-          </a>
-        </li>
-
-        <li>
-          <a href="/#formation" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
-            Parcours
-          </a>
-        </li>
-
-        <li>
-          <a href="/#experiences" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
-            Expériences
-          </a>
-        </li>
-
-        <li>
-          <a href="/#passions" class="block px-8 py-4 text-slate-200 hover:text-cyan-300 hover:bg-cyan-500/10 transition">
-            Passions
-          </a>
-        </li>
-
-        <li class="px-8 pt-6">
-
           <a
-            href="/contact"
-            class="
-              flex
-              justify-center
-              rounded-full
-              bg-gradient-to-r
-              from-cyan-500
-              to-sky-600
-              py-4
-              text-white
-              font-semibold
-              shadow-lg
-              hover:scale-105
-              transition
-            "
+            href={lien(lang, l.href)}
+            class="lien-nav block rounded-full px-4 py-2 font-bold"
+            aria-current={estActif(l.href) ? 'page' : undefined}
           >
-            Me contacter
+            {l.label[lang]}
           </a>
-
         </li>
-
-      </ul>
-
-    </div>
-
+      ))}
+      <!-- Changer de langue (option C) : un globe + un interrupteur FR | EN.
+           La langue actuelle est surlignée (ce n'est pas un lien) ;
+           l'autre est un lien vers la même page dans cette langue.
+           hreflang et lang aident les lecteurs d'écran à bien prononcer. -->
+      <li class="flex items-center gap-2 px-4 py-2 md:ml-2 md:px-0">
+        <svg class="text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18" />
+        </svg>
+        <div role="group" aria-label={tr(lang, 'Langue', 'Language')} class="inline-flex rounded-full border-[1.5px] border-primary p-0.5 text-sm font-bold">
+          {(['fr', 'en'] as const).map((code) =>
+            code === lang ? (
+              <span aria-current="true" class="rounded-full bg-primary px-3 py-1 text-primary-content">{code.toUpperCase()}</span>
+            ) : (
+              <a
+                href={autre.href}
+                hreflang={code}
+                lang={code}
+                aria-label={code === 'en' ? 'English version' : 'Version française'}
+                class="rounded-full px-3 py-1 text-primary transition-colors hover:bg-primary/20"
+              >
+                {code.toUpperCase()}
+              </a>
+            ),
+          )}
+        </div>
+      </li>
+    </ul>
   </nav>
-
 </header>
 
-<script>
-
-const btn = document.getElementById("mobile-menu-btn");
-const menu = document.getElementById("mobile-menu");
-
-btn?.addEventListener("click", () => {
-  menu?.classList.toggle("hidden");
-});
-
-window.addEventListener("scroll", () => {
-
-  const header = document.querySelector("header");
-
-  if(window.scrollY > 20){
-
-    header?.classList.add("py-3");
-
-    header?.classList.remove("py-5");
-
-  }else{
-
-    header?.classList.remove("py-3");
-
-    header?.classList.add("py-5");
-
+<style>
+  /* ---------- État "pilule" (par défaut) ---------- */
+  .nav-pilule {
+    max-width: 64rem;
+    background: rgb(10 15 46 / 0.94);
+    /* Halo cyan fin sous la barre + ombre douce pour se détacher des sections claires */
+    box-shadow: 0 3px 0 #35c3ea, 0 10px 30px rgb(10 15 46 / 0.18);
+    backdrop-filter: blur(8px);
+    transition: max-width 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
   }
 
-});
+  .lien-nav {
+    position: relative;
+    color: var(--color-base-content);
+    transition: color 0.2s, background-color 0.2s, opacity 0.2s;
+  }
+  .lien-nav:hover {
+    color: var(--color-primary);
+  }
+  /* Page active : fond cyan clair, texte bleu nuit */
+  .lien-nav[aria-current='page'] {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+  }
 
-</script>
+  /* ---------- État "sur la couverture" (accueil, en haut de page) ---------- */
+  [data-sur-couverture] .nav-pilule {
+    max-width: 80rem; /* même largeur que le contenu de la couverture */
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  /* Sur mobile, le menu ouvert garde son fond : on ne touche qu'à l'écran large */
+  @media (min-width: 768px) {
+    [data-sur-couverture] .lien-nav {
+      font-weight: 600;
+      opacity: 0.85;
+    }
+    [data-sur-couverture] .lien-nav:hover {
+      color: var(--color-base-content);
+      opacity: 1;
+    }
+    /* Soulignement cyan : court pour la page active, pleine largeur au survol */
+    [data-sur-couverture] .lien-nav::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0.15rem;
+      width: 0;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--color-primary);
+      transform: translateX(-50%);
+      transition: width 0.25s ease;
+    }
+    [data-sur-couverture] .lien-nav:hover::after {
+      width: calc(100% - 2rem);
+    }
+    [data-sur-couverture] .lien-nav[aria-current='page'] {
+      background: transparent;
+      color: var(--color-base-content);
+      opacity: 1;
+    }
+    [data-sur-couverture] .lien-nav[aria-current='page']::after {
+      width: 1.5rem;
+    }
+  }
 
-<style>
-
-header{
-
-  transition:.35s ease;
-
-}
-
-nav{
-
-  transition:.35s ease;
-
-}
-
+  /* ---------- Menu mobile ouvert ---------- */
+  [data-ouvert] .menu-liste {
+    display: flex;
+    background: var(--color-base-100);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
+  }
 </style>
+
+<script>
+  const entete = document.querySelector<HTMLElement>('[data-entete]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const bouton = document.querySelector<HTMLButtonElement>('[data-menu-bouton]');
+  const libelle = document.querySelector<HTMLElement>('[data-menu-libelle]');
+
+  // 1. Menu discret tant que la couverture est visible (accueil uniquement)
+  const couverture = document.querySelector('[data-couverture]');
+  if (entete && couverture) {
+    entete.setAttribute('data-sur-couverture', '');
+    // rootMargin négatif : la bascule se fait quand le bas de la couverture
+    // passe sous le menu (96 px depuis le haut de l'écran).
+    const observateur = new IntersectionObserver(
+      ([entree]) => entete.toggleAttribute('data-sur-couverture', entree.isIntersecting),
+      { rootMargin: '-96px 0px 0px 0px', threshold: 0 },
+    );
+    observateur.observe(couverture);
+  }
+
+  // 2. Ouverture / fermeture du menu mobile
+  function basculer(ouvrir: boolean) {
+    if (!nav || !bouton || !libelle) return;
+    nav.toggleAttribute('data-ouvert', ouvrir);
+    bouton.setAttribute('aria-expanded', String(ouvrir));
+    libelle.textContent = (ouvrir ? bouton.dataset.texteFermer : bouton.dataset.texteOuvrir) ?? '';
+  }
+
+  bouton?.addEventListener('click', () => {
+    basculer(bouton.getAttribute('aria-expanded') !== 'true');
+  });
+
+  // Échap referme le menu et rend le focus au bouton
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && nav?.hasAttribute('data-ouvert')) {
+      basculer(false);
+      bouton?.focus();
+    }
+  });
+</script>

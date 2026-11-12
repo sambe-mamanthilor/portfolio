@@ -1,0 +1,21 @@
+---
+/**
+ * Une page par projet (/projets/cielixir, /projets/tiktak…).
+ * getStaticPaths() est appelée au build : elle demande la liste des projets
+ * à PocketBase et Astro génère une page par projet. Ajouter un projet dans
+ * le back-office puis relancer le build suffit à créer sa page.
+ * Le contenu de la page est dans src/vues/PageProjet.astro (partagé avec l'anglais).
+ */
+import PageProjet from '../../vues/PageProjet.astro';
+import { getProjets } from '../../lib/pocketbase';
+
+export async function getStaticPaths() {
+  const projets = await getProjets();
+  return projets.map((projet, index) => ({
+    params: { slug: projet.slug },
+    // Le projet suivant (le dernier renvoie vers le premier)
+    props: { projet, suivant: projets[(index + 1) % projets.length] },
+  }));
+}
+---
+<PageProjet {...Astro.props} />

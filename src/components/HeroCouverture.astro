@@ -1,0 +1,207 @@
+---
+/**
+ * Couverture de l'accueil, style "couverture de magazine".
+ * Écrite uniquement en classes Tailwind (et daisyUI pour les boutons).
+ *
+ * Lire les classes :
+ *  - sans préfixe  = mobile (le style de base)
+ *  - "md:"         = à partir de 768 px (tablette et ordinateur)
+ *  - "[...]"       = valeur précise qui n'existe pas dans Tailwind,
+ *                    ex. top-[22%] ou text-[1.35rem]. Les "_" remplacent les espaces.
+ *  - "z-1" à "z-4" = ordre de superposition, du fond vers l'avant :
+ *      1 grand mot + panneau, 2 portrait, 3 traits lumineux, 4 texte.
+ *
+ * Tout ce qui est décoratif porte aria-hidden="true" : un lecteur d'écran
+ * ne lit que le titre, le texte et les liens.
+ *
+ * Animation d'arrivée, dans l'ordre :
+ *  1. la photo apparaît (0 s) ;
+ *  2. le nom s'écrit lettre par lettre avec un curseur cyan (à 0,8 s) ;
+ *  3. le reste du texte et les boutons apparaissent (de 2 s à 2,6 s).
+ * Les étapes 1 et 3 sont en CSS (animate-apparait + délai), l'étape 2 en JS.
+ * motion-reduce:animate-none : rien ne bouge si la personne a demandé
+ * « réduire les animations » dans son système. Sans JavaScript, le nom
+ * s'affiche simplement en entier.
+ */
+import { Image } from 'astro:assets';
+import { bouton } from '../lib/boutons';
+import { SITE } from '../data/site';
+import { langue, tr, lien } from '../i18n';
+
+const lang = langue(Astro);
+import portrait from '../assets/images/moi-detoure.png';
+
+// Traits lumineux : position (top, left), longueur (width) et décalage
+// de l'animation (delay). Les valeurs changent pour chaque trait, on les
+// met donc dans un tableau plutôt que de répéter 7 fois la même balise.
+const traits = [
+  { top: '22%', left: '58%', width: '22%', delay: '0s' },
+  { top: '31%', left: '70%', width: '12%', delay: '1.2s' },
+  { top: '48%', left: '52%', width: '30%', delay: '0.6s' },
+  { top: '57%', left: '80%', width: '14%', delay: '1.8s' },
+  { top: '69%', left: '60%', width: '18%', delay: '0.3s' },
+  { top: '40%', left: '6%', width: '9%', delay: '2.2s' },
+];
+
+---
+
+<section
+  data-theme="mts-nuit"
+  data-couverture
+  aria-labelledby="titre-hero"
+  class="relative isolate flex flex-col overflow-hidden pt-26 text-base-content
+         bg-radial-[120%_90%_at_78%_40%] from-[#13235a] via-[#0f1944] via-27% to-[#060a1f]
+         md:min-h-[max(100svh,54rem)] md:pt-32"
+>
+  <!-- Grand mot en contour, derrière le nom et le portrait -->
+  <p
+    aria-hidden="true"
+    class="absolute bottom-[32%] left-1/2 z-1 -translate-x-1/2 select-none whitespace-nowrap
+           animate-apparait motion-reduce:animate-none
+           font-display text-[4.5rem] leading-none uppercase tracking-[-0.02em]
+           text-transparent [-webkit-text-stroke:1.5px_rgb(121_244_255/0.22)]
+           md:top-[15%] md:bottom-auto md:text-[13vw]"
+  >
+    {tr(lang, 'Développeuse', 'Developer')}
+  </p>
+
+  <!-- Traits lumineux : seules les valeurs du tableau changent d'un trait à l'autre -->
+  <div aria-hidden="true">
+    {traits.map((trait) => (
+      <span
+        class="absolute z-3 h-0.75 rounded-full opacity-55 animate-glisse
+               bg-linear-to-r from-transparent via-primary to-transparent"
+        style={`top:${trait.top}; left:${trait.left}; width:${trait.width}; animation-delay:${trait.delay}`}
+      ></span>
+    ))}
+  </div>
+
+  <!-- Portrait dans un ovale, avec une bordure cyan et un halo lumineux dessous.
+       Mobile : sous le texte, centré. Ordinateur : à droite, à 30 % du haut.
+       rounded-[50%] sur un bloc plus haut que large = un ovale ;
+       overflow-hidden découpe la photo selon cet ovale.
+       La photo est presque aussi large que l’ovale (98 %) et descendue de 10 % :
+       la tête entière tient dans l'ovale, les épaules sont coupées en bas. -->
+  <div
+    class="relative z-2 order-2 mx-auto mt-10 mb-12 aspect-420/453 w-[min(80%,19rem)] overflow-hidden rounded-[50%]
+           animate-apparait motion-reduce:animate-none
+           border-3 border-primary/25 shadow-[4px_0_4px_rgb(121_244_255/0.38),0_30px_30px_rgb(121_244_255/0.39)]
+           md:absolute md:top-[30%] md:right-[3%] md:m-0 md:w-[29.3%]"
+  >
+    <Image
+      src={portrait}
+      alt=""
+      widths={[420, 640, 860]}
+      sizes="(min-width: 768px) 30vw, 80vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute top-[10%] left-1/2 h-auto w-[98%] max-w-none -translate-x-1/2"
+    />
+  </div>
+
+  <!-- Contenu, toujours au premier plan -->
+  <div class="container-site relative z-4 pt-2 md:pt-25">
+    <div class="md:-ml-6">
+    <p class="text-[13px] font-bold uppercase tracking-[0.25em] text-primary
+              animate-apparait [animation-delay:0.5s] motion-reduce:animate-none">Portfolio</p>
+
+    <!-- Le nom s'écrit comme au clavier : voir le script juste en dessous.
+         aria-label : un lecteur d'écran lit le nom en entier, pas lettre par lettre. -->
+    <h1
+      id="titre-hero"
+      aria-label="Maman Thilor SAMBE"
+      class="mt-4.5 font-display text-[clamp(2.75rem,5.6vw,5rem)] leading-[0.95]"
+      data-machine
+    >
+      <span data-ligne>Maman Thilor</span><br /><span class="text-primary" data-ligne>SAMBE</span>
+    </h1>
+
+    <!-- Machine à écrire.
+         Script "is:inline" placé juste après le titre : il s'exécute pendant le
+         chargement, AVANT que la page s'affiche, donc on ne voit jamais le nom
+         apparaître puis disparaître.
+         Principe : chaque lettre devient un <span> invisible (opacity 0) ; on les
+         rend visibles une par une. Les lettres gardent leur place dès le départ,
+         donc rien ne bouge autour pendant l'écriture.
+         Le curseur a une largeur nulle (w-0) : il se glisse après chaque lettre
+         sans décaler le texte ; la barre visible est dessinée en position absolue. -->
+    <script is:inline>
+      (() => {
+        const titre = document.querySelector('[data-machine]');
+        if (!titre || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        // 1. Découper chaque ligne en lettres invisibles
+        const lettres = [];
+        titre.querySelectorAll('[data-ligne]').forEach((ligne) => {
+          const texte = ligne.textContent;
+          ligne.textContent = '';
+          for (const caractere of texte) {
+            const span = document.createElement('span');
+            span.textContent = caractere;
+            span.style.opacity = '0';
+            ligne.append(span);
+            lettres.push(span);
+          }
+        });
+
+        // 2. Le curseur : une fine barre cyan qui clignote
+        const curseur = document.createElement('span');
+        curseur.setAttribute('aria-hidden', 'true');
+        curseur.className = 'relative inline-block w-0';
+        curseur.innerHTML =
+          '<span class="absolute bottom-[0.08em] left-[0.08em] h-[0.85em] w-[3px] rounded-full bg-primary animate-clignote"></span>';
+        lettres[0].before(curseur);
+
+        // 3. Écrire une lettre toutes les 70 ms, après l'arrivée de la photo
+        let i = 0;
+        setTimeout(function ecrire() {
+          lettres[i].style.opacity = '1';
+          lettres[i].after(curseur);
+          i++;
+          if (i < lettres.length) {
+            setTimeout(ecrire, lettres[i - 1].textContent === ' ' ? 140 : 70);
+          } else {
+            // Fini : le curseur clignote encore un peu, puis disparaît
+            setTimeout(() => curseur.remove(), 2400);
+          }
+        }, 800);
+      })();
+    </script>
+
+    <p class="mt-5.5 max-w-208 text-[clamp(1.1rem,1.5vw,1.35rem)]
+              animate-apparait [animation-delay:2s] motion-reduce:animate-none">
+      {tr(lang, 'Étudiante en 2ᵉ année de BUT Métiers du Multimédia et de l’Internet (MMI)', 'Second-year student in a Bachelor’s degree in Multimedia & Internet (BUT MMI)')}
+      <br class="hidden md:inline" />
+      {tr(lang, 'en parcours développement web & dispositifs interactifs', 'specialising in web development & interactive media')}
+    </p>
+
+
+    <p class="mt-10 flex max-w-115 items-center gap-2.5 text-[15px] text-slate-300
+              animate-apparait [animation-delay:2.2s] motion-reduce:animate-none">
+      <span class="size-2.5 flex-none rounded-full bg-green-400 ring-4 ring-green-400/20" aria-hidden="true"></span>
+      {SITE.recherche[lang]}
+    </p>
+
+    <div class="mt-8 flex flex-wrap gap-4 animate-apparait [animation-delay:2.4s] motion-reduce:animate-none">
+      <a href={lien(lang, '/projets')} class={bouton('principal')}>{tr(lang, 'Voir mes projets', 'See my projects')}</a>
+      <a href={SITE.cv} class={bouton('secondaire')} download>
+        {tr(lang, 'Mon CV', 'My CV')} <span class="sr-only">(PDF)</span>
+      </a>
+    </div>
+    </div>
+  </div>
+
+  <!-- Bas de couverture (ordinateur seulement) : « DÉCOUVRIR ↓ ».
+       "group" sur le lien + "group-hover:" sur la flèche : la flèche descend
+       quand on survole le lien entier. -->
+  <a
+    href="#projets"
+    class="group container-site relative z-4 mt-auto hidden items-center gap-3 pt-12 pb-10
+           animate-apparait [animation-delay:2.6s] motion-reduce:animate-none
+           text-[13.6px] font-bold uppercase tracking-[0.3em] text-primary md:flex"
+  >
+    <span>{tr(lang, 'Découvrir', 'Explore')}</span>
+    <span class="text-[22px] leading-none transition-transform duration-300 group-hover:translate-y-1" aria-hidden="true">↓</span>
+    <span class="sr-only">{tr(lang, 'mes projets phares', 'my featured projects')}</span>
+  </a>
+</section>

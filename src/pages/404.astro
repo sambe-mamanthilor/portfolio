@@ -1,21 +1,26 @@
 ---
+/**
+ * Page affichée quand une adresse n'existe pas.
+ * Il n'y a qu'une seule page 404 pour tout le site : on regarde si l'adresse
+ * demandée commence par /en pour choisir la langue.
+ */
 import Layout from '../layouts/Layout.astro';
+import { bouton } from '../lib/boutons';
+import { tr, lien, type Lang } from '../i18n';
+
+const lang: Lang = Astro.url.pathname.startsWith('/en') ? 'en' : 'fr';
 ---
 
-<Layout title="Page non trouvée - 404" description="Désolé, cette page n'existe pas">
-  <div class="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100 flex items-center justify-center py-12 px-4">
-    <div class="max-w-md w-full text-center">
-      <h1 class="text-6xl font-bold text-primary mb-4">404</h1>
-      <h2 class="text-3xl font-bold mb-3">Page non trouvée</h2>
-      <p class="text-gray-600 mb-8">Désolé, la page que vous cherchez n'existe pas ou a été supprimée.</p>
-      <div class="flex flex-col gap-4">
-        <a href="/" class="px-6 py-3 bg-gradient-to-r from-cyan400 to-sky-400 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
-          Retour au portfolio
-        </a>
-        <a href="/#contact" class="px-6 py-3 bg-white border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-white transition-all">
-          Me contacter
-        </a>
+<Layout title={tr(lang, 'Page introuvable', 'Page not found')}>
+  <section class="zone-nuit haut-de-page pb-24 text-center" data-theme="mts-nuit" aria-labelledby="titre-page">
+    <div class="container-site">
+      <p class="font-display text-8xl text-primary" aria-hidden="true">404</p>
+      <h1 id="titre-page" class="mt-4 font-display text-4xl">{tr(lang, 'Cette page s’est perdue', 'This page got lost')}</h1>
+      <p class="mt-4 text-lg text-muted">{tr(lang, 'L’adresse demandée n’existe pas, ou plus.', 'The page you’re looking for doesn’t exist, or no longer does.')}</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href={lien(lang, '/')} class={bouton('principal')}>{tr(lang, 'Retour à l’accueil', 'Back to home')}</a>
+        <a href={lien(lang, '/projets')} class={bouton('secondaire')}>{tr(lang, 'Voir mes projets', 'See my projects')}</a>
       </div>
     </div>
-  </div>
+  </section>
 </Layout>

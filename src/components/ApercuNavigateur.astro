@@ -1,0 +1,209 @@
+---
+/**
+ * Aperçu dynamique d'un projet web : une fenêtre de navigateur
+ * qui change de forme (ordinateur → tablette → mobile).
+ *
+ * Fonctionnement :
+ *  1. Au départ, les captures du projet défilent dans la fenêtre "ordinateur".
+ *  2. "Tester le site en direct" (ou un clic sur Tablette / Mobile) charge le
+ *     VRAI site dans une iframe : le recruteur peut cliquer et naviguer.
+ *  3. Les boutons Ordinateur / Tablette / Mobile redimensionnent le cadre en
+ *     douceur. Le site s'affiche à la vraie largeur de l'appareil (1280, 768
+ *     ou 390 px), puis il est réduit pour tenir dans la page : c'est donc bien
+ *     la version responsive du site qu'on voit, pas une image étirée.
+ *
+ * Sans JavaScript : la première capture s'affiche, avec le lien vers le site.
+ * Si un site refuse d'être affiché dans une iframe, le lien "Ouvrir ↗"
+ * de la barre d'adresse reste toujours disponible.
+ */
+interface Props {
+  titre: string;
+  /** Adresse du site, SEULEMENT s'il accepte l'affichage en direct (iframe). */
+  url?: string;
+  /** Adresse du site en ligne, pour la barre d'adresse et le lien « Ouvrir ». */
+  lien?: string;
+  images: { src: string; alt: string }[];
+}
+
+const { titre, url, lien = url, images } = Astro.props;
+const domaine = lien ? new URL(lien).host : '';
+---
+
+<figure class="mx-auto max-w-6xl" data-apercu data-url={url}>
+  {url && (
+    <div class="mb-6 flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Taille de l'écran">
+      <button type="button" class="btn btn-sm btn-primary" data-appareil="ordinateur" aria-pressed="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2" /><path d="M8 21h8M12 17v4" /></svg>
+        Ordinateur
+      </button>
+      <button type="button" class="btn btn-sm btn-ghost border border-primary/40" data-appareil="tablette" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" /><path d="M11 18h2" /></svg>
+        Tablette
+      </button>
+      <button type="button" class="btn btn-sm btn-ghost border border-primary/40" data-appareil="mobile" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2" /><path d="M11 18h2" /></svg>
+        Mobile
+      </button>
+    </div>
+  )}
+
+  <!-- La "scène" sert à mesurer la place disponible -->
+  <div data-scene class="flex justify-center">
+    <!-- Le cadre : sa taille et ses arrondis changent selon l'appareil (transition douce) -->
+    <div
+      data-cadre
+      class="w-full overflow-hidden rounded-xl border border-primary/30 bg-[#060a1f] shadow-[0_30px_80px_-20px_rgb(53_195_234/0.35)]
+             transition-all duration-700 ease-out"
+    >
+      <!-- Barre du navigateur -->
+      <div data-barre class="flex h-9 items-center gap-3 border-b border-primary/20 bg-base-200 px-3 transition-all duration-700">
+        <span class="flex gap-1.5" aria-hidden="true">
+          <span class="size-2.5 rounded-full bg-red-400/80"></span>
+          <span class="size-2.5 rounded-full bg-yellow-400/80"></span>
+          <span class="size-2.5 rounded-full bg-green-400/80"></span>
+        </span>
+        <span class="flex-1 truncate rounded-full bg-base-100 px-3 py-0.5 text-center text-xs text-muted">
+          <span aria-hidden="true">🔒 </span>{domaine || titre}
+        </span>
+        {lien && (
+          <a href={lien} target="_blank" rel="noopener noreferrer" class="text-xs text-primary hover:underline">
+            Ouvrir ↗<span class="sr-only"> le site {titre} (nouvel onglet)</span>
+          </a>
+        )}
+      </div>
+
+      <!-- L'écran -->
+      <div data-ecran class="relative aspect-[16/10] overflow-hidden bg-base-100 transition-all duration-700">
+        <!-- Captures : fondu enchaîné de l'une à l'autre -->
+        {images.map((image, i) => (
+          <img
+            src={image.src}
+            alt={image.alt}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            data-diapo
+            class:list={['absolute inset-0 size-full object-cover object-top transition-opacity duration-1000', i === 0 ? 'opacity-100' : 'opacity-0']}
+          />
+        ))}
+
+        <!-- Zone où le vrai site est chargé (à sa vraie largeur, puis réduit) -->
+        <div data-direct class="absolute top-0 left-0 hidden origin-top-left"></div>
+
+        {url && (
+          <button
+            type="button"
+            data-lancer
+            class="btn btn-primary absolute bottom-4 left-1/2 -translate-x-1/2 shadow-lg"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+            Tester le site en direct
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <figcaption class="mt-4 text-center text-sm text-muted" data-legende>
+    {url
+      ? 'Changez la taille de l’écran pour voir le site s’adapter, ou testez-le en direct.'
+      : `Captures du site ${titre}. Pour le tester, utilisez « Ouvrir ↗ » dans la barre d'adresse.`}
+  </figcaption>
+</figure>
+
+<script>
+  // Taille réelle de chaque appareil (en pixels CSS) et arrondi du cadre
+  const APPAREILS = {
+    ordinateur: { largeur: 1280, hauteur: 800, rayon: 12, barre: true },
+    tablette: { largeur: 768, hauteur: 1024, rayon: 28, barre: false },
+    mobile: { largeur: 390, hauteur: 844, rayon: 40, barre: false },
+  } as const;
+  type Appareil = keyof typeof APPAREILS;
+
+  const reduireAnimations = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-apercu]').forEach((apercu) => {
+    const url = apercu.dataset.url;
+    const scene = apercu.querySelector<HTMLElement>('[data-scene]')!;
+    const cadre = apercu.querySelector<HTMLElement>('[data-cadre]')!;
+    const barre = apercu.querySelector<HTMLElement>('[data-barre]')!;
+    const ecran = apercu.querySelector<HTMLElement>('[data-ecran]')!;
+    const direct = apercu.querySelector<HTMLElement>('[data-direct]')!;
+    const lancer = apercu.querySelector<HTMLButtonElement>('[data-lancer]');
+    const diapos = [...apercu.querySelectorAll<HTMLImageElement>('[data-diapo]')];
+    const boutons = [...apercu.querySelectorAll<HTMLButtonElement>('[data-appareil]')];
+
+    let appareil: Appareil = 'ordinateur';
+    let enDirect = false;
+
+    // 1. Diaporama des captures (toutes les 3 s), coupé si "réduire les animations"
+    let indice = 0;
+    let minuteur: number | undefined;
+    if (diapos.length > 1 && !reduireAnimations) {
+      minuteur = window.setInterval(() => {
+        diapos[indice].classList.replace('opacity-100', 'opacity-0');
+        indice = (indice + 1) % diapos.length;
+        diapos[indice].classList.replace('opacity-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // 2. Calcule la taille du cadre pour l'appareil choisi
+    function miseEnPage() {
+      const a = APPAREILS[appareil];
+      const hauteurBarre = a.barre ? 36 : 0;
+      const largeurDispo = scene.clientWidth;
+      const hauteurDispo = Math.min(window.innerHeight * 0.75, 760) - hauteurBarre;
+      // Échelle : on réduit l'appareil pour qu'il tienne, sans jamais l'agrandir
+      const echelle = Math.min(1, largeurDispo / a.largeur, hauteurDispo / a.hauteur);
+
+      cadre.style.width = `${a.largeur * echelle}px`;
+      cadre.style.borderRadius = `${a.rayon}px`;
+      cadre.style.borderWidth = a.barre ? '1px' : '10px'; // bordure épaisse = contour de tablette/téléphone
+      barre.style.height = `${hauteurBarre}px`;
+      barre.style.opacity = a.barre ? '1' : '0';
+      barre.style.borderBottomWidth = a.barre ? '1px' : '0';
+      ecran.style.aspectRatio = 'auto';
+      ecran.style.height = `${a.hauteur * echelle}px`;
+
+      // Le site en direct garde sa vraie largeur, puis il est réduit
+      direct.style.width = `${a.largeur}px`;
+      direct.style.height = `${a.hauteur}px`;
+      direct.style.transform = `scale(${echelle})`;
+    }
+
+    // 3. Charge le vrai site dans une iframe (une seule fois)
+    function passerEnDirect() {
+      if (enDirect || !url) return;
+      enDirect = true;
+      window.clearInterval(minuteur);
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.title = 'Site du projet, affiché en direct';
+      iframe.className = 'size-full border-0 bg-white';
+      direct.append(iframe);
+      direct.classList.remove('hidden');
+      diapos.forEach((img) => img.classList.add('hidden'));
+      lancer?.remove();
+    }
+
+    // 4. Boutons Ordinateur / Tablette / Mobile
+    boutons.forEach((bouton) => {
+      bouton.addEventListener('click', () => {
+        appareil = bouton.dataset.appareil as Appareil;
+        boutons.forEach((b) => {
+          const actif = b === bouton;
+          b.setAttribute('aria-pressed', String(actif));
+          b.classList.toggle('btn-primary', actif);
+          b.classList.toggle('btn-ghost', !actif);
+        });
+        // Une capture d'ordinateur n'a pas de sens sur un téléphone :
+        // en tablette ou mobile, on passe directement au vrai site.
+        if (appareil !== 'ordinateur') passerEnDirect();
+        miseEnPage();
+      });
+    });
+
+    lancer?.addEventListener('click', passerEnDirect);
+    window.addEventListener('resize', miseEnPage);
+    miseEnPage();
+  });
+</script>

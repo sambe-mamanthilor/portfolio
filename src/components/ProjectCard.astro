@@ -1,166 +1,211 @@
 ---
-export interface Props {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  tags: string[];
-  link?: string;
-  github?: string;
-  category?: string;
+/**
+ * Carte d'un projet (accueil et page Projets).
+ *
+ * Toute la carte est cliquable, mais avec UN SEUL lien dans le HTML :
+ * le lien "Découvrir" est étiré sur toute la carte grâce à un ::after
+ * positionné en absolu. Un lecteur d'écran n'entend donc pas trois liens
+ * identiques (image, titre, bouton) pour le même projet.
+ *
+ * Aperçu animé au survol (ou au focus clavier) :
+ *  - si le projet a une "apercu_video" : la vidéo muette se lance en boucle ;
+ *  - sinon, s'il a au moins 2 images dans "galerie" : jusqu'à 4 images
+ *    défilent en fondu ;
+ *  - sinon : image fixe, comme avant.
+ * Rien n'est chargé tant qu'on ne survole pas (preload="none", images lazy).
+ * Désactivé si "réduire les animations" est activé.
+ */
+import ProjetImage from './ProjetImage.astro';
+import { bouton } from '../lib/boutons';
+import { fileUrl, type Projet } from '../lib/pocketbase';
+import { langue, tr, lien, champ } from '../i18n';
+
+const lang = langue(Astro);
+
+interface Props {
+  projet: Projet;
+  /** Niveau du titre selon la page (h3 sous un h2 "Mes projets"). */
+  niveauTitre?: 'h2' | 'h3';
 }
 
-const {
-  title,
-  description,
-  image,
-  tags,
-  link,
-  category
-} = Astro.props as Props;
+const { projet, niveauTitre = 'h3' } = Astro.props;
+const Titre = niveauTitre;
+const categories = projet.expand?.categorie ?? [];
+// Titre court s'il existe (dans la bonne langue), sinon le titre complet
+const titre = champ(projet, 'titre_court', lang) || champ(projet, 'titre', lang);
+
+const video = fileUrl(projet, projet.apercu_video);
+const images = video
+  ? []
+  : (projet.galerie ?? []).slice(0, 4).map((f) => fileUrl(projet, f, '800x450')).filter(Boolean) as string[];
+const aApercu = Boolean(video) || images.length >= 2;
 ---
 
-<article
-  class="
-    group
-    h-full
-    overflow-hidden
-    rounded-3xl
-    border
-    border-sky-200
-    bg-white
-    shadow-lg
-    transition-all
-    duration-300
-    hover:-translate-y-2
-    hover:shadow-2xl
-  "
->
+<article class="carte-projet group relative flex h-full flex-col overflow-hidden rounded-box border border-base-300 bg-base-100" data-theme="mts-nuit">
+  <div class="media relative aspect-video overflow-hidden" data-apercu={aApercu ? '' : undefined}>
+    <ProjetImage projet={projet} taille="400x225" class="aspect-video w-full transition-transform duration-300 group-hover:scale-[1.03]" />
 
-  <div class="relative h-56 overflow-hidden">
+    {video && (
+      <video class="couche" src={video} muted loop playsinline preload="none" aria-hidden="true" data-video></video>
+    )}
+    {images.map((src) => (
+      <img class="couche" src={src} alt="" loading="lazy" decoding="async" width="800" height="450" data-diapo />
+    ))}
 
-    {
-      image ? (
-        <img
-          src={image}
-          alt={title}
-          class="
-            h-full
-            w-full
-            object-cover
-            transition-transform
-            duration-500
-            group-hover:scale-105
-          "
-        />
-      ) : (
-        <div class="h-full w-full bg-gradient-to-br from-sky-500 to-cyan-400" />
-      )
-    }
-
-    {
-      category && (
-        <span
-          class="
-            absolute
-            right-4
-            top-4
-            rounded-full
-            bg-black/60
-            px-3
-            py-1
-            text-xs
-            font-semibold
-            text-white
-            backdrop-blur
-          "
-        >
-          {category}
-        </span>
-      )
-    }
-
-    <div
-      class="
-        absolute
-        inset-0
-        bg-gradient-to-t
-        from-black/50
-        via-transparent
-        to-transparent
-      "
-    />
+    {aApercu && (
+      <>
+        <span class="pastille" aria-hidden="true">{video ? tr(lang, 'Vidéo', 'Video') : tr(lang, 'Aperçu', 'Preview')}</span>
+        <span class="barre" aria-hidden="true"></span>
+      </>
+    )}
   </div>
 
-  <div class="flex h-[260px] flex-col p-6">
+  <div class="flex flex-1 flex-col gap-3 border-t border-base-300 p-5">
+    {categories.length > 0 && (
+      <ul class="flex flex-wrap gap-2" aria-label={tr(lang, 'Catégories', 'Categories')}>
+        {categories.map((c) => (
+          <li class="badge badge-sm badge-outline border-primary/50 text-primary">{champ(c, 'nom', lang)}</li>
+        ))}
+      </ul>
+    )}
 
-    <h3
-      class="
-        mb-3
-        text-2xl
-        font-bold
-        text-slate-900
-        transition-colors
-        group-hover:text-cyan-600
-      "
+    <Titre class="font-display text-xl">{titre}</Titre>
+    <p class="flex-1 text-sm leading-relaxed text-muted">{champ(projet, 'resume', lang)}</p>
+
+    <a
+      href={lien(lang, `/projets/${projet.slug}`)}
+      class:list={[bouton('secondaire', 'petit'), "mt-2 self-start after:absolute after:inset-0 after:content-['']"]}
     >
-      {title}
-    </h3>
-
-    <p class="mb-5 flex-1 text-sm leading-6 text-slate-600">
-      {description}
-    </p>
-
-    <div class="mb-5 flex flex-wrap gap-2">
-      {
-        tags?.slice(0, 4).map((tag) => (
-          <span
-            class="
-              rounded-full
-              bg-cyan-50
-              px-3
-              py-1
-              text-xs
-              font-medium
-              text-cyan-700
-            "
-          >
-            {tag}
-          </span>
-        ))
-      }
-    </div>
-
-    <div class="mt-auto flex gap-3">
-
-      {
-        link && (
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="
-              flex-1
-              rounded-xl
-              bg-gradient-to-r
-              from-cyan-500
-              to-sky-600
-              px-4
-              py-3
-              text-center
-              font-semibold
-              text-white
-              transition
-              hover:opacity-90
-            "
-          >
-            Voir le projet
-          </a>
-        )
-      }
-
-    </div>
-
+      {tr(lang, 'Découvrir', 'Discover')}<span class="sr-only"> {tr(lang, 'le projet', 'the project')} {titre}</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+    </a>
   </div>
-
 </article>
+
+<style>
+  /* ---------- Aperçu animé ---------- */
+  .couche {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .couche[data-active] {
+    opacity: 1;
+  }
+  .pastille {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: rgb(10 15 46 / 0.8);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .pastille::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #f87171;
+  }
+  [data-lecture] .pastille::before {
+    animation: clignote 1s infinite;
+  }
+  @keyframes clignote {
+    50% { opacity: 0.2; }
+  }
+  /* Barre de lecture : avance pendant l'aperçu */
+  .barre {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 0;
+    background: var(--color-primary);
+  }
+  [data-lecture] .barre {
+    animation: avance var(--duree, 6s) linear infinite;
+  }
+  @keyframes avance {
+    to { width: 100%; }
+  }
+
+  .carte-projet {
+    /* Carte sombre (thème "mts-nuit") posée sur le fond clair */
+    box-shadow: 0 10px 25px rgb(10 15 46 / 0.18);
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  }
+  .carte-projet:hover,
+  .carte-projet:focus-within {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+    box-shadow: 0 18px 40px rgb(10 15 46 / 0.28), 0 0 0 1px rgb(53 195 234 / 0.4);
+  }
+  /* Contour de focus visible sur toute la carte quand on y arrive au clavier */
+  .carte-projet:has(a:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+  .carte-projet a:focus-visible {
+    outline: none;
+  }
+</style>
+
+<script>
+  // Aperçu au survol : un seul script pour toutes les cartes de la page
+  const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-apercu]').forEach((media) => {
+    const carte = media.closest('article');
+    if (!carte || reduit) return;
+
+    const video = media.querySelector<HTMLVideoElement>('[data-video]');
+    const images = [...media.querySelectorAll<HTMLImageElement>('[data-diapo]')];
+    let minuteur: number | undefined;
+    let i = 0;
+
+    if (images.length) media.style.setProperty('--duree', `${images.length * 1.4}s`);
+
+    function demarrer() {
+      if (media.hasAttribute('data-lecture')) return;
+      media.setAttribute('data-lecture', '');
+      if (video) {
+        video.setAttribute('data-active', '');
+        video.play().catch(() => {}); // lecture refusée : on garde l'image fixe
+      } else {
+        i = 0;
+        images[0].setAttribute('data-active', '');
+        minuteur = window.setInterval(() => {
+          images[i].removeAttribute('data-active');
+          i = (i + 1) % images.length;
+          images[i].setAttribute('data-active', '');
+        }, 1400);
+      }
+    }
+
+    function arreter() {
+      media.removeAttribute('data-lecture');
+      window.clearInterval(minuteur);
+      images.forEach((img) => img.removeAttribute('data-active'));
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+        video.removeAttribute('data-active');
+      }
+    }
+
+    carte.addEventListener('pointerenter', demarrer);
+    carte.addEventListener('pointerleave', arreter);
+    carte.addEventListener('focusin', demarrer);
+    carte.addEventListener('focusout', arreter);
+  });
+</script>

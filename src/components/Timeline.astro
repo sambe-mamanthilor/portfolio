@@ -1,0 +1,69 @@
+---
+/**
+ * Frise du processus d'un projet (collection "etapes").
+ * C'est une liste ORDONNÉE (<ol>) : l'ordre des étapes a du sens,
+ * et les lecteurs d'écran annoncent "étape 2 sur 5".
+ *
+ * Mise en page :
+ *  - mobile : une ligne à gauche, toutes les étapes à droite ;
+ *  - ordinateur : ligne au centre, étapes alternées gauche / droite.
+ */
+import type { Etape } from '../lib/pocketbase';
+import { langue, tr, champ } from '../i18n';
+
+interface Props {
+  etapes: Etape[];
+}
+const { etapes } = Astro.props;
+const lang = langue(Astro);
+---
+
+<ol class="frise relative mx-auto max-w-4xl" data-frise>
+  {etapes.map((etape, index) => (
+    <li class:list={['etape relative pb-12 pl-10 md:w-1/2', index % 2 === 0 ? 'md:pl-0 md:pr-12 md:text-right' : 'md:ml-auto md:pl-12']}>
+      <span class="point" aria-hidden="true" />
+      <h3 class="text-lg font-semibold text-primary">
+        <span class="sr-only">{tr(lang, 'Étape', 'Step')} {index + 1}{tr(lang, ' : ', ': ')}</span>{champ(etape, 'titre', lang)}
+      </h3>
+      <div class="texte-riche mt-2 text-muted" set:html={champ(etape, 'description', lang)} />
+    </li>
+  ))}
+</ol>
+
+<style>
+  /* La ligne verticale */
+  .frise::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0;
+    left: 0.6rem;
+    width: 2px;
+    background: var(--color-accent);
+  }
+  .point {
+    position: absolute;
+    top: 0.35rem;
+    left: 0.2rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px rgb(53 195 234 / 0.25);
+  }
+
+  @media (min-width: 768px) {
+    .frise::before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    /* Le point se place sur la ligne centrale, côté intérieur */
+    .etape:nth-child(odd) .point {
+      left: auto;
+      right: -0.5rem;
+    }
+    .etape:nth-child(even) .point {
+      left: -0.5rem;
+    }
+  }
+</style>
