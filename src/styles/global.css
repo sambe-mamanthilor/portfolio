@@ -203,10 +203,12 @@
     @apply pt-32 md:pt-40;
   }
 
-  /* Zone sombre (haut de page) : à utiliser AVEC data-theme="mts-nuit".
-     Léger dégradé vertical pour éviter un aplat trop plat. */
+  /* Zone sombre : à utiliser AVEC data-theme="mts-nuit".
+     Dégradé de la maquette : bleu nuit → gris-bleu (même teinte que le
+     pied de page) → bleu nuit. La bande claire au milieu donne du relief.
+     Contraste au point le plus clair (#3e586b) : cyan 6:1, gris clair 5:1 (AA). */
   .zone-nuit {
-    background: linear-gradient(180deg, #0a0f2e 0%, #111a3d 100%);
+    background: linear-gradient(180deg, #0a0f2e 0%, #3e586b 50%, #0a0f2e 100%);
     color: var(--color-base-content);
   }
 
