@@ -204,11 +204,11 @@
   }
 
   /* Zone sombre : à utiliser AVEC data-theme="mts-nuit".
-     Dégradé de la maquette : bleu nuit → gris-bleu (même teinte que le
+     Dégradé doux : bleu nuit → bleu ardoise (même teinte que le
      pied de page) → bleu nuit. La bande claire au milieu donne du relief.
-     Contraste au point le plus clair (#3e586b) : cyan 6:1, gris clair 5:1 (AA). */
+     Teinte foncée au milieu : le fond reste profond et le texte net. */
   .zone-nuit {
-    background: linear-gradient(180deg, #0a0f2e 0%, #3e586b 50%, #0a0f2e 100%);
+    background: linear-gradient(180deg, #0a0f2e 0%, #1b2a4a 50%, #0a0f2e 100%);
     color: var(--color-base-content);
   }
 
