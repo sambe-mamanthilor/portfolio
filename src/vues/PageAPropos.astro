@@ -131,8 +131,8 @@ const logoRond = 'size-24 flex-none rounded-full border border-base-300 bg-white
   <!-- ===================== ZONE SOMBRE : PRÉSENTATION ===================== -->
   <div data-theme="mts-nuit" class="zone-nuit">
     <section class="haut-de-page pb-24" aria-labelledby="titre-page">
-      <div class="container-site grid items-center gap-12 md:grid-cols-[1fr_auto] md:gap-16">
-        <div>
+      <div class="container-site grid items-center gap-8 md:grid-cols-[1fr_auto] lg:grid-cols-12">
+        <div class="lg:col-span-8">
           <h1 id="titre-page" class="font-display text-5xl">{tr(lang, 'À propos', 'About me')}</h1>
           <div class="mt-8 max-w-2xl space-y-4 text-lg leading-relaxed text-muted">
             <p>
@@ -152,7 +152,7 @@ const logoRond = 'size-24 flex-none rounded-full border border-base-300 bg-white
              cyan, halo dessous), à la taille de cette page. La photo détourée est
              descendue de 10 % pour que la tête tienne entière dans l'ovale. -->
         <div
-          class="relative mx-auto aspect-[420/453] w-60 overflow-hidden rounded-[50%] border-3 border-primary/25
+          class="relative mx-auto aspect-[420/453] w-60 lg:col-span-4 lg:mr-0 overflow-hidden rounded-[50%] border-3 border-primary/25
                  shadow-[4px_0_4px_rgb(121_244_255/0.38),0_30px_30px_rgb(121_244_255/0.39)] md:w-80"
         >
           <Image
@@ -167,7 +167,7 @@ const logoRond = 'size-24 flex-none rounded-full border border-base-300 bg-white
       </div>
 
       <!-- Soft skills et langues -->
-      <div class="container-site mt-16 grid gap-10 sm:grid-cols-2">
+      <div class="container-site mt-16 grid gap-8 sm:grid-cols-2">
         <div>
           <h2 class="font-display text-3xl font-light">Soft skills</h2>
           <ul class="mt-5 space-y-3 font-semibold">

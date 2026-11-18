@@ -30,10 +30,15 @@ const lang = langue(Astro);
 
       <div>
         <h2 class="titre-section text-2xl">{tr(lang, 'Hébergement', 'Hosting')}</h2>
+        <p>{tr(lang, 'Site web : hébergé par', 'Website: hosted by')}
+          <a class="underline" href="https://www.netlify.com" rel="noopener noreferrer" target="_blank">Netlify, Inc.</a>,
+          101 2nd Street, San Francisco, CA 94105, {tr(lang, 'États-Unis', 'United States')}.</p>
         <p>{tr(lang,
-          'Le site, sa base de données et le nom de domaine sont hébergés par',
-          'The website, its database and the domain name are hosted by')}
-          <a class="underline" href="https://www.infomaniak.com" rel="noopener noreferrer" target="_blank">Infomaniak</a>.</p>
+          'Base de données (projets et messages du formulaire de contact) : serveur privé virtuel (VPS) mis à disposition par l’IUT Nord Franche-Comté, Montbéliard, France.',
+          'Database (projects and contact form messages): virtual private server (VPS) provided by IUT Nord Franche-Comté, Montbéliard, France.')}</p>
+        <p>{tr(lang, 'Nom de domaine : enregistré chez', 'Domain name: registered with')}
+          <a class="underline" href="https://www.infomaniak.com" rel="noopener noreferrer" target="_blank">Infomaniak</a>
+          {tr(lang, '(Genève, Suisse).', '(Geneva, Switzerland).')}</p>
       </div>
 
       <div id="donnees" class="scroll-mt-28">

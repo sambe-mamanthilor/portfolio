@@ -39,7 +39,7 @@
   --color-primary-content: #ffffff;
   --color-secondary: #0ea3cd;
   --color-secondary-content: #0a0f2e;
-  --color-accent: #0b7fa3;
+  --color-accent: #0a7598;        /* un peu plus foncé que le primaire : 4,6:1 sur les encadrés base-200 (petits libellés) */
   --color-accent-content: #ffffff;
   --color-neutral: #0a0f2e;       /* boutons sombres */
   --color-neutral-content: #ffffff;

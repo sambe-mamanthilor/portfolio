@@ -96,7 +96,7 @@ const liens = [
   <!-- ===================== ZONE SOMBRE : EN-TÊTE ===================== -->
   <div data-theme="mts-nuit" class="zone-nuit">
     <section class="haut-de-page pb-24" aria-labelledby="titre-projet">
-      <div class="container-site grid items-center gap-10 lg:grid-cols-2">
+      <div class="container-site grid items-center gap-8 lg:grid-cols-2">
         <div>
           <nav aria-label={tr(lang, 'Fil d’Ariane', 'Breadcrumb')} class="text-sm text-muted">
             <ol class="flex gap-2">
@@ -159,13 +159,13 @@ const liens = [
 
     <!-- ============ CONTEXTE + INFOS CLÉS ============ -->
     <section class="section" aria-labelledby="titre-contexte">
-      <div class="container-site grid gap-12 lg:grid-cols-[3fr_2fr]">
-        <div>
+      <div class="container-site grid gap-8 lg:grid-cols-12">
+        <div class="lg:col-span-7">
           <h2 id="titre-contexte" class="titre-section">{tr(lang, 'Contexte', 'Context')}</h2>
           <div class="texte-riche mt-6 text-lg leading-relaxed text-muted" set:html={projet.contexte} />
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-4 lg:col-span-5">
           {projet.role && (
             <div class="rounded-box border border-base-300 bg-base-200 p-5">
               <h2 class="text-xs font-semibold uppercase tracking-widest text-accent">{tr(lang, 'Mon rôle', 'My role')}</h2>
@@ -188,7 +188,7 @@ const liens = [
     {sections.length > 0 && <LigneOndulee />}
     {sections.length > 0 && (
       <section class="section" aria-label={tr(lang, 'Objectifs et résultat', 'Goals and outcome')}>
-        <div class="container-site grid gap-12 md:grid-cols-2">
+        <div class="container-site grid gap-8 md:grid-cols-2">
           {sections.map((s) => (
             <div>
               <h2 id={s.id} class="titre-section text-2xl md:text-3xl">{s.titre}</h2>

@@ -4,8 +4,8 @@
  * Principe :
  *  - le français est la langue par défaut, sans préfixe : /projets
  *  - l'anglais a le préfixe /en : /en/projets
- *  - chaque page est écrite UNE seule fois (dossier src/pages/[...lang]/) ;
- *    Astro la génère deux fois, une par langue.
+ *  - le contenu de chaque page est écrit UNE seule fois dans src/vues/ ;
+ *    src/pages/ (français) et src/pages/en/ (anglais) ne font que l'afficher.
  *  - dans le code, on écrit les deux langues côte à côte avec tr() :
  *        tr(lang, 'Mes projets', 'My projects')
  *    C'est plus simple à relire qu'un grand dictionnaire séparé.
@@ -48,9 +48,4 @@ export function champ<T extends object>(record: T, nom: string, lang: Lang): any
     if (!vide) return en;
   }
   return r[nom];
-}
-
-/** À exporter tel quel par chaque page : génère la version française et la version anglaise. */
-export function cheminsLangues() {
-  return [{ params: { lang: undefined } }, { params: { lang: 'en' } }];
 }
