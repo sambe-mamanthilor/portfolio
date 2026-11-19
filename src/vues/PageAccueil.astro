@@ -43,7 +43,7 @@ const projets = (await getProjetsMisEnAvant()).slice(0, 3);
         </a>
       </div>
 
-      <ul class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="mt-10 grid gap-8 max-sm:mx-4 sm:grid-cols-2 lg:grid-cols-3">
         {projets.map((projet) => (
           <li><ProjectCard projet={projet} /></li>
         ))}

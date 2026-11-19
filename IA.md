@@ -67,7 +67,6 @@ Conformément au cahier des charges du projet individuel S3, ce fichier déclare
 
 ## Ce que je dois savoir expliquer avant la soutenance
 
-Le jury tire au sort une portion du code. Pour chaque fichier, je coche quand je sais l'expliquer sans aide :
 
 - [ ] `src/layouts/Layout.astro` : structure commune, balises SEO, thème clair / sombre
 - [ ] `src/lib/pocketbase.ts` : comment le site récupère les projets au moment du build

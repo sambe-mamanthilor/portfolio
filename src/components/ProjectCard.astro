@@ -60,7 +60,7 @@ const aApercu = Boolean(video) || images.length >= 2;
     )}
   </div>
 
-  <div class="flex flex-1 flex-col gap-3 border-t border-base-300 p-5">
+  <div class="flex flex-1 flex-col gap-2 border-t border-base-300 p-4 md:gap-3 md:p-5">
     {categories.length > 0 && (
       <ul class="flex flex-wrap gap-2" aria-label={tr(lang, 'Catégories', 'Categories')}>
         {categories.map((c) => (
@@ -69,8 +69,8 @@ const aApercu = Boolean(video) || images.length >= 2;
       </ul>
     )}
 
-    <Titre class="font-display text-xl">{titre}</Titre>
-    <p class="flex-1 text-sm leading-relaxed text-muted">{champ(projet, 'resume', lang)}</p>
+    <Titre class="font-display text-lg md:text-xl">{titre}</Titre>
+    <p class="flex-1 text-[0.8125rem] leading-relaxed text-muted md:text-sm">{champ(projet, 'resume', lang)}</p>
 
     <a
       href={lien(lang, `/projets/${projet.slug}`)}

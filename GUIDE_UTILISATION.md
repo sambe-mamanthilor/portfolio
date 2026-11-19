@@ -1,296 +1,104 @@
-# 🎨 Portfolio Maman SAMBE - Guide Complet
+# Guide d'utilisation de mon portfolio
 
-## ✅ Votre portfolio est prêt!
+Ce guide me sert d'aide-mémoire : comment je lance mon site, où se trouve chaque chose, et comment je le mets à jour.
 
-Félicitations! Votre portfolio moderne, responsive et facilement modifiable est maintenant opérationnel! 🚀
+## Ce que j'utilise
 
-### 🌍 Accéder à votre portfolio
+- **Astro 6** : génère toutes les pages au moment du build (site statique).
+- **Tailwind CSS 4 et daisyUI 5** : mise en page et composants, avec mon thème « mts » (clair) et « mts-nuit » (sombre).
+- **PocketBase** : ma base de données et mon back-office (projets, expériences, messages du formulaire).
+- **Netlify** : héberge le site et le reconstruit à chaque push sur GitHub.
+- **Le VPS de l'IUT** : fait tourner PocketBase à l'adresse `https://api.maman-sambe.fr`.
 
-**En développement :**
-```
-http://localhost:4321/
-```
+## Lancer le site sur mon ordinateur
 
-**Pages disponibles :**
-- `/` - Accueil avec hero section et projets en vedette
-- `/about` - À propos de vous
-- `/skills` - Vos compétences par catégorie
-- `/projects` - Tous vos projets
-- `/education` - Formation et expérience
-- `/passions` - Vos centres d'intérêt
-- `/contact` - Page de contact
-
----
-
-## 📝 Comment modifier votre portfolio
-
-### **Option 1 : Modifier les données (RECOMMANDÉ)**
-
-Tout votre contenu est dans un fichier JSON centralissé :
-
-```
-src/data/portfolio.json
-```
-
-**Vous pouvez facilement modifier :**
-- Vos informations personnelles
-- Vos compétences (ajouter/supprimer/réorganiser)
-- Vos projets (ajouter de nouveaux projets)
-- Votre formation
-- Votre expérience
-- Vos intérêts/passions
-
-Le portfolio se mettra à jour automatiquement!
-
-**Structure du fichier `portfolio.json` :**
-
-```json
-{
-  "personal": { /* Infos personnelles */ },
-  "skills": [ /* Compétences par catégorie */ ],
-  "projects": [ /* Vos projets */ ],
-  "education": [ /* Formation */ ],
-  "experience": [ /* Expérience pro */ ],
-  "interests": [ /* Passions */ ]
-}
-```
-
-### **Option 2 : Modifier les pages (approche avancée)**
-
-Les pages se trouvent dans :
-```
-src/pages/
-├── index.astro (Accueil)
-├── about.astro (À propos)
-├── skills.astro (Compétences)
-├── projects.astro (Projets)
-├── education.astro (Formation)
-├── passions.astro (Passions)
-└── contact.astro (Contact)
-```
-
-### **Option 3 : Modifier les composants**
-
-Les composants réutilisables se trouvent dans :
-```
-src/components/
-├── Header.astro (Navigation)
-├── Footer.astro (Pied de page)
-└── ProjectCard.astro (Carte projet)
-```
-
----
-
-## 🎨 Personnalisation
-
-### Palette de couleurs
-
-Les couleurs sont définies dans `tailwind.config.mjs` :
-
-```javascript
-colors: {
-  primary: '#E75480',      // Rose vif
-  secondary: '#A855F7',    // Violet
-  accent: '#06B6D4',       // Cyan
-  dark: '#1F2937',         // Gris foncé
-  light: '#F9FAFB',        // Blanc cassé
-  border: '#FCE7F3',       // Rose pâle
-}
-```
-
-Pour changer les couleurs :
-1. Ouvrez `tailwind.config.mjs`
-2. Modifiez les codes HEX
-
-### Font personnalisée
-
-Actuellement utilise "Inter". Pour changer :
-1. Modifiez `tailwind.config.mjs`
-2. Changez l'import Google Fonts dans `src/layouts/Layout.astro`
-
----
-
-## 📊 Ajouter des projets
-
-**Dans `src/data/portfolio.json`, section `projects` :**
-
-```json
-{
-  "id": "mon-projet",
-  "title": "Mon Projet",
-  "description": "Description courte",
-  "longDescription": "Description longue",
-  "image": "/images/projects/mon-projet.jpg",
-  "tags": ["HTML", "CSS", "JavaScript"],
-  "technologies": ["HTML5", "CSS3"],
-  "link": "https://exemple.com",
-  "github": "https://github.com/example",
-  "date": "2024",
-  "category": "Web"
-}
-```
-
-Puis c'est automatique! La page projets se mettra à jour.
-
----
-
-## 🚀 Commandes disponibles
-
-```bash
-# Démarrer le serveur de développement
-npm run dev
-
-# Compiler pour la production
-npm run build
-
-# Prévisualiser la build
-npm run preview
-
-# Vérifier les types TypeScript
-npm run check
-```
-
----
-
-## 📁 Structure du projet
-
-```
-portfolio/
-├── src/
-│   ├── data/
-│   │   └── portfolio.json (VOS DONNÉES!)
-│   ├── pages/
-│   │   ├── index.astro
-│   │   ├── about.astro
-│   │   ├── skills.astro
-│   │   ├── projects.astro
-│   │   ├── education.astro
-│   │   ├── passions.astro
-│   │   └── contact.astro
-│   ├── components/
-│   │   ├── Header.astro
-│   │   ├── Footer.astro
-│   │   └── ProjectCard.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── styles/
-│       └── global.css
-├── public/
-│   └── images/ (Ajouter vos images ici)
-├── tailwind.config.mjs (Couleurs & theming)
-├── postcss.config.mjs
-├── astro.config.mjs
-└── package.json
-```
-
----
-
-## 🖼️ Ajouter des images
-
-1. Créez des dossiers dans `public/images/` :
-   - `public/images/profile.jpg` - Votre photo de profil
-   - `public/images/projects/` - Images des projets
-   - `public/images/skills/` - Icons des skills
-
-2. Dans `portfolio.json`, référencez-les :
-   ```json
-   "image": "/images/projects/mon-projet.jpg"
+1. Dans le fichier `.env`, je mets l'adresse de ma base :
+   ```
+   POCKETBASE_URL=https://api.maman-sambe.fr
+   ```
+2. Je lance :
+   ```bash
+   npm install      # la première fois seulement
+   npm run dev      # site sur http://localhost:4321
    ```
 
----
-
-## 📱 Responsive Design
-
-Le portfolio est entièrement responsive:
-- **Mobile** : < 640px
-- **Tablet** : 640px - 1024px
-- **Desktop** : > 1024px
-
-Les breakpoints Tailwind utilisés:
-- `sm:` (640px)
-- `md:` (768px)
-- `lg:` (1024px)
-
----
-
-## 🌐 Déploiement
-
-### Déployer sur Netlify (Recommandé)
-
-1. Poussez votre code sur GitHub
-2. Connectez Netlify à votre repo GitHub
-3. Netlify déploiera automatiquement à chaque push
-
-**Configuration Netlify:**
-- Build command: `npm run build`
-- Publish directory: `dist`
-
-### Déployer sur Vercel
-
-1. Connectez votre GitHub à Vercel
-2. Vercel détectera Astro automatiquement
-3. C'est prêt!
-
-### Déployer manuellement
+Autres commandes :
 
 ```bash
-npm run build
-# Poussez le dossier `dist/` sur votre hébergement
+npm run build    # construit le site dans dist/
+npm run preview  # affiche la version construite
 ```
 
----
+## Les pages
 
-## 🎯 Prochaines étapes
+| Adresse | Page |
+|---|---|
+| `/` | Accueil (couverture, projets phares, compétences, à propos, contact) |
+| `/a-propos/` | Parcours, expériences et passions |
+| `/projets/` | Tous mes projets, avec recherche et filtres |
+| `/projets/[slug]/` | Étude de cas d'un projet (une page créée par projet) |
+| `/contact/` | Formulaire de contact par étapes |
+| `/mentions-legales/` | Mentions légales |
+| `/en/...` | Les mêmes pages en anglais |
 
-### À faire :
-- [ ] Ajouter vos images de profil et projets dans `public/images/`
-- [ ] Mettre à jour `portfolio.json` avec vos vrais données
-- [ ] Tester sur mobile/tablet/desktop
-- [ ] Demander du feedback à quelqu'un
-- [ ] Déployer en production
+## Où se trouve chaque chose
 
-### Optionnel :
-- [ ] Changer la palette de couleurs
-- [ ] Ajouter un blog avec Astro Content Collections
-- [ ] Intégrer un formulaire de contact (Formspree, EmailJS, etc)
-- [ ] Ajouter de l'analytics (Google Analytics, Plausible)
-- [ ] Ajouter un sitemap et robots.txt
+```
+src/
+├── pages/        les adresses du site (fichiers courts qui appellent une vue)
+├── vues/         le contenu des pages, partagé entre le français et l'anglais
+├── components/   les morceaux réutilisables (en-tête, pied de page, cartes, carrousel…)
+├── layouts/      le gabarit commun (balises <head>, SEO, favicon)
+├── lib/          la connexion à PocketBase, les boutons, les formats de date
+├── i18n/         la fonction tr() qui choisit le texte selon la langue
+├── data/         les infos fixes du site et la liste des logiciels
+└── styles/       global.css : mon thème, mes couleurs, la grille
 
----
+pocketbase/
+├── pb_migrations/  la structure de ma base, écrite en code
+└── pb_hooks/       l'envoi d'un e-mail à chaque message reçu
+```
 
-## 🔧 Dépannage
+## Ajouter ou modifier un projet
 
-### Le portfolio ne s'affiche pas?
-- Vérifiez que le serveur dev est lancé : `npm run dev`
-- Allez à `http://localhost:4321/`
+1. Je me connecte au back-office : `https://api.maman-sambe.fr/_/`
+2. J'ajoute ou je modifie le projet dans la collection `projets`.
+3. Je relance la construction du site : soit je fais un push, soit dans Netlify je vais dans **Deploys**, puis **Trigger deploy**.
 
-### Les changements ne s'appliquent pas?
-- Les fichiers `.astro` se rechargent automatiquement
-- Pour `portfolio.json`, rafraîchissez la page (Ctrl+R ou Cmd+R)
+La nouvelle page est créée toute seule grâce à `getStaticPaths` dans `src/pages/projets/[slug].astro`.
 
-### Comment ajouter une nouvelle page?
-- Créez un fichier `.astro` dans `src/pages/`
-- Importez `Layout` et utilisez-le
-- La route sera automatiquement créée!
+Pour changer la structure de la base (ajouter un champ, par exemple), j'écris une migration dans `pocketbase/pb_migrations/` au lieu de le faire à la main. Comme ça, ma base locale et celle du VPS restent identiques.
 
----
+## Changer les couleurs ou les polices
 
-## 📞 Support
+Tout est dans `src/styles/global.css` : les couleurs des thèmes « mts » et « mts-nuit », et les polices Inter et Playfair Display, installées dans le projet (pas de Google Fonts).
 
-Pour des questions sur :
-- **Astro** : https://docs.astro.build/
-- **TailwindCSS** : https://tailwindcss.com/docs
-- **Deployment** : https://docs.astro.build/en/guides/deploy/
+## Les messages du formulaire de contact
 
----
+- Chaque message est enregistré dans la collection `messages` de PocketBase.
+- Je reçois un e-mail à chaque nouveau message, grâce au fichier `pocketbase/pb_hooks/notification_message.pb.js`.
 
-## 🎉 Vous êtes prêt!
+## Mettre en ligne
 
-Votre portfolio est:
-✅ **Responsive** - Fonctionne sur tous les appareils  
-✅ **Moderne** - Technologies actuelles (Astro, TailwindCSS)  
-✅ **Modifiable** - Facile de mettre à jour vos données  
-✅ **Déployable** - Prêt pour Netlify, Vercel, etc.  
-✅ **Performant** - Chargement ultra-rapide  
+Je fais un push sur la branche `main` :
 
-Bonne chance dans votre parcours! 🚀
+```bash
+git add .
+git commit -m "Ce que j'ai changé"
+git push
+```
+
+Netlify reconstruit et publie le site tout seul en une à deux minutes.
+
+## Si quelque chose ne marche pas
+
+- **`npm run dev` plante :** je vérifie que `POCKETBASE_URL` est bien rempli dans `.env` et que `https://api.maman-sambe.fr` répond.
+- **Les images d'un projet ne s'affichent pas :** je vérifie qu'elles sont bien dans PocketBase sur le VPS.
+- **Un déploiement Netlify échoue :** je regarde le journal dans Netlify. Si PocketBase était coupé à ce moment-là, je relance le déploiement.
+
+## Documentation
+
+- Astro : https://docs.astro.build/
+- Tailwind CSS : https://tailwindcss.com/docs
+- daisyUI : https://daisyui.com/
+- PocketBase : https://pocketbase.io/docs/

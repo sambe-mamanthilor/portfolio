@@ -49,14 +49,14 @@ const texteRecherche = (p: (typeof projets)[number]) =>
       <h1 id="titre-page" class="font-display text-5xl">{tr(lang, 'Mes', 'My')} <span class="text-primary">{tr(lang, 'projets', 'projects')}</span></h1>
 
       <!-- Barre de recherche + filtres -->
-      <div class="barre-filtres mt-10 flex flex-col gap-4 rounded-box border border-base-300 p-4 lg:flex-row lg:items-center" data-filtres hidden>
-        <label class="input flex flex-1 items-center gap-2 bg-base-100">
+      <div class="barre-filtres mt-6 flex flex-col gap-3 rounded-box border border-base-300 p-3 md:mt-10 md:gap-4 md:p-4 lg:flex-row lg:items-center" data-filtres hidden>
+        <label class="input input-sm flex flex-1 items-center gap-2 bg-base-100 md:input-md">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
           <span class="sr-only">{tr(lang, 'Rechercher un projet', 'Search projects')}</span>
           <input type="search" placeholder={tr(lang, 'Rechercher une technologie (Astro, PocketBase, Figma…)', 'Search a technology (Astro, PocketBase, Figma…)')} data-recherche class="grow" />
         </label>
 
-        <div role="group" aria-label={tr(lang, 'Filtrer par catégorie', 'Filter by category')} class="flex flex-wrap gap-2">
+        <div role="group" aria-label={tr(lang, 'Filtrer par catégorie', 'Filter by category')} class="-mx-3 flex gap-2 overflow-x-auto px-3 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0 [&>button]:shrink-0 [&>button]:whitespace-nowrap max-md:[&>button]:min-h-0 max-md:[&>button]:px-3 max-md:[&>button]:py-1 max-md:[&>button]:text-xs">
           <button type="button" class={bouton('secondaire', 'petit')} aria-pressed="true" data-filtre="tous">{tr(lang, 'Tous', 'All')}</button>
           {categoriesUtiles.map((c) => (
             <button type="button" class={bouton('secondaire', 'petit')} aria-pressed="false" data-filtre={c.id}>{champ(c, 'nom', lang)}</button>
@@ -80,7 +80,7 @@ const texteRecherche = (p: (typeof projets)[number]) =>
 
   <section class="section pt-8" aria-label={tr(lang, 'Liste des projets', 'Project list')}>
     <div class="container-site">
-      <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" data-grille>
+      <ul class="grid gap-8 max-sm:mx-4 sm:grid-cols-2 lg:grid-cols-3" data-grille>
         {projets.map((projet) => (
           <li
             class="carte-anim"

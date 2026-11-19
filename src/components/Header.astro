@@ -33,13 +33,13 @@ const estActif = (href: string) =>
   href === '/' ? chemin === '/' : chemin === href || chemin.startsWith(`${href}/`);
 ---
 
-<header class="entete sticky top-0 z-40 bg-transparent px-4 pt-4" data-theme="mts-nuit" data-entete>
+<header class="entete sticky top-0 z-40 bg-transparent px-4 pt-3 md:pt-4" data-theme="mts-nuit" data-entete>
   <nav
     aria-label={tr(lang, 'Navigation principale', 'Main navigation')}
-    class="nav-pilule relative mx-auto flex items-center justify-between gap-4 rounded-full px-3 py-2 md:px-5"
+    class="nav-pilule relative mx-auto flex items-center justify-between gap-4 rounded-full px-3 py-1 md:px-5 md:py-2"
     data-nav
   >
-    <a href={lien(lang, '/')} class="rounded-full" aria-label={`MTS – ${tr(lang, 'Accueil', 'Home')}, ${SITE.nom}`}>
+    <a href={lien(lang, '/')} class="rounded-full [--taille:36px] md:[--taille:46px]" aria-label={`MTS – ${tr(lang, 'Accueil', 'Home')}, ${SITE.nom}`}>
       <Logo taille={46} />
     </a>
 
